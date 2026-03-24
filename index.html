@@ -1624,8 +1624,8 @@ document.querySelectorAll('.nav-link').forEach(l => {
   });
 });
 
-document.querySelector('.cta-signin')?.addEventListener('click', () => goToMembership('signin'));
-document.querySelector('.cta-start-free')?.addEventListener('click', () => goToMembership('signup'));
+document.querySelector('.cta-signin')?.addEventListener('click', () => { if(!getStoredPlan()) persistPlan('starter'); goToMembership('signin'); });
+document.querySelector('.cta-start-free')?.addEventListener('click', () => { persistPlan('starter'); goToMembership('signup'); });
 document.querySelector('.cta-read-report')?.addEventListener('click', () => document.getElementById('ideas')?.scrollIntoView({behavior:'smooth', block:'start'}));
 document.querySelector('.cta-browse')?.addEventListener('click', () => document.getElementById('leaderboard')?.scrollIntoView({behavior:'smooth', block:'start'}));
 
@@ -1654,17 +1654,36 @@ document.querySelectorAll('.cta-leaderboard-report').forEach(btn => {
 });
 
 document.querySelector('.cta-upgrade')?.addEventListener('click', () => startUpgradeCheckout());
-document.querySelector('.cta-plan-free')?.addEventListener('click', () => goToMembership('signup'));
-document.querySelector('.cta-plan-starter')?.addEventListener('click', () => { window.__pendingPlan = 'starter'; goToMembership('signup'); });
-document.querySelector('.cta-plan-pro')?.addEventListener('click', () => { window.__pendingPlan = 'pro'; goToMembership('signup'); });
-document.querySelector('.cta-get-free-report')?.addEventListener('click', () => goToMembership('signup'));
+document.querySelector('.cta-plan-free')?.addEventListener('click', () => { persistPlan('starter'); goToMembership('signup'); });
+document.querySelector('.cta-plan-starter')?.addEventListener('click', () => { window.__pendingPlan = 'starter'; persistPlan('starter'); goToMembership('signup'); });
+document.querySelector('.cta-plan-pro')?.addEventListener('click', () => { window.__pendingPlan = 'pro'; persistPlan('pro'); goToMembership('signup'); });
+document.querySelector('.cta-get-free-report')?.addEventListener('click', () => { persistPlan('starter'); goToMembership('signup'); });
 
-document.getElementById('goto-free-plan')?.addEventListener('click', () => goToMembership('signup'));
-document.getElementById('goto-starter-plan')?.addEventListener('click', () => { window.__pendingPlan = 'starter'; startUpgradeCheckout('starter'); });
-document.getElementById('goto-pro-plan')?.addEventListener('click', () => { window.__pendingPlan = 'pro'; startUpgradeCheckout('pro'); });
+document.getElementById('goto-free-plan')?.addEventListener('click', () => { persistPlan('starter'); goToMembership('signup'); });
+document.getElementById('goto-starter-plan')?.addEventListener('click', () => { window.__pendingPlan = 'starter'; persistPlan('starter'); startUpgradeCheckout('starter'); });
+document.getElementById('goto-pro-plan')?.addEventListener('click', () => { window.__pendingPlan = 'pro'; persistPlan('pro'); startUpgradeCheckout('pro'); });
+
+
+function persistPlan(plan){
+  const safePlan = (plan === 'starter' || plan === 'pro') ? plan : 'starter';
+  localStorage.setItem('nichelab_plan', safePlan);
+  return safePlan;
+}
+
+function getStoredPlan(){
+  const saved = (localStorage.getItem('nichelab_plan') || '').toLowerCase();
+  return saved === 'pro' ? 'pro' : (saved === 'starter' ? 'starter' : null);
+}
+
+function resolveDashboardPlan(){
+  if (window.__pendingPlan === 'pro' || window.__pendingPlan === 'starter') return window.__pendingPlan;
+  const stored = getStoredPlan();
+  if (stored) return stored;
+  return 'starter';
+}
 
 function startUpgradeCheckout(plan = null){
-  const resolvedPlan = plan || window.__pendingPlan || 'upgrade';
+  const resolvedPlan = plan || window.__pendingPlan || getStoredPlan() || 'upgrade';
   const normalizedPlan =
     resolvedPlan === 'starter' ? 'starter_yearly' :
     resolvedPlan === 'pro' ? 'pro_yearly' :
@@ -1732,14 +1751,16 @@ async function initFirebaseAuth(){
       const email = user.email || 'Signed-in user';
       let copy = `Signed in as ${email}.`;
       if (window.__pendingResource) copy += ` You can now unlock access flows for ${window.__pendingResource}.`;
-      if (window.__pendingPlan) copy += ` Pending checkout intent: ${window.__pendingPlan}.`;
+      if (window.__pendingPlan) copy += ` Pending plan intent: ${window.__pendingPlan}.`;
       setMemberState('Signed in', copy, true);
       showToast('Authentication successful.');
+      const resolvedPlan = resolveDashboardPlan();
+      persistPlan(resolvedPlan);
       setTimeout(() => {
         const params = new URLSearchParams();
+        params.set('plan', resolvedPlan);
         if (window.__pendingResource) params.set('resource', window.__pendingResource);
-        if (window.__pendingPlan) params.set('plan', window.__pendingPlan);
-        window.location.href = 'dashboard.html' + (params.toString() ? ('?' + params.toString()) : '');
+        window.location.href = 'dashboard.html?' + params.toString();
       }, 700);
     } else {
       setMemberState('Not signed in', 'Users who click report access or plan buttons will be routed here until authentication is completed.', false);
@@ -1801,8 +1822,12 @@ async function signUpWithEmail(){
     if (displayName) {
       await authFns.updateProfile(cred.user, { displayName });
     }
-    if (window.__pendingPlan === 'starter' || window.__pendingPlan === 'pro') {
-      startUpgradeCheckout(window.__pendingPlan);
+    const resolvedPlan = resolveDashboardPlan();
+    persistPlan(resolvedPlan);
+    if (window.__pendingPlan === 'pro') {
+      startUpgradeCheckout('pro');
+    } else if (window.__pendingPlan === 'starter' && getStoredPlan() === 'starter') {
+      startUpgradeCheckout('starter');
     }
   } catch (err) {
     console.error(err);
