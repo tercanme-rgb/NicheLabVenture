@@ -1,20 +1,23 @@
-# NicheLab Generation Engine V7.1
 
-This version adds an editorial cleanup pass.
+# NicheLab site integration
 
-## Improvements over v7
-- fixes title rewrite edge-cases
-- removes awkward duplicates like `AI AI QA`
-- improves shortlist ordering
-- exports a publish-ready featured shortlist
+This package connects the site UI to the auto-generated report files.
 
-## Quick start
+## Files
+- `index.html`
+- `dashboard.html`
 
-```bash
-python .\run_pipeline.py --category "AI Automation"
-```
+## What they do
+- `index.html` reads:
+  - `generated-reports/homepage-feed.json`
+  - `generated-reports/reports-manifest.json`
+- `dashboard.html` reads:
+  - `generated-reports/homepage-feed.json`
+  - `generated-reports/reports-manifest.json`
 
-Open:
-- `output\report-starter.html`
-- `output\report-pro.html`
-- `output\featured-shortlist.json`
+## Result
+When GitHub Actions creates new reports, the homepage featured report and dashboard report list update automatically.
+
+## Replace in repo
+- replace current `index.html`
+- replace current `dashboard.html`
