@@ -1,0 +1,342 @@
+[
+  {
+    "candidate_id": "cand_micro-saas_niche_workflow_saas_0",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "niche_workflow_saas",
+    "title": "Status Visibility for Small Remote Teams",
+    "subtitle": "A focused status visibility wedge for small remote teams facing spreadsheet dependency.",
+    "buyer": {
+      "primary": "small remote teams",
+      "secondary": []
+    },
+    "workflow": "status visibility",
+    "pain": "spreadsheet dependency",
+    "trigger": "team growth",
+    "business_model": "tiered_saas",
+    "geo": "Global",
+    "thesis": "A tiered saas product focused on status visibility could win with small remote teams by reducing spreadsheet dependency under conditions shaped by team growth."
+  },
+  {
+    "candidate_id": "cand_micro-saas_smb_tooling_1",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "smb_tooling",
+    "title": "Ops Dashboards for Small Saas Teams",
+    "subtitle": "A focused ops dashboards wedge for small SaaS teams facing expensive incumbents.",
+    "buyer": {
+      "primary": "small SaaS teams",
+      "secondary": []
+    },
+    "workflow": "ops dashboards",
+    "pain": "expensive incumbents",
+    "trigger": "lean teams",
+    "business_model": "freemium",
+    "geo": "Global",
+    "thesis": "A freemium product focused on ops dashboards could win with small SaaS teams by reducing expensive incumbents under conditions shaped by lean teams."
+  },
+  {
+    "candidate_id": "cand_micro-saas_vertical_micro_tools_2",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "vertical_micro_tools",
+    "title": "Lightweight Workflow Tool for Agency Founders",
+    "subtitle": "A focused document review wedge for agency founders facing too many manual steps.",
+    "buyer": {
+      "primary": "agency founders",
+      "secondary": []
+    },
+    "workflow": "document review",
+    "pain": "too many manual steps",
+    "trigger": "staff shortages",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on document review could win with agency founders by reducing too many manual steps under conditions shaped by staff shortages."
+  },
+  {
+    "candidate_id": "cand_micro-saas_niche_workflow_saas_3",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "niche_workflow_saas",
+    "title": "Coordination Workflow for Agency Operators",
+    "subtitle": "A focused exception handling wedge for agency operators facing manual coordination.",
+    "buyer": {
+      "primary": "agency operators",
+      "secondary": []
+    },
+    "workflow": "exception handling",
+    "pain": "manual coordination",
+    "trigger": "service complexity",
+    "business_model": "tiered_saas",
+    "geo": "Global",
+    "thesis": "A tiered saas product focused on exception handling could win with agency operators by reducing manual coordination under conditions shaped by service complexity."
+  },
+  {
+    "candidate_id": "cand_micro-saas_smb_tooling_4",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "smb_tooling",
+    "title": "Reporting Workflows for Bootstrapped Founders",
+    "subtitle": "A focused reporting workflows wedge for bootstrapped founders facing messy workflows.",
+    "buyer": {
+      "primary": "bootstrapped founders",
+      "secondary": []
+    },
+    "workflow": "reporting workflows",
+    "pain": "messy workflows",
+    "trigger": "software sprawl",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on reporting workflows could win with bootstrapped founders by reducing messy workflows under conditions shaped by software sprawl."
+  },
+  {
+    "candidate_id": "cand_micro-saas_vertical_micro_tools_5",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "vertical_micro_tools",
+    "title": "Fragmented Tools Tool for Agency Founders",
+    "subtitle": "A focused approval tracking wedge for agency founders facing fragmented tools.",
+    "buyer": {
+      "primary": "agency founders",
+      "secondary": []
+    },
+    "workflow": "approval tracking",
+    "pain": "fragmented tools",
+    "trigger": "compliance pressure",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on approval tracking could win with agency founders by reducing fragmented tools under conditions shaped by compliance pressure."
+  },
+  {
+    "candidate_id": "cand_micro-saas_niche_workflow_saas_6",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "niche_workflow_saas",
+    "title": "Lightweight Workflow Tool for Agency Operators",
+    "subtitle": "A focused status visibility wedge for agency operators facing slow handoffs.",
+    "buyer": {
+      "primary": "agency operators",
+      "secondary": []
+    },
+    "workflow": "status visibility",
+    "pain": "slow handoffs",
+    "trigger": "margin pressure",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on status visibility could win with agency operators by reducing slow handoffs under conditions shaped by margin pressure."
+  },
+  {
+    "candidate_id": "cand_micro-saas_smb_tooling_7",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "smb_tooling",
+    "title": "Lightweight Workflow Tool for Bootstrapped Founders",
+    "subtitle": "A focused reporting workflows wedge for bootstrapped founders facing messy workflows.",
+    "buyer": {
+      "primary": "bootstrapped founders",
+      "secondary": []
+    },
+    "workflow": "reporting workflows",
+    "pain": "messy workflows",
+    "trigger": "lean teams",
+    "business_model": "freemium",
+    "geo": "Global",
+    "thesis": "A freemium product focused on reporting workflows could win with bootstrapped founders by reducing messy workflows under conditions shaped by lean teams."
+  },
+  {
+    "candidate_id": "cand_micro-saas_vertical_micro_tools_8",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "vertical_micro_tools",
+    "title": "Approval Tracking for Bookkeepers",
+    "subtitle": "A focused approval tracking wedge for bookkeepers facing too many manual steps.",
+    "buyer": {
+      "primary": "bookkeepers",
+      "secondary": []
+    },
+    "workflow": "approval tracking",
+    "pain": "too many manual steps",
+    "trigger": "growing service volume",
+    "business_model": "workflow_saas",
+    "geo": "Global",
+    "thesis": "A workflow saas product focused on approval tracking could win with bookkeepers by reducing too many manual steps under conditions shaped by growing service volume."
+  },
+  {
+    "candidate_id": "cand_micro-saas_niche_workflow_saas_9",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "niche_workflow_saas",
+    "title": "Exception Handling for Agency Operators",
+    "subtitle": "A focused exception handling wedge for agency operators facing manual coordination.",
+    "buyer": {
+      "primary": "agency operators",
+      "secondary": []
+    },
+    "workflow": "exception handling",
+    "pain": "manual coordination",
+    "trigger": "service complexity",
+    "business_model": "tiered_saas",
+    "geo": "Global",
+    "thesis": "A tiered saas product focused on exception handling could win with agency operators by reducing manual coordination under conditions shaped by service complexity."
+  },
+  {
+    "candidate_id": "cand_micro-saas_smb_tooling_10",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "smb_tooling",
+    "title": "Internal Alerts for Bootstrapped Founders",
+    "subtitle": "A focused internal alerts wedge for bootstrapped founders facing messy workflows.",
+    "buyer": {
+      "primary": "bootstrapped founders",
+      "secondary": []
+    },
+    "workflow": "internal alerts",
+    "pain": "messy workflows",
+    "trigger": "support cost",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on internal alerts could win with bootstrapped founders by reducing messy workflows under conditions shaped by support cost."
+  },
+  {
+    "candidate_id": "cand_micro-saas_vertical_micro_tools_11",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "vertical_micro_tools",
+    "title": "Lightweight Workflow Tool for Agency Founders",
+    "subtitle": "A focused approval tracking wedge for agency founders facing too many manual steps.",
+    "buyer": {
+      "primary": "agency founders",
+      "secondary": []
+    },
+    "workflow": "approval tracking",
+    "pain": "too many manual steps",
+    "trigger": "growing service volume",
+    "business_model": "workflow_saas",
+    "geo": "Global",
+    "thesis": "A workflow saas product focused on approval tracking could win with agency founders by reducing too many manual steps under conditions shaped by growing service volume."
+  },
+  {
+    "candidate_id": "cand_micro-saas_niche_workflow_saas_12",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "niche_workflow_saas",
+    "title": "Review Layer Workflows for Startup Operations Leads",
+    "subtitle": "A focused review workflows wedge for startup operations leads facing spreadsheet dependency.",
+    "buyer": {
+      "primary": "startup operations leads",
+      "secondary": []
+    },
+    "workflow": "review workflows",
+    "pain": "spreadsheet dependency",
+    "trigger": "service complexity",
+    "business_model": "tiered_saas",
+    "geo": "Global",
+    "thesis": "A tiered saas product focused on review workflows could win with startup operations leads by reducing spreadsheet dependency under conditions shaped by service complexity."
+  },
+  {
+    "candidate_id": "cand_micro-saas_smb_tooling_13",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "smb_tooling",
+    "title": "Internal Alerts for Small Saas Teams",
+    "subtitle": "A focused internal alerts wedge for small SaaS teams facing messy workflows.",
+    "buyer": {
+      "primary": "small SaaS teams",
+      "secondary": []
+    },
+    "workflow": "internal alerts",
+    "pain": "messy workflows",
+    "trigger": "lean teams",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on internal alerts could win with small SaaS teams by reducing messy workflows under conditions shaped by lean teams."
+  },
+  {
+    "candidate_id": "cand_micro-saas_vertical_micro_tools_14",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "vertical_micro_tools",
+    "title": "Follow-up Coordination for Legal Ops Teams",
+    "subtitle": "A focused follow-up coordination wedge for legal ops teams facing too many manual steps.",
+    "buyer": {
+      "primary": "legal ops teams",
+      "secondary": []
+    },
+    "workflow": "follow-up coordination",
+    "pain": "too many manual steps",
+    "trigger": "growing service volume",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on follow-up coordination could win with legal ops teams by reducing too many manual steps under conditions shaped by growing service volume."
+  },
+  {
+    "candidate_id": "cand_micro-saas_niche_workflow_saas_15",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "niche_workflow_saas",
+    "title": "Review Workflows for Startup Operations Leads",
+    "subtitle": "A focused review workflows wedge for startup operations leads facing spreadsheet dependency.",
+    "buyer": {
+      "primary": "startup operations leads",
+      "secondary": []
+    },
+    "workflow": "review workflows",
+    "pain": "spreadsheet dependency",
+    "trigger": "margin pressure",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on review workflows could win with startup operations leads by reducing spreadsheet dependency under conditions shaped by margin pressure."
+  },
+  {
+    "candidate_id": "cand_micro-saas_smb_tooling_16",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "smb_tooling",
+    "title": "Low Visibility Tool for Small Saas Teams",
+    "subtitle": "A focused support triage wedge for small SaaS teams facing low visibility.",
+    "buyer": {
+      "primary": "small SaaS teams",
+      "secondary": []
+    },
+    "workflow": "support triage",
+    "pain": "low visibility",
+    "trigger": "support cost",
+    "business_model": "subscription",
+    "geo": "Global",
+    "thesis": "A subscription product focused on support triage could win with small SaaS teams by reducing low visibility under conditions shaped by support cost."
+  },
+  {
+    "candidate_id": "cand_micro-saas_vertical_micro_tools_17",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "vertical_micro_tools",
+    "title": "Follow-up Coordination for Legal Ops Teams",
+    "subtitle": "A focused follow-up coordination wedge for legal ops teams facing too many manual steps.",
+    "buyer": {
+      "primary": "legal ops teams",
+      "secondary": []
+    },
+    "workflow": "follow-up coordination",
+    "pain": "too many manual steps",
+    "trigger": "growing service volume",
+    "business_model": "workflow_saas",
+    "geo": "Global",
+    "thesis": "A workflow saas product focused on follow-up coordination could win with legal ops teams by reducing too many manual steps under conditions shaped by growing service volume."
+  },
+  {
+    "candidate_id": "cand_micro-saas_niche_workflow_saas_18",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "niche_workflow_saas",
+    "title": "Lightweight Workflow Tool for Startup Operations Leads",
+    "subtitle": "A focused handoff tracking wedge for startup operations leads facing poor visibility.",
+    "buyer": {
+      "primary": "startup operations leads",
+      "secondary": []
+    },
+    "workflow": "handoff tracking",
+    "pain": "poor visibility",
+    "trigger": "tool fragmentation",
+    "business_model": "tiered_saas",
+    "geo": "Global",
+    "thesis": "A tiered saas product focused on handoff tracking could win with startup operations leads by reducing poor visibility under conditions shaped by tool fragmentation."
+  },
+  {
+    "candidate_id": "cand_micro-saas_smb_tooling_19",
+    "visible_category": "Micro-SaaS",
+    "engine_theme": "smb_tooling",
+    "title": "Support Triage for Bootstrapped Founders",
+    "subtitle": "A focused support triage wedge for bootstrapped founders facing low visibility.",
+    "buyer": {
+      "primary": "bootstrapped founders",
+      "secondary": []
+    },
+    "workflow": "support triage",
+    "pain": "low visibility",
+    "trigger": "support cost",
+    "business_model": "freemium",
+    "geo": "Global",
+    "thesis": "A freemium product focused on support triage could win with bootstrapped founders by reducing low visibility under conditions shaped by support cost."
+  }
+]

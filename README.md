@@ -1,33 +1,47 @@
-# NicheLab Report Schema
+# NicheLab First Working Generation Engine
 
-GitHub-ready schema package for report generation.
+This is the first working report generation engine.
+
+## What it does
+1. Takes a visible category such as `Micro-SaaS`
+2. Generates candidate opportunities
+3. Scores and ranks those candidates
+4. Converts the top candidate into a report JSON
+5. Renders Starter and PRO HTML report pages
 
 ## Files
-- `report-schema.json`: JSON Schema for report objects
-- `example-report.json`: Example report payload
-- `generation-pipeline.md`: Suggested generation flow
-- `starter-pro-mapping.md`: Starter vs PRO visibility mapping
+- `category-architecture.json`
+- `generate_candidates.py`
+- `score_candidates.py`
+- `generate_report_json.py`
+- `render_report.py`
+- `run_pipeline.py`
 
-## Suggested repo structure
+## Quick start
 
-```text
-/data
-  report-schema.json
-  example-report.json
-/docs
-  generation-pipeline.md
-  starter-pro-mapping.md
+```bash
+python run_pipeline.py --category "Micro-SaaS"
 ```
 
-Or keep these files in the repo root.
+Then open:
 
-## Recommended use
-1. Create one JSON object per report
-2. Store report JSON files in `/reports`
-3. Render:
-   - dashboard cards
-   - report detail pages
-   - starter locked pages
-   - pro full pages
-   - PDF exports
-4. Use `starter_view` and `pro_view` to gate content in the UI
+```text
+output/report-starter.html
+output/report-pro.html
+output/report.json
+```
+
+## Example categories
+- Micro-SaaS
+- AI Automation
+- E-Commerce
+- Creator Economy
+- Local Business
+- B2B Services
+- Finance & Admin
+
+## Notes
+- This engine is heuristic and template-based
+- It does not require OpenAI or any external API
+- It is designed as a first working production engine, not the final quality layer
+- You can later replace any stage with stronger data or LLM generation
