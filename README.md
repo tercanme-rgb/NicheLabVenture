@@ -21,3 +21,4 @@ When GitHub Actions creates new reports, the homepage featured report and dashbo
 ## Replace in repo
 - replace current `index.html`
 - replace current `dashboard.html`
+
