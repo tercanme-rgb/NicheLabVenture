@@ -1,613 +1,162 @@
-{
-  "visible_categories": [
-    "Micro-SaaS",
-    "AI Automation",
-    "E-Commerce",
-    "Creator Economy",
-    "Local Business",
-    "B2B Services",
-    "Finance & Admin"
-  ],
-  "categories": {
-    "Micro-SaaS": {
-      "engine_themes": [
-        "niche_workflow_saas",
-        "smb_tooling",
-        "vertical_micro_tools"
-      ]
-    },
-    "AI Automation": {
-      "engine_themes": [
-        "ai_workflow_ops",
-        "agent_qa",
-        "human_review_layers"
-      ]
-    },
-    "E-Commerce": {
-      "engine_themes": [
-        "returns_workflows",
-        "support_ops",
-        "post_purchase_ops"
-      ]
-    },
-    "Creator Economy": {
-      "engine_themes": [
-        "content_workflows",
-        "audience_monetization",
-        "member_onboarding"
-      ]
-    },
-    "Local Business": {
-      "engine_themes": [
-        "clinic_admin",
-        "appointment_workflows",
-        "lead_follow_up"
-      ]
-    },
-    "B2B Services": {
-      "engine_themes": [
-        "agency_ops",
-        "client_onboarding",
-        "delivery_qa"
-      ]
-    },
-    "Finance & Admin": {
-      "engine_themes": [
-        "invoice_review",
-        "expense_approval",
-        "reconciliation_workflows"
-      ]
+#!/usr/bin/env python3
+import json, random, argparse, re
+from pathlib import Path
+
+BASE = Path(__file__).resolve().parent
+ARCH = json.loads((BASE / "category-architecture.json").read_text(encoding="utf-8"))
+
+FORBIDDEN_TITLE_CHUNKS = {"tool", "platform", "solution", "software", "dashboard"}
+
+def normalize_title(title: str) -> str:
+    title = re.sub(r"\s+", " ", title.strip())
+    words = []
+    for i, word in enumerate(title.split()):
+        lw = word.lower()
+        if i and lw in {"for", "and", "of", "with"}:
+            words.append(lw)
+        else:
+            words.append(word.capitalize())
+    out = " ".join(words)
+    for src, dst in ARCH.get("publish_rules", {}).get("title_normalization", {}).items():
+        out = out.replace(src, dst)
+    return out
+
+def workflow_focus_from(workflow: str, category: str) -> str:
+    custom = {
+        "support inbox triage": "Support Triage Workflow",
+        "internal alert escalation": "Internal Alert Escalation Workflow",
+        "invoice exception review": "Invoice Exception Review",
+        "client onboarding QA": "Client Onboarding QA",
+        "patient intake follow-up": "Patient Intake Follow-Up",
+        "contract request triage": "Contract Request Triage",
+        "AI output validation": "AI Output Validation",
+        "human approval routing": "Human Approval Routing",
+        "prompt review workflow": "Prompt Review Workflow",
+        "approval routing": "Approval Routing Workflow",
+        "handoff tracking": "Handoff Tracking Workflow",
+        "exception handling": "Exception Handling Workflow",
+        "review workflows": "Review Workflow",
+        "appointment reminders": "Appointment Reminder System",
+        "lead qualification": "Lead Qualification Workflow",
+        "invoice review": "Invoice Review Workflow",
+        "expense approvals": "Expense Approval Workflow",
+        "reconciliation": "Reconciliation Workflow",
+        "audit logging": "Audit Logging",
+        "client onboarding": "Client Onboarding Workflow",
+        "proposal-to-kickoff flow": "Proposal-to-Kickoff Workflow",
+        "delivery reporting": "Delivery Reporting Workflow",
     }
-  },
-  "engine_theme_dictionary": {
-    "niche_workflow_saas": {
-      "buyers": [
-        "indie SaaS teams",
-        "startup operations leads",
-        "small remote teams",
-        "agency operators"
-      ],
-      "workflows": [
-        "approval routing",
-        "handoff tracking",
-        "review workflows",
-        "status visibility",
-        "exception handling"
-      ],
-      "pains": [
-        "manual coordination",
-        "poor visibility",
-        "slow handoffs",
-        "spreadsheet dependency"
-      ],
-      "triggers": [
-        "team growth",
-        "tool fragmentation",
-        "margin pressure",
-        "service complexity"
-      ],
-      "models": [
-        "subscription",
-        "tiered_saas"
-      ]
-    },
-    "smb_tooling": {
-      "buyers": [
-        "small SaaS teams",
-        "bootstrapped founders",
-        "ops-heavy SMBs"
-      ],
-      "workflows": [
-        "reporting workflows",
-        "internal alerts",
-        "ops dashboards",
-        "support triage"
-      ],
-      "pains": [
-        "expensive incumbents",
-        "manual reporting",
-        "low visibility",
-        "messy workflows"
-      ],
-      "triggers": [
-        "software sprawl",
-        "lean teams",
-        "support cost"
-      ],
-      "models": [
-        "subscription",
-        "freemium"
-      ]
-    },
-    "vertical_micro_tools": {
-      "buyers": [
-        "legal ops teams",
-        "clinic managers",
-        "agency founders",
-        "bookkeepers"
-      ],
-      "workflows": [
-        "intake workflows",
-        "approval tracking",
-        "document review",
-        "follow-up coordination"
-      ],
-      "pains": [
-        "too many manual steps",
-        "slow follow-up",
-        "fragmented tools"
-      ],
-      "triggers": [
-        "staff shortages",
-        "growing service volume",
-        "compliance pressure"
-      ],
-      "models": [
-        "subscription",
-        "workflow_saas"
-      ]
-    },
-    "ai_workflow_ops": {
-      "buyers": [
-        "AI product teams",
-        "automation agencies",
-        "startup operators"
-      ],
-      "workflows": [
-        "output validation",
-        "prompt review",
-        "workflow auditability",
-        "human approval"
-      ],
-      "pains": [
-        "inconsistent outputs",
-        "manual QA",
-        "poor traceability",
-        "tool sprawl"
-      ],
-      "triggers": [
-        "AI adoption",
-        "trust pressure",
-        "workflow complexity"
-      ],
-      "models": [
-        "subscription",
-        "usage_based"
-      ]
-    },
-    "agent_qa": {
-      "buyers": [
-        "agent builders",
-        "AI startups",
-        "product engineers"
-      ],
-      "workflows": [
-        "agent testing",
-        "scenario replay",
-        "failure triage",
-        "eval pipelines"
-      ],
-      "pains": [
-        "agent drift",
-        "hard-to-reproduce bugs",
-        "manual testing"
-      ],
-      "triggers": [
-        "multi-agent workflows",
-        "enterprise deployments",
-        "release frequency"
-      ],
-      "models": [
-        "subscription",
-        "usage_based"
-      ]
-    },
-    "human_review_layers": {
-      "buyers": [
-        "ops teams using AI",
-        "compliance-sensitive teams",
-        "B2B SaaS vendors"
-      ],
-      "workflows": [
-        "human approval",
-        "audit logging",
-        "review queues",
-        "exception routing"
-      ],
-      "pains": [
-        "unclear ownership",
-        "missing logs",
-        "approval bottlenecks"
-      ],
-      "triggers": [
-        "procurement pressure",
-        "regulatory scrutiny",
-        "AI workflow growth"
-      ],
-      "models": [
-        "subscription",
-        "seat_based"
-      ]
-    },
-    "returns_workflows": {
-      "buyers": [
-        "Shopify brands",
-        "DTC operators",
-        "e-commerce ops teams"
-      ],
-      "workflows": [
-        "return approval",
-        "refund exception review",
-        "warehouse coordination"
-      ],
-      "pains": [
-        "refund leakage",
-        "manual returns",
-        "margin loss"
-      ],
-      "triggers": [
-        "rising return volume",
-        "margin compression",
-        "cross-border complexity"
-      ],
-      "models": [
-        "subscription",
-        "ops_tooling"
-      ]
-    },
-    "support_ops": {
-      "buyers": [
-        "DTC support teams",
-        "marketplace sellers",
-        "e-commerce operators"
-      ],
-      "workflows": [
-        "ticket triage",
-        "refund communication",
-        "status updates",
-        "issue categorization"
-      ],
-      "pains": [
-        "support overload",
-        "slow replies",
-        "fragmented inboxes"
-      ],
-      "triggers": [
-        "order growth",
-        "staff constraints",
-        "customer expectation pressure"
-      ],
-      "models": [
-        "subscription",
-        "seat_based"
-      ]
-    },
-    "post_purchase_ops": {
-      "buyers": [
-        "Shopify brands",
-        "consumer operators",
-        "ops managers"
-      ],
-      "workflows": [
-        "shipment follow-up",
-        "delivery exception handling",
-        "post-purchase communication"
-      ],
-      "pains": [
-        "poor post-purchase visibility",
-        "manual follow-up",
-        "support duplication"
-      ],
-      "triggers": [
-        "cross-border shipping",
-        "third-party logistics dependence"
-      ],
-      "models": [
-        "subscription",
-        "workflow_saas"
-      ]
-    },
-    "content_workflows": {
-      "buyers": [
-        "newsletter operators",
-        "course creators",
-        "YouTubers"
-      ],
-      "workflows": [
-        "content repurposing",
-        "launch planning",
-        "content ops"
-      ],
-      "pains": [
-        "manual repetition",
-        "messy publishing workflows",
-        "inconsistent output"
-      ],
-      "triggers": [
-        "content volume growth",
-        "creator burnout",
-        "platform dependence"
-      ],
-      "models": [
-        "subscription",
-        "template_plus_saas"
-      ]
-    },
-    "audience_monetization": {
-      "buyers": [
-        "community founders",
-        "creators",
-        "newsletter owners"
-      ],
-      "workflows": [
-        "offer packaging",
-        "funnel follow-up",
-        "member upsell"
-      ],
-      "pains": [
-        "unclear monetization",
-        "manual upsell flow",
-        "low conversion visibility"
-      ],
-      "triggers": [
-        "ad revenue pressure",
-        "audience diversification"
-      ],
-      "models": [
-        "subscription",
-        "digital_product"
-      ]
-    },
-    "member_onboarding": {
-      "buyers": [
-        "membership founders",
-        "community operators",
-        "cohort hosts"
-      ],
-      "workflows": [
-        "member onboarding",
-        "activation flows",
-        "welcome sequences"
-      ],
-      "pains": [
-        "poor activation",
-        "manual onboarding",
-        "churn after signup"
-      ],
-      "triggers": [
-        "membership growth",
-        "retention pressure"
-      ],
-      "models": [
-        "subscription",
-        "membership"
-      ]
-    },
-    "clinic_admin": {
-      "buyers": [
-        "clinic owners",
-        "practice managers",
-        "dental office operators"
-      ],
-      "workflows": [
-        "patient intake",
-        "review response",
-        "billing exception review"
-      ],
-      "pains": [
-        "admin overload",
-        "missed follow-ups",
-        "paper-heavy workflows"
-      ],
-      "triggers": [
-        "staff shortages",
-        "patient volume growth"
-      ],
-      "models": [
-        "subscription",
-        "practice_ops"
-      ]
-    },
-    "appointment_workflows": {
-      "buyers": [
-        "salon owners",
-        "clinic managers",
-        "local service businesses"
-      ],
-      "workflows": [
-        "appointment reminders",
-        "rescheduling",
-        "booking confirmations"
-      ],
-      "pains": [
-        "no-shows",
-        "manual reminder workflows",
-        "scheduling confusion"
-      ],
-      "triggers": [
-        "higher booking volume",
-        "small team load"
-      ],
-      "models": [
-        "subscription",
-        "local_business_saas"
-      ]
-    },
-    "lead_follow_up": {
-      "buyers": [
-        "local service operators",
-        "home service businesses",
-        "agencies"
-      ],
-      "workflows": [
-        "quote follow-up",
-        "lead qualification",
-        "booking follow-up"
-      ],
-      "pains": [
-        "slow response",
-        "lost leads",
-        "messy follow-up"
-      ],
-      "triggers": [
-        "higher lead cost",
-        "low conversion"
-      ],
-      "models": [
-        "subscription",
-        "workflow_saas"
-      ]
-    },
-    "agency_ops": {
-      "buyers": [
-        "marketing agencies",
-        "design studios",
-        "AI agencies"
-      ],
-      "workflows": [
-        "delivery reporting",
-        "QA and approval",
-        "handoff coordination"
-      ],
-      "pains": [
-        "messy delivery",
-        "unclear ownership",
-        "client confusion"
-      ],
-      "triggers": [
-        "remote teams",
-        "margin pressure",
-        "service productization"
-      ],
-      "models": [
-        "subscription",
-        "white_label_workflow"
-      ]
-    },
-    "client_onboarding": {
-      "buyers": [
-        "agencies",
-        "consultancies",
-        "service firms"
-      ],
-      "workflows": [
-        "proposal-to-kickoff flow",
-        "client onboarding",
-        "intake coordination"
-      ],
-      "pains": [
-        "messy onboarding",
-        "scope creep",
-        "manual follow-up"
-      ],
-      "triggers": [
-        "more clients",
-        "faster onboarding expectations"
-      ],
-      "models": [
-        "subscription",
-        "workflow_saas"
-      ]
-    },
-    "delivery_qa": {
-      "buyers": [
-        "service businesses",
-        "agencies",
-        "boutique consultancies"
-      ],
-      "workflows": [
-        "deliverable review",
-        "approval workflows",
-        "handoff QA"
-      ],
-      "pains": [
-        "inconsistent delivery",
-        "manual QA",
-        "late revisions"
-      ],
-      "triggers": [
-        "team scaling",
-        "quality pressure"
-      ],
-      "models": [
-        "subscription",
-        "ops_tooling"
-      ]
-    },
-    "invoice_review": {
-      "buyers": [
-        "finance managers",
-        "bookkeepers",
-        "fractional CFOs"
-      ],
-      "workflows": [
-        "invoice review",
-        "invoice exception handling",
-        "invoice approval"
-      ],
-      "pains": [
-        "manual review",
-        "invoice errors",
-        "approval delays"
-      ],
-      "triggers": [
-        "lean finance teams",
-        "vendor growth"
-      ],
-      "models": [
-        "subscription",
-        "finance_workflow"
-      ]
-    },
-    "expense_approval": {
-      "buyers": [
-        "ops leads",
-        "finance teams",
-        "SMB admins"
-      ],
-      "workflows": [
-        "expense approvals",
-        "purchase review",
-        "policy checks"
-      ],
-      "pains": [
-        "slow approvals",
-        "spreadsheet dependency",
-        "low visibility"
-      ],
-      "triggers": [
-        "cost scrutiny",
-        "distributed teams"
-      ],
-      "models": [
-        "subscription",
-        "workflow_saas"
-      ]
-    },
-    "reconciliation_workflows": {
-      "buyers": [
-        "bookkeepers",
-        "finance managers",
-        "e-commerce finance teams"
-      ],
-      "workflows": [
-        "reconciliation",
-        "payment exception handling",
-        "cash flow checks"
-      ],
-      "pains": [
-        "messy reconciliation",
-        "manual exception review",
-        "low visibility"
-      ],
-      "triggers": [
-        "cross-border payments",
-        "volume growth"
-      ],
-      "models": [
-        "subscription",
-        "finance_ops_tool"
-      ]
+    return custom.get(workflow, workflow.title())
+
+def pain_focus_from(pain: str, workflow: str) -> str:
+    mapping = {
+        "manual coordination": workflow_focus_from(workflow, ""),
+        "poor visibility": workflow_focus_from(workflow, ""),
+        "slow handoffs": "Handoff Workflow",
+        "spreadsheet dependency": workflow_focus_from(workflow, ""),
+        "inconsistent outputs": "AI Output Review",
+        "manual QA": "AI QA Workflow",
+        "refund leakage": "Refund Exception Review",
+        "admin overload": workflow_focus_from(workflow, ""),
+        "messy onboarding": "Client Onboarding QA",
+        "manual review": "Exception Review Workflow",
+        "support overload": "Support Triage Workflow",
+        "low visibility": workflow_focus_from(workflow, ""),
+        "invoice errors": "Invoice Exception Review",
+        "approval delays": "Approval Workflow",
+        "missed follow-ups": "Follow-Up Workflow",
     }
-  }
-}
+    return mapping.get(pain, workflow_focus_from(workflow, ""))
+
+def apply_editorial_rewrite(title: str, category: str) -> str:
+    rules = ARCH.get("editorial_rules", {}).get(category, {})
+    for src, dst in rules.get("preferred_rewrites", {}).items():
+        title = title.replace(src, dst)
+
+    cleanup_pairs = {
+        " for B2B AI Product Teams Shipping AI Features": " for B2B AI Product Teams",
+        " for B2B SaaS Teams Shipping AI Features": " for B2B AI Product Teams",
+        " for Smb Admin Teams": " for SMB Admin Teams",
+        "AI AI QA Workflow": "AI QA Workflow",
+        "QA Workflow for B2B AI Product Teams": "AI QA Workflow for B2B AI Product Teams",
+        "Expense Approval Controls Workflow": "Expense Approval Workflow",
+        "Approval Controls Workflow": "Approval Workflow",
+    }
+    for src, dst in cleanup_pairs.items():
+        title = title.replace(src, dst)
+
+    title = re.sub(r"\bAI AI\b", "AI", title)
+    title = re.sub(r"\bWorkflow Workflow\b", "Workflow", title)
+    title = re.sub(r"\s+", " ", title).strip()
+    return title
+
+def build_candidate(visible_category: str, theme_name: str, seed_i: int):
+    theme = ARCH["engine_theme_dictionary"][theme_name]
+    random.seed(f"{visible_category}:{theme_name}:{seed_i}")
+    buyer = random.choice(theme["buyers"])
+    workflow = random.choice(theme["workflows"])
+    pain = random.choice(theme["pains"])
+    trigger = random.choice(theme["triggers"])
+    model = random.choice(theme["models"])
+
+    title_options = [
+        f"{workflow} for {buyer}",
+        f"{workflow_focus_from(workflow, visible_category)} for {buyer}",
+        f"{pain_focus_from(pain, workflow)} for {buyer}",
+    ]
+    title = normalize_title(random.choice(title_options))
+
+    if any(chunk in title.lower() for chunk in FORBIDDEN_TITLE_CHUNKS):
+        title = normalize_title(f"{workflow_focus_from(workflow, visible_category)} for {buyer}")
+
+    title = apply_editorial_rewrite(title, visible_category)
+    title = normalize_title(title)
+
+    subtitle = f"A focused {workflow} wedge for {buyer} facing {pain}."
+    thesis = f"A {model.replace('_', ' ')} product focused on {workflow} could win with {buyer} by reducing {pain} under conditions shaped by {trigger}."
+    return {
+        "candidate_id": f"cand_{visible_category.lower().replace(' ','_')}_{theme_name}_{seed_i}",
+        "visible_category": visible_category,
+        "engine_theme": theme_name,
+        "title": title,
+        "subtitle": subtitle,
+        "buyer": {"primary": buyer, "secondary": []},
+        "workflow": workflow,
+        "pain": pain,
+        "trigger": trigger,
+        "business_model": model,
+        "geo": "Global",
+        "thesis": thesis
+    }
+
+def dedupe_key(c):
+    return "|".join([c["visible_category"].lower(), c["title"].lower()])
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--category", required=True, help="Visible category")
+    ap.add_argument("--count", type=int, default=30)
+    args = ap.parse_args()
+
+    if args.category not in ARCH["categories"]:
+        raise SystemExit(f"Unknown category: {args.category}")
+
+    themes = ARCH["categories"][args.category]["engine_themes"]
+    raw = [build_candidate(args.category, themes[i % len(themes)], i) for i in range(args.count)]
+
+    deduped = []
+    seen = set()
+    for c in raw:
+        k = dedupe_key(c)
+        if k not in seen:
+            seen.add(k)
+            deduped.append(c)
+
+    out_dir = BASE / "output"
+    out_dir.mkdir(exist_ok=True)
+    out_path = out_dir / "candidates.json"
+    out_path.write_text(json.dumps(deduped, indent=2), encoding="utf-8")
+    print(f"Wrote {len(deduped)} candidates to {out_path}")
+
+if __name__ == "__main__":
+    main()

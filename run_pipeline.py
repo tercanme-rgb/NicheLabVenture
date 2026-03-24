@@ -21,10 +21,12 @@ def main():
     run([py, "generate_report_json.py", "--index", str(args.candidate_index)])
     run([py, "render_report.py", "--plan", "starter"])
     run([py, "render_report.py", "--plan", "pro"])
+    run([py, "export_featured_shortlist.py"])
     print("\nDone. Open:")
     print(" - output/report-starter.html")
     print(" - output/report-pro.html")
     print(" - output/report.json")
+    print(" - output/featured-shortlist.json")
 
 if __name__ == "__main__":
     main()
