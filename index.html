@@ -3,102 +3,146 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NicheLab</title>
+  <title>NicheLab — Premium Market Intelligence</title>
   <style>
-    *{box-sizing:border-box} body{margin:0;font-family:Arial,sans-serif;background:#07080C;color:#ECF0F8}
+    :root{
+      --bg:#06070B; --panel:#0B0E16; --panel2:#101523; --line:#1A2133; --line2:#27314A;
+      --text:#EEF2FB; --muted:#92A0BF; --soft:#66708A; --gold:#C8861A; --gold2:#E6A42C;
+      --radius:22px; --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --serif: Georgia, "Times New Roman", serif; --sans: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:var(--sans);color:var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(200,134,26,.07), transparent 28%),
+        radial-gradient(circle at top right, rgba(87,167,255,.04), transparent 24%),
+        linear-gradient(180deg,#05060A 0%, #07090E 100%);
+    }
     a{text-decoration:none;color:inherit}
-    .wrap{max-width:1200px;margin:0 auto;padding:28px 22px 60px}
-    .nav{display:flex;justify-content:space-between;align-items:center;padding:14px 0 26px}
-    .brand{font-size:24px;font-weight:700}
-    .nav-links{display:flex;gap:14px;flex-wrap:wrap}
-    .btn{padding:11px 16px;border:1px solid #252B44;border-radius:12px;background:#0B0D15;color:#ECF0F8}
-    .btn-gold{background:linear-gradient(180deg,#E8A832,#C8861A);border:none;color:#fff}
-    .hero{border:1px solid rgba(200,134,26,.22);border-radius:24px;padding:28px;background:linear-gradient(160deg,#120F05,#0B0D15)}
-    .eyebrow{font-family:monospace;font-size:11px;letter-spacing:1px;color:#6F7897;text-transform:uppercase;margin-bottom:10px}
-    h1{font-family:Georgia,serif;font-size:54px;line-height:1.02;margin:0 0 14px}
-    .lede{font-size:18px;line-height:1.7;color:#A8B0C8;max-width:960px}
-    .search-shell{margin:22px 0 18px;padding:14px 16px;border-radius:16px;background:#F5F5F0;border:1px solid rgba(0,0,0,.10)}
-    .search-text{font-size:24px;color:#111}
-    .feed-grid{display:grid;grid-template-columns:1.3fr .9fr;gap:16px;margin-top:18px}
-    .card{background:#0B0D15;border:1px solid #1D2136;border-radius:18px;padding:20px}
-    .muted{color:#8892B0}
-    .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .kpi{background:#10131E;border:1px solid #252B44;border-radius:14px;padding:14px}
-    .kpi .label{font-family:monospace;font-size:11px;color:#6F7897;text-transform:uppercase}
-    .kpi .value{font-size:24px;margin-top:8px}
-    .section{margin-top:38px}
-    .section h2{font-family:Georgia,serif;font-size:34px;margin:0 0 16px}
-    .reports{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-    .report-card{background:#0B0D15;border:1px solid #1D2136;border-radius:18px;padding:18px}
-    .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}
-    .badge{font-family:monospace;font-size:10px;padding:5px 8px;border-radius:999px;border:1px solid #252B44;background:#10131E;color:#A8B0C8;text-transform:uppercase}
-    .ticker{overflow:hidden;white-space:nowrap;border-top:1px solid #1D2136;border-bottom:1px solid #1D2136;padding:12px 0;margin-top:16px}
-    .ticker-track{display:inline-block;white-space:nowrap;animation:slide 32s linear infinite}
-    .ticker-item{display:inline-block;margin-right:44px;color:#A8B0C8}
-    @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-    footer{margin-top:50px;color:#8892B0;font-size:14px}
-    @media (max-width:980px){.feed-grid,.reports,.kpis{grid-template-columns:1fr}h1{font-size:40px}.search-text{font-size:18px}}
+    .wrap{max-width:1240px;margin:0 auto;padding:24px 22px 70px}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:8px 0 22px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:30px;letter-spacing:-.03em}
+    .brand-mark{
+      width:16px;height:16px;border-radius:50%;
+      background:linear-gradient(180deg,var(--gold2),var(--gold));
+      box-shadow:0 0 0 4px rgba(200,134,26,.12), 0 0 24px rgba(200,134,26,.26);
+    }
+    .nav-links{display:flex;gap:10px;flex-wrap:wrap}
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 16px;
+      border-radius:13px;border:1px solid var(--line2);background:linear-gradient(180deg,#0E1320,#090D16);
+      color:var(--text);transition:.18s ease;font-size:14px;
+    }
+    .btn:hover{transform:translateY(-1px);border-color:#33415f}
+    .btn.gold{border:none;background:linear-gradient(180deg,var(--gold2),var(--gold));color:white;box-shadow:0 8px 30px rgba(200,134,26,.24)}
+
+    .hero-shell{
+      border:1px solid rgba(200,134,26,.22);
+      background:linear-gradient(160deg, rgba(25,18,7,.95), rgba(8,11,18,.98));
+      border-radius:30px;padding:24px;position:relative;overflow:hidden;
+      box-shadow:0 18px 50px rgba(0,0,0,.34), inset 0 1px 0 rgba(255,255,255,.03);
+    }
+    .hero-shell:before{
+      content:"";position:absolute;left:0;right:0;top:0;height:1px;
+      background:linear-gradient(90deg, transparent, rgba(230,164,44,.8), transparent);
+    }
+    .eyebrow{font:11px/1.4 var(--mono);color:var(--soft);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
+    h1{margin:0;font-family:var(--serif);font-size:72px;line-height:.97;letter-spacing:-.04em;max-width:950px}
+    .lede{margin-top:18px;max-width:940px;font-size:18px;line-height:1.75;color:var(--muted)}
+    .search-shell{
+      margin-top:22px;background:#F3F2EE;color:#111;border-radius:16px;padding:16px 18px;
+      box-shadow:0 16px 40px rgba(0,0,0,.18);max-width:1000px
+    }
+    .search-text{font-size:28px;line-height:1.3;letter-spacing:-.02em}
+    .hero-grid{margin-top:18px;display:grid;grid-template-columns:1.25fr .95fr;gap:16px}
+    .card{
+      background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);
+      border-radius:var(--radius);padding:22px;
+    }
+    .feature-title{font-family:var(--serif);font-size:42px;line-height:1.02;letter-spacing:-.03em;margin:6px 0 10px}
+    .feature-sub{color:var(--muted);line-height:1.7;font-size:16px;max-width:760px}
+    .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 16px}
+    .badge{
+      border:1px solid var(--line2);background:#0D1220;color:#BAC3D8;border-radius:999px;
+      font:10px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.12em;padding:7px 10px;
+    }
+    .badge.good{color:#9FE6B8;border-color:rgba(34,197,94,.28);background:rgba(34,197,94,.08)}
+    .badge.gold{color:#FFD287;border-color:rgba(200,134,26,.25);background:rgba(200,134,26,.08)}
+    .stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .stat{border:1px solid var(--line2);border-radius:18px;padding:16px;background:#0C1120;min-height:110px}
+    .stat .label{font:10px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--soft)}
+    .stat .value{margin-top:16px;font-size:30px;letter-spacing:-.03em}
+    .section{margin-top:42px}
+    .section h2{margin:0 0 14px;font-family:var(--serif);font-size:44px;letter-spacing:-.03em}
+    .ticker{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;overflow:hidden;white-space:nowrap;background:rgba(255,255,255,.01)}
+    .ticker-track{display:inline-block;white-space:nowrap;animation:scroll 34s linear infinite}
+    .ticker-item{display:inline-block;color:var(--muted);margin-right:42px}
+    @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .reports-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .report-card{
+      display:block;border-radius:22px;border:1px solid var(--line);
+      background:linear-gradient(180deg,var(--panel2),var(--panel));padding:20px;min-height:230px;transition:.18s ease
+    }
+    .report-card:hover{transform:translateY(-2px);border-color:#34405C}
+    .report-card h3{margin:8px 0 10px;font-family:var(--serif);font-size:31px;line-height:1.04;letter-spacing:-.03em}
+    .report-card p{margin:0;color:var(--muted);line-height:1.65;font-size:15px}
+    .footer{margin-top:54px;color:var(--soft);font-size:14px}
+    @media (max-width:1100px){h1{font-size:56px}.hero-grid,.reports-grid{grid-template-columns:1fr}.search-text{font-size:22px}}
+    @media (max-width:720px){.wrap{padding:18px 14px 50px}h1{font-size:42px}.feature-title{font-size:34px}.section h2{font-size:34px}.stat-grid{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="nav">
-      <div class="brand">NicheLab</div>
+    <nav class="nav">
+      <div class="brand"><span class="brand-mark"></span> NicheLab</div>
       <div class="nav-links">
         <a class="btn" href="dashboard.html">Dashboard</a>
         <a class="btn" href="#pricing">Pricing</a>
         <a class="btn" href="#contact">Contact</a>
-        <a class="btn btn-gold" href="dashboard.html">Start free</a>
+        <a class="btn gold" href="dashboard.html">Start free</a>
       </div>
-    </div>
+    </nav>
 
-    <section class="hero">
+    <section class="hero-shell">
       <div class="eyebrow">Report #184 published today · Webhook Reliability Platform</div>
       <h1>The #1 Website to Spot Trends and Startup Ideas Worth Building.</h1>
       <div class="lede">
         NicheLab mines Reddit sentiment, search velocity, funding signals, and competitor gaps — then condenses research into investment-grade opportunity reports.
       </div>
+
       <div class="search-shell">
         <div class="search-text">The market already knows what to build.</div>
       </div>
 
-      <div class="feed-grid">
+      <div class="hero-grid">
         <div class="card">
           <div class="eyebrow">Auto-generated featured report</div>
-          <div id="featured-title" style="font-size:30px;font-family:Georgia,serif;margin-bottom:8px">Loading featured report...</div>
-          <div id="featured-subtitle" class="muted">Please wait while the site loads the latest report feed.</div>
+          <div id="featured-title" class="feature-title">Loading latest report...</div>
+          <div id="featured-subtitle" class="feature-sub">The system is fetching the newest generated report feed.</div>
           <div class="badge-row">
             <span id="featured-category" class="badge">Category</span>
-            <span id="featured-confidence" class="badge">Confidence</span>
-            <span id="featured-recommendation" class="badge">Recommendation</span>
+            <span id="featured-confidence" class="badge good">Confidence</span>
+            <span id="featured-recommendation" class="badge gold">Recommendation</span>
           </div>
-          <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:10px">
-            <a id="featured-link" class="btn btn-gold" href="dashboard.html">Open report</a>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <a id="featured-link" class="btn gold" href="dashboard.html">Open report</a>
             <a class="btn" href="dashboard.html">View dashboard</a>
           </div>
         </div>
 
         <div class="card">
           <div class="eyebrow">Live report system</div>
-          <div class="kpis">
-            <div class="kpi">
-              <div class="label">Reports</div>
-              <div class="value" id="kpi-total">—</div>
-            </div>
-            <div class="kpi">
-              <div class="label">Categories</div>
-              <div class="value" id="kpi-categories">—</div>
-            </div>
-            <div class="kpi">
-              <div class="label">Updated</div>
-              <div class="value" id="kpi-updated" style="font-size:18px">—</div>
-            </div>
+          <div class="stat-grid">
+            <div class="stat"><div class="label">Reports</div><div id="kpi-total" class="value">—</div></div>
+            <div class="stat"><div class="label">Categories</div><div id="kpi-categories" class="value">—</div></div>
+            <div class="stat"><div class="label">Updated</div><div id="kpi-updated" class="value" style="font-size:22px">—</div></div>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="section">
+    <section class="section">
       <h2>From the community</h2>
       <div class="ticker">
         <div class="ticker-track">
@@ -107,72 +151,67 @@
           <span class="ticker-item">“The competitive landscape section stopped me from entering the wrong market.”</span>
           <span class="ticker-item">“I used one report as my roadmap and got to revenue in 40 days.”</span>
           <span class="ticker-item">“NicheLab is now part of our deal flow workflow.”</span>
-          <span class="ticker-item">“The risk matrix is more useful than most paid reports I have bought.”</span>
           <span class="ticker-item">“The reports feel expensive in a good way.”</span>
           <span class="ticker-item">“The trend signal layer picks things up surprisingly early.”</span>
-          <span class="ticker-item">“I found a micro-SaaS gap in legal document automation far faster than my manual research.”</span>
           <span class="ticker-item">“The opportunity scoring alone changed how I screen niches.”</span>
           <span class="ticker-item">“The competitive landscape section stopped me from entering the wrong market.”</span>
-          <span class="ticker-item">“I used one report as my roadmap and got to revenue in 40 days.”</span>
         </div>
       </div>
-    </div>
+    </section>
 
     <section class="section">
       <h2>Latest generated reports</h2>
-      <div id="latest-reports" class="reports"></div>
+      <div id="latest-reports" class="reports-grid"></div>
     </section>
 
-    <footer>
-      Auto-generated report feed connected to GitHub Actions publishing.
-    </footer>
+    <div class="footer">Auto-generated report feed connected to GitHub Actions publishing.</div>
   </div>
 
   <script>
-    async function loadHomepageFeed() {
+    async function loadHomepage() {
       try {
-        const res = await fetch('generated-reports/homepage-feed.json?ts=' + Date.now());
-        const feed = await res.json();
-
+        const feedRes = await fetch('generated-reports/homepage-feed.json?ts=' + Date.now());
+        const feed = await feedRes.json();
         const featured = feed.featured_report || {};
+
         document.getElementById('featured-title').textContent = featured.title || 'No featured report available';
-        document.getElementById('featured-subtitle').textContent = featured.subtitle || 'The report feed is active but no featured item was returned.';
+        document.getElementById('featured-subtitle').textContent = featured.subtitle || 'No subtitle available.';
         document.getElementById('featured-category').textContent = featured.category || 'Category';
         document.getElementById('featured-confidence').textContent = 'Confidence ' + (featured.overall_confidence ?? '—');
-        document.getElementById('featured-recommendation').textContent = (featured.recommendation || 'Recommendation').replaceAll('_',' ');
+        document.getElementById('featured-recommendation').textContent = (featured.recommendation || 'Recommendation').replaceAll('_', ' ');
         document.getElementById('featured-link').href = featured.report_path || 'dashboard.html';
 
         document.getElementById('kpi-total').textContent = feed.total_reports ?? '—';
         document.getElementById('kpi-categories').textContent = (feed.categories || []).length || '—';
-        const updated = feed.generated_at ? new Date(feed.generated_at).toLocaleDateString() : '—';
-        document.getElementById('kpi-updated').textContent = updated;
+        document.getElementById('kpi-updated').textContent = feed.generated_at ? new Date(feed.generated_at).toLocaleDateString() : '—';
 
         const manifestRes = await fetch('generated-reports/reports-manifest.json?ts=' + Date.now());
         const manifest = await manifestRes.json();
         const holder = document.getElementById('latest-reports');
         holder.innerHTML = '';
+
         (manifest.reports || []).slice(0, 6).forEach(item => {
-          const div = document.createElement('a');
-          div.className = 'report-card';
-          div.href = item.report_path;
-          div.innerHTML = `
-            <div class="eyebrow">${item.category}</div>
-            <div style="font-size:22px;font-family:Georgia,serif;margin-bottom:8px">${item.title}</div>
-            <div class="muted">${item.subtitle || ''}</div>
+          const el = document.createElement('a');
+          el.className = 'report-card';
+          el.href = item.report_path;
+          el.innerHTML = `
+            <div class="eyebrow">${item.category || 'Report'}</div>
+            <h3>${item.title || 'Untitled report'}</h3>
+            <p>${item.subtitle || ''}</p>
             <div class="badge-row">
-              <span class="badge">Confidence ${item.overall_confidence ?? '—'}</span>
+              <span class="badge good">Confidence ${item.overall_confidence ?? '—'}</span>
               <span class="badge">${(item.recommendation || '—').replaceAll('_',' ')}</span>
             </div>
           `;
-          holder.appendChild(div);
+          holder.appendChild(el);
         });
-      } catch (err) {
-        console.error(err);
+      } catch (e) {
+        console.error(e);
         document.getElementById('featured-title').textContent = 'Feed could not be loaded';
-        document.getElementById('featured-subtitle').textContent = 'The generated report feed was not found or is not yet published.';
+        document.getElementById('featured-subtitle').textContent = 'The generated report feed is missing or not yet deployed.';
       }
     }
-    loadHomepageFeed();
+    loadHomepage();
   </script>
 </body>
 </html>

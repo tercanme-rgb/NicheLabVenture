@@ -5,92 +5,96 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>NicheLab Dashboard</title>
   <style>
-    *{box-sizing:border-box} body{margin:0;font-family:Arial,sans-serif;background:#07080C;color:#ECF0F8}
+    :root{
+      --bg:#06070B;--panel:#0B0E16;--panel2:#101523;--line:#1A2133;--line2:#27314A;
+      --text:#EEF2FB;--muted:#92A0BF;--soft:#66708A;--gold:#C8861A;--gold2:#E6A42C;
+      --radius:20px;--mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --serif: Georgia, "Times New Roman", serif;--sans: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;font-family:var(--sans);color:var(--text);
+      background:radial-gradient(circle at top left, rgba(200,134,26,.06), transparent 24%), linear-gradient(180deg,#05060A,#07090E);
+    }
     a{text-decoration:none;color:inherit}
-    .app{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
-    .side{background:#090B12;border-right:1px solid #151A27;padding:22px 16px}
-    .brand{font-size:24px;font-weight:700;margin-bottom:20px}
-    .side a{display:block;padding:14px 14px;border-radius:14px;color:#A8B0C8;margin-bottom:8px;border:1px solid transparent}
-    .side a.active,.side a:hover{background:#0E1220;border-color:#252B44;color:#fff}
-    .main{padding:26px}
-    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:16px}
-    .card{background:#0B0D15;border:1px solid #1D2136;border-radius:18px;padding:20px}
-    .eyebrow{font-family:monospace;font-size:11px;color:#6F7897;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
-    h1{font-family:Georgia,serif;font-size:38px;margin:0 0 10px}
-    .muted{color:#8892B0}
-    .reports{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:18px}
-    .report-card{background:#0B0D15;border:1px solid #1D2136;border-radius:18px;padding:18px}
-    .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-    .badge{font-family:monospace;font-size:10px;padding:5px 8px;border-radius:999px;border:1px solid #252B44;background:#10131E;color:#A8B0C8;text-transform:uppercase}
-    .toolbar{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px}
-    .btn{padding:10px 14px;border:1px solid #252B44;border-radius:12px;background:#0B0D15;color:#ECF0F8}
+    .app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+    .side{background:#080B12;border-right:1px solid #141B2A;padding:22px 16px;position:sticky;top:0;height:100vh}
+    .brand{display:flex;align-items:center;gap:10px;font-size:28px;font-weight:700;margin-bottom:24px}
+    .brand-mark{width:15px;height:15px;border-radius:50%;background:linear-gradient(180deg,var(--gold2),var(--gold));box-shadow:0 0 0 4px rgba(200,134,26,.12)}
+    .nav-link{display:block;padding:15px 14px;border-radius:14px;color:#AAB5CE;margin-bottom:8px;border:1px solid transparent}
+    .nav-link.active,.nav-link:hover{background:#0E1320;border-color:#252B44;color:#fff}
+    .main{padding:28px}
+    .hero-grid{display:grid;grid-template-columns:1.2fr .9fr;gap:16px}
+    .card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+    .eyebrow{font:11px/1.4 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--soft);margin-bottom:10px}
+    .hero-title{font-family:var(--serif);font-size:48px;line-height:1.02;letter-spacing:-.03em;margin:0 0 10px}
+    .muted{color:var(--muted);line-height:1.72}
+    .badge-row{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 16px}
+    .badge{border:1px solid var(--line2);background:#0D1220;color:#BAC3D8;border-radius:999px;font:10px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.12em;padding:7px 10px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 16px;border-radius:13px;border:1px solid var(--line2);background:linear-gradient(180deg,#0E1320,#090D16);color:var(--text)}
+    .btn.gold{border:none;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#fff}
     .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .stat{background:#10131E;border:1px solid #252B44;border-radius:14px;padding:14px}
-    .stat .label{font-family:monospace;font-size:11px;color:#6F7897;text-transform:uppercase}
-    .stat .value{font-size:24px;margin-top:8px}
-    .section{margin-top:30px}
-    .section h2{font-family:Georgia,serif;font-size:30px;margin:0 0 14px}
-    @media (max-width:980px){.app{grid-template-columns:1fr}.side{border-right:none;border-bottom:1px solid #151A27}.hero,.reports,.stats{grid-template-columns:1fr}}
+    .stat{border:1px solid var(--line2);border-radius:18px;padding:16px;background:#0C1120}
+    .stat .label{font:10px/1.2 var(--mono);text-transform:uppercase;letter-spacing:.12em;color:var(--soft)}
+    .stat .value{margin-top:16px;font-size:28px;letter-spacing:-.03em}
+    .section{margin-top:34px}
+    .section h2{font-family:var(--serif);font-size:40px;letter-spacing:-.03em;margin:0 0 16px}
+    .reports-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+    .report-card{display:block;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,var(--panel2),var(--panel));padding:20px;min-height:210px}
+    .report-card h3{font-family:var(--serif);font-size:31px;line-height:1.04;letter-spacing:-.03em;margin:8px 0 10px}
+    @media (max-width:1050px){.app{grid-template-columns:1fr}.side{position:relative;height:auto;border-right:none;border-bottom:1px solid #141B2A}.hero-grid,.reports-grid,.stats{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <div class="app">
     <aside class="side">
-      <div class="brand">NicheLab</div>
-      <a class="active" href="dashboard.html">Dashboard</a>
-      <a href="#reports">Opportunities</a>
-      <a href="#featured">Signals</a>
-      <a href="#reports">Research</a>
-      <a href="#reports">Saved</a>
-      <a href="#account">Account</a>
-      <a href="index.html">Back to site</a>
+      <div class="brand"><span class="brand-mark"></span>NicheLab</div>
+      <a class="nav-link active" href="dashboard.html">Dashboard</a>
+      <a class="nav-link" href="#reports">Opportunities</a>
+      <a class="nav-link" href="#reports">Signals</a>
+      <a class="nav-link" href="#reports">Research</a>
+      <a class="nav-link" href="#reports">Saved</a>
+      <a class="nav-link" href="#account">Account</a>
+      <a class="nav-link" href="index.html">Back to site</a>
     </aside>
 
     <main class="main">
-      <section class="hero" id="featured">
+      <section class="hero-grid">
         <div class="card">
           <div class="eyebrow">Live generated dashboard</div>
-          <h1 id="featured-title">Loading latest generated report...</h1>
-          <div id="featured-subtitle" class="muted">The dashboard will load the latest feed from generated-reports.</div>
+          <div id="featured-title" class="hero-title">Loading latest generated report...</div>
+          <div id="featured-subtitle" class="muted">The dashboard is loading the newest report feed from generated-reports.</div>
           <div class="badge-row">
             <span id="featured-category" class="badge">Category</span>
             <span id="featured-confidence" class="badge">Confidence</span>
             <span id="featured-recommendation" class="badge">Recommendation</span>
           </div>
-          <div class="toolbar">
-            <a id="featured-open" class="btn" href="#">Open full report</a>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <a id="featured-open" class="btn gold" href="#">Open full report</a>
             <a class="btn" href="index.html">Back to site</a>
           </div>
         </div>
+
         <div class="card">
           <div class="eyebrow">System stats</div>
           <div class="stats">
-            <div class="stat">
-              <div class="label">Reports</div>
-              <div id="stat-reports" class="value">—</div>
-            </div>
-            <div class="stat">
-              <div class="label">Categories</div>
-              <div id="stat-categories" class="value">—</div>
-            </div>
-            <div class="stat">
-              <div class="label">Updated</div>
-              <div id="stat-updated" class="value" style="font-size:18px">—</div>
-            </div>
+            <div class="stat"><div class="label">Reports</div><div id="stat-reports" class="value">—</div></div>
+            <div class="stat"><div class="label">Categories</div><div id="stat-categories" class="value">—</div></div>
+            <div class="stat"><div class="label">Updated</div><div id="stat-updated" class="value" style="font-size:20px">—</div></div>
           </div>
         </div>
       </section>
 
       <section class="section" id="reports">
         <h2>Generated report library</h2>
-        <div id="report-list" class="reports"></div>
+        <div id="report-list" class="reports-grid"></div>
       </section>
 
       <section class="section" id="account">
         <h2>Account</h2>
         <div class="card">
           <div class="eyebrow">Auto-publish connected</div>
-          <div class="muted">This dashboard now reads from the generated report manifest. New reports published by GitHub Actions will appear here automatically.</div>
+          <div class="muted">This dashboard reads directly from the generated report manifest. New reports published by GitHub Actions appear here automatically.</div>
         </div>
       </section>
     </main>
@@ -118,23 +122,24 @@
         const manifest = await manifestRes.json();
         const holder = document.getElementById('report-list');
         holder.innerHTML = '';
+
         (manifest.reports || []).forEach(item => {
-          const div = document.createElement('a');
-          div.className = 'report-card';
-          div.href = item.report_path;
-          div.innerHTML = `
-            <div class="eyebrow">${item.category}</div>
-            <div style="font-size:22px;font-family:Georgia,serif;margin-bottom:8px">${item.title}</div>
+          const el = document.createElement('a');
+          el.className = 'report-card';
+          el.href = item.report_path;
+          el.innerHTML = `
+            <div class="eyebrow">${item.category || 'Report'}</div>
+            <h3>${item.title || 'Untitled report'}</h3>
             <div class="muted">${item.subtitle || ''}</div>
             <div class="badge-row">
               <span class="badge">Confidence ${item.overall_confidence ?? '—'}</span>
               <span class="badge">${(item.recommendation || '—').replaceAll('_',' ')}</span>
             </div>
           `;
-          holder.appendChild(div);
+          holder.appendChild(el);
         });
-      } catch (err) {
-        console.error(err);
+      } catch (e) {
+        console.error(e);
         document.getElementById('featured-title').textContent = 'Dashboard feed could not be loaded';
         document.getElementById('featured-subtitle').textContent = 'The generated report manifest is missing or unreachable.';
       }
