@@ -83,6 +83,9 @@ button,input,textarea,select{font:inherit}
 .score.good{color:var(--green);background:var(--green-bg);border-color:var(--green-br)}
 .score.mid{color:var(--amber);background:var(--amber-bg);border-color:var(--amber-br)}
 .small-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.tab-page{display:none}
+.tab-page.active{display:block}
+
 .linkish{color:var(--cyan);font-weight:600}
 .toolbar{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap}
 .filter-row{display:flex;gap:10px;flex-wrap:wrap}
@@ -97,10 +100,10 @@ button,input,textarea,select{font:inherit}
     <div class="logo"><div class="logo-mark">NL</div><div>NicheLab</div></div>
     <div class="plan-badge" id="plan-badge">PRO workspace</div>
     <nav class="side-nav">
-      <button class="side-link active">Dashboard</button>
-      <button class="side-link">Opportunities</button>
-      <button class="side-link">Signals</button>
-      <button class="side-link">Saved</button>
+      <button class="side-link active" data-tab="dashboard">Dashboard</button>
+      <button class="side-link" data-tab="opportunities">Opportunities</button>
+      <button class="side-link" data-tab="signals">Signals</button>
+      <button class="side-link" data-tab="saved">Saved</button>
       <button class="side-link js-upgrade hidden" id="upgrade-nav">Upgrade to PRO</button>
       <a class="side-link" href="index.html">Back to site</a>
     </nav>
@@ -115,7 +118,8 @@ button,input,textarea,select{font:inherit}
       </div>
     </div>
 
-    <section class="hero">
+    <div class="tab-page active" id="tab-dashboard">
+<section class="hero">
       <div class="kicker" id="hero-kicker">PRO access</div>
       <h1 id="hero-title">Full market intelligence<br>workspace.</h1>
       <p id="hero-copy">PRO includes full report access, competitor tables, TAM/SAM/SOM blocks, downloadable PDF exports, and deeper opportunity tooling.</p>
@@ -128,7 +132,10 @@ button,input,textarea,select{font:inherit}
       <div class="card"><div class="metric" id="next-unlock">PRO</div><div class="label">Workspace tier</div><div class="value" id="unlock-copy">Full exports, custom research, and deep report access enabled</div></div>
     </div>
 
-    <div class="section">
+    </div>
+
+<div class="tab-page" id="tab-opportunities">
+<div class="section" id="opportunities-section">
       <div class="section-head"><div class="section-title">Reports and access</div><div class="line"></div></div>
       <div class="two-col">
         <div class="list">
@@ -191,7 +198,10 @@ button,input,textarea,select{font:inherit}
       </div>
     </div>
 
-    <div class="section">
+    </div>
+
+<div class="tab-page" id="tab-signals">
+<div class="section" id="signals-section">
       <div class="section-head"><div class="section-title">Opportunity table</div><div class="line"></div></div>
       <div class="toolbar">
         <div class="filter-row">
@@ -208,8 +218,21 @@ button,input,textarea,select{font:inherit}
             <tr data-starter="true"><td>Webhook Reliability Platform</td><td>Dev Tools</td><td><span class="score good">84</span></td><td><span class="score good">78</span></td><td><span class="score mid">61</span></td><td><span class="score bad">42</span></td><td><span class="score good">High</span></td><td><a class="linkish report-open" href="report-webhook-reliability.html?plan=pro" data-starter="true">Open</a></td></tr><tr data-starter="true"><td>AI Mock API Server (Hosted)</td><td>Dev Tools / AI</td><td><span class="score good">81</span></td><td><span class="score good">76</span></td><td><span class="score mid">58</span></td><td><span class="score bad">39</span></td><td><span class="score good">High</span></td><td><a class="linkish report-open" href="report-ai-mock-api-server.html?plan=pro" data-starter="true">Open</a></td></tr><tr data-starter="false"><td>EU AI Act Compliance Logger</td><td>Compliance SaaS</td><td><span class="score mid">74</span></td><td><span class="score mid">69</span></td><td><span class="score mid">57</span></td><td><span class="score mid">58</span></td><td><span class="score mid">Emerging</span></td><td><span class="lock-badge">PRO only</span></td></tr><tr data-starter="false"><td>Rate Limit Management Proxy</td><td>Infrastructure</td><td><span class="score mid">68</span></td><td><span class="score mid">64</span></td><td><span class="score bad">31</span></td><td><span class="score bad">36</span></td><td><span class="score mid">Rising</span></td><td><span class="lock-badge">PRO only</span></td></tr><tr data-starter="false"><td>Client Onboarding Workflow Suite</td><td>B2B SaaS</td><td><span class="score good">79</span></td><td><span class="score mid">74</span></td><td><span class="score mid">63</span></td><td><span class="score bad">49</span></td><td><span class="score good">High</span></td><td><span class="lock-badge">PRO only</span></td></tr>
           </tbody>
         </table>
+      
+    </div>
+
+<div class="tab-page" id="tab-saved">
+<div class="section" id="saved-section">
+      <div class="section-head"><div class="section-title">Saved workspace</div><div class="line"></div></div>
+      <div class="small-grid">
+        <div class="small-item"><strong>Saved ideas</strong><div class="note">Webhook Reliability Platform<br>AI Mock API Server<br>Client onboarding workflow suite</div></div>
+        <div class="small-item"><strong>Watchlists</strong><div class="note">Dev tools<br>AI infrastructure<br>Compliance SaaS</div></div>
+        <div class="small-item"><strong>Notes</strong><div class="note">Starter users can save a smaller workspace. PRO expands the workspace and unlocks deeper exports.</div></div>
+        <div class="small-item"><strong>Next action</strong><div class="note">Use saved items to decide which report to revisit next.</div></div>
       </div>
     </div>
+
+</div>
   </main>
 </div>
 
@@ -272,6 +295,23 @@ if (plan === 'starter'){
 } else {
   document.getElementById('export-btn').addEventListener('click', () => showToast('Shortlist export queued.'));
 }
+
+function openTab(tab){
+  document.querySelectorAll('.side-link[data-tab]').forEach(x => x.classList.toggle('active', x.dataset.tab === tab));
+  document.querySelectorAll('.tab-page').forEach(page => page.classList.toggle('active', page.id === 'tab-' + tab));
+  if (history.replaceState) history.replaceState(null, '', '#' + tab);
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+document.querySelectorAll('.side-link[data-tab]').forEach(btn => {
+  btn.addEventListener('click', () => openTab(btn.dataset.tab));
+});
+
+const initialTab = window.location.hash ? window.location.hash.replace('#','') : 'dashboard';
+if (document.getElementById('tab-' + initialTab)) {
+  openTab(initialTab);
+}
+
 </script>
 </body>
 </html>
