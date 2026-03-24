@@ -404,10 +404,6 @@ footer{border-top:1px solid var(--b1)}
 /* ANIMATIONS */
 .reveal{opacity:0;transform:translateY(16px);transition:opacity .55s ease,transform .55s ease}
 .reveal.visible{opacity:1;transform:none}
-
-.lb-name-link{display:block}
-.lb-name-link:hover .lb-nm{color:var(--gold-l)}
-
 </style>
 </head>
 <body>
@@ -441,19 +437,19 @@ footer{border-top:1px solid var(--b1)}
   </div>
   <div class="hero-eyebrow">
     <span class="eyebrow-dot"></span>
-    <span id="hero-eyebrow-text">Report loading…</span>
+    Report #184 published today · Webhook Reliability Platform
   </div>
   <h1>The market already knows<br><em>what to build.</em></h1>
   <p class="hero-context">NicheLab mines <strong>Reddit sentiment, search velocity, funding signals, and competitor gaps</strong> — then condenses 200+ hours of research into 13-section investment-grade opportunity reports. Build the right thing. The first time.</p>
   <div class="hero-actions">
-    <a class="btn btn-gold btn-lg cta-read-report" id="hero-read-report" href="dashboard.html">Read today\'s report free →</a>
-    <a class="btn btn-ghost btn-lg cta-browse" href="#leaderboard">Browse live opportunities</a>
+    <button class="btn btn-gold btn-lg cta-read-report" type="button">Read today's report free →</button>
+    <button class="btn btn-ghost btn-lg cta-browse" type="button">Browse 200+ opportunities</button>
   </div>
   <div class="hero-stats">
-    <div class="hstat"><span class="hstat-v" id="hero-stat-builders">—</span><span class="hstat-l">Active builders</span></div>
-    <div class="hstat"><span class="hstat-v" id="hero-stat-ideas">—</span><span class="hstat-l">Validated ideas</span></div>
-    <div class="hstat"><span class="hstat-v" id="hero-stat-categories">—</span><span class="hstat-l">Tracked categories</span></div>
-    <div class="hstat"><span class="hstat-v" id="hero-stat-updated">—</span><span class="hstat-l">Last update</span></div>
+    <div class="hstat"><span class="hstat-v">1,240+</span><span class="hstat-l">Active builders</span></div>
+    <div class="hstat"><span class="hstat-v">200+</span><span class="hstat-l">Validated ideas</span></div>
+    <div class="hstat"><span class="hstat-v">47</span><span class="hstat-l">Countries</span></div>
+    <div class="hstat"><span class="hstat-v">13</span><span class="hstat-l">Sections per report</span></div>
   </div>
 </section>
 
@@ -522,19 +518,19 @@ footer{border-top:1px solid var(--b1)}
       <div class="fc-icon">🔗</div>
       <div class="fc-meta">
         <div class="fc-eyebrow">
-          <span class="fc-cat" id="featured-cat">Category loading</span>
-          <span class="fc-pill tag-hot" id="featured-pill">Live feed</span>
+          <span class="fc-cat">Micro-SaaS · Dev Tools</span>
+          <span class="fc-pill tag-hot">High Signal</span>
         </div>
-        <div class="fc-title" id="featured-title">Loading featured report…</div>
-        <div class="fc-tagline" id="featured-tagline">The current featured report will appear here automatically from the publishing pipeline.</div>
+        <div class="fc-title">Webhook Reliability Platform for Indie Developers</div>
+        <div class="fc-tagline">Production-grade webhook management for teams that can't afford Datadog but can't afford downtime. Capture, debug, replay, and monitor every webhook event across your entire SaaS stack — in one place, under $80/month.</div>
         <div class="fc-scores">
-          <div class="schip"><span class="sc-l">Confidence</span><span class="sc-v sc-hi" id="featured-score-confidence">—</span></div>
-          <div class="schip"><span class="sc-l">Recommendation</span><span class="sc-v sc-hi" id="featured-score-reco">—</span></div>
-          <div class="schip"><span class="sc-l">Reports</span><span class="sc-v sc-md" id="featured-score-total">—</span></div>
-          <div class="schip"><span class="sc-l">Categories</span><span class="sc-v sc-hi" id="featured-score-categories">—</span></div>
-          <div class="schip"><span class="sc-l">Published</span><span class="sc-v" id="featured-score-date">—</span></div>
-          <div class="schip"><span class="sc-l">Path</span><span class="sc-v" id="featured-score-path">Live</span></div>
-          <div class="schip"><span class="sc-l">Status</span><span class="sc-v sc-hi">Auto</span></div>
+          <div class="schip"><span class="sc-l">Market</span><span class="sc-v sc-hi">84/100</span></div>
+          <div class="schip"><span class="sc-l">Revenue</span><span class="sc-v sc-hi">78/100</span></div>
+          <div class="schip"><span class="sc-l">Competition</span><span class="sc-v sc-md">61/100</span></div>
+          <div class="schip"><span class="sc-l">Difficulty</span><span class="sc-v sc-hi">42/100</span></div>
+          <div class="schip"><span class="sc-l">MVP Time</span><span class="sc-v">10–14 wks</span></div>
+          <div class="schip"><span class="sc-l">TAM</span><span class="sc-v">$7.0B</span></div>
+          <div class="schip"><span class="sc-l">CAGR</span><span class="sc-v sc-hi">18.2%</span></div>
         </div>
       </div>
     </div>
@@ -574,7 +570,7 @@ footer{border-top:1px solid var(--b1)}
       </div>
       <div class="fc-acts">
         <button class="btn-outline cta-save-idea" type="button">Save idea</button>
-        <a class="btn-gold-ol cta-full-report" id="featured-full-report" href="dashboard.html">Full live report →</a>
+        <button class="btn-gold-ol cta-full-report" type="button">Full 13-section report →</button>
       </div>
     </div>
   </div>
@@ -794,9 +790,68 @@ footer{border-top:1px solid var(--b1)}
       </div>
     </div>
     <div class="lb-row lbh">
-      <div>#</div>
-    <div id="leaderboard-rows"></div>
-</div>
+      <div>#</div><div>Idea</div>
+      <div style="text-align:center">Market</div>
+      <div style="text-align:center">Revenue</div>
+      <div style="text-align:center">Difficulty</div>
+      <div style="text-align:center">Signal</div>
+      <div style="text-align:right">Report</div>
+    </div>
+    <div class="lb-row" data-category="micro-saas dev-tools">
+      <div class="lb-rank r1">1</div>
+      <div><div class="lb-nm">Webhook Reliability Platform</div><div class="lb-ct">Micro-SaaS · Dev Tools</div></div>
+      <div class="lb-sc lsh" style="text-align:center">84</div>
+      <div class="lb-sc lsh" style="text-align:center">78</div>
+      <div class="lb-sc lsh" style="text-align:center">42</div>
+      <div class="lb-sc lsh" style="text-align:center">⬆ High</div>
+      <div style="text-align:right"><button class="lb-view cta-leaderboard-report" data-idea="Webhook Reliability Platform" type="button">Full Report</button></div>
+    </div>
+    <div class="lb-row" data-category="micro-saas dev-tools ai">
+      <div class="lb-rank r2">2</div>
+      <div><div class="lb-nm">AI Mock API Server (Hosted)</div><div class="lb-ct">Micro-SaaS · Dev Tools</div></div>
+      <div class="lb-sc lsh" style="text-align:center">81</div>
+      <div class="lb-sc lsh" style="text-align:center">76</div>
+      <div class="lb-sc lsh" style="text-align:center">39</div>
+      <div class="lb-sc lsh" style="text-align:center">⬆ High</div>
+      <div style="text-align:right"><button class="lb-view cta-leaderboard-report" data-idea="AI Mock API Server (Hosted)" type="button">Full Report</button></div>
+    </div>
+    <div class="lb-row" data-category="micro-saas dev-tools">
+      <div class="lb-rank r3">3</div>
+      <div><div class="lb-nm">API Breaking Change Monitor</div><div class="lb-ct">Micro-SaaS · Infrastructure</div></div>
+      <div class="lb-sc lsh" style="text-align:center">77</div>
+      <div class="lb-sc lsh" style="text-align:center">72</div>
+      <div class="lb-sc lsm" style="text-align:center">54</div>
+      <div class="lb-sc lsm" style="text-align:center">↗ Rising</div>
+      <div style="text-align:right"><button class="lb-view cta-leaderboard-report" data-idea="API Breaking Change Monitor" type="button">Full Report</button></div>
+    </div>
+    <div class="lb-row" data-category="ai">
+      <div class="lb-rank">4</div>
+      <div><div class="lb-nm">EU AI Act Compliance Logger</div><div class="lb-ct">Compliance · SaaS</div></div>
+      <div class="lb-sc lsh" style="text-align:center">74</div>
+      <div class="lb-sc lsm" style="text-align:center">69</div>
+      <div class="lb-sc lsm" style="text-align:center">58</div>
+      <div class="lb-sc lsm" style="text-align:center">↗ Emerging</div>
+      <div style="text-align:right"><button class="lb-view cta-leaderboard-report" data-idea="EU AI Act Compliance Logger" type="button">Full Report</button></div>
+    </div>
+    <div class="lb-row" data-category="micro-saas dev-tools">
+      <div class="lb-rank">5</div>
+      <div><div class="lb-nm">Rate Limit Management Proxy</div><div class="lb-ct">Micro-SaaS · Dev Tools</div></div>
+      <div class="lb-sc lsm" style="text-align:center">68</div>
+      <div class="lb-sc lsm" style="text-align:center">64</div>
+      <div class="lb-sc lsh" style="text-align:center">31</div>
+      <div class="lb-sc lsm" style="text-align:center">↗ Rising</div>
+      <div style="text-align:right"><button class="lb-view cta-leaderboard-report" data-idea="Rate Limit Management Proxy" type="button">Full Report</button></div>
+    </div>
+    <div class="lb-row" style="opacity:.55;cursor:default">
+      <div class="lb-rank" style="color:var(--t3)">6–200+</div>
+      <div style="color:var(--t3);font-size:13px;display:flex;align-items:center;gap:10px">
+        <span>Unlock all opportunities</span>
+        <span style="font-family:var(--mono);font-size:10px;padding:2px 8px;background:var(--gold-bg);color:var(--gold-l);border:1px solid var(--gold-br);border-radius:4px">STARTER · $249/yr</span>
+      </div>
+      <div></div><div></div><div></div><div></div>
+      <div style="text-align:right"><button class="lb-view cta-upgrade" type="button">Upgrade →</button></div>
+    </div>
+  </div>
 </div>
 
 <!-- ═══ SIGNALS ═══ -->
@@ -806,5 +861,1143 @@ footer{border-top:1px solid var(--b1)}
     <div class="sec-line"></div>
     <span class="sec-tag tag-cyan">Real-time</span>
   </div>
-  <div class="sigs-row reveal" id="signals-grid"></div>
+  <div class="sigs-row reveal">
+    <div class="sig-card">
+      <div class="sig-pct sig-up">+287%</div>
+      <div class="sig-nm">Webhook Debugging</div>
+      <div class="sig-src">Google Trends · 36mo</div>
+      <div class="sig-badge sb-r">Rising Fast</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-pct sig-up">+890%</div>
+      <div class="sig-nm">AI Agent Debugging</div>
+      <div class="sig-src">Search Volume · 18mo</div>
+      <div class="sig-badge sb-h">Explosive</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-pct sig-up">+412%</div>
+      <div class="sig-nm">API Rate Limiting</div>
+      <div class="sig-src">Search Volume · 12mo</div>
+      <div class="sig-badge sb-g">Emerging</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-pct sig-up">+195%</div>
+      <div class="sig-nm">Mock API Servers</div>
+      <div class="sig-src">GitHub Stars · 6mo</div>
+      <div class="sig-badge sb-r">Rising</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-pct sig-gold">$7M</div>
+      <div class="sig-nm">Hookdeck Series A</div>
+      <div class="sig-src">Crunchbase · 2023</div>
+      <div class="sig-badge sb-g">Market Validated</div>
+    </div>
+  </div>
+</div>
 
+
+<!-- ═══ PROOF ═══ -->
+<div class="wrap">
+  <div class="sec-head">
+    <span class="sec-label">From the community</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="comm-marquee reveal">
+    <div class="comm-track">
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“NicheLab is what idea research should look like for serious builders. The competitor maps alone save weeks.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--gold-bg);color:var(--gold-l)">AK</div><div><div class="proof-nm">Alex Kim</div><div class="comm-role">Solo founder · $8K MRR</div></div></div>
+      </div>
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“I stopped wasting weekends researching niches on Twitter. The action plans are unusually practical.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--green-bg);color:var(--green)">SR</div><div><div class="proof-nm">Sara Reyes</div><div class="comm-role">Developer · 2 products shipped</div></div></div>
+      </div>
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“The TAM/SAM/SOM section gave me language I could use directly in an investor deck.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--amber-bg);color:var(--amber)">JM</div><div><div class="proof-nm">James Müller</div><div class="comm-role">Founder · Pre-seed funded</div></div></div>
+      </div>
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“Best signal-to-noise ratio I’ve seen in a startup research product. No fluff, just usable insight.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--cyan-bg);color:var(--cyan)">LT</div><div><div class="proof-nm">Lina Torres</div><div class="comm-role">Operator · B2B SaaS</div></div></div>
+      </div>
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“The risk matrix was the section that changed my mind about entering a market that looked attractive on the surface.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--gold-bg);color:var(--gold-l)">MC</div><div><div class="proof-nm">Marcus Chen</div><div class="comm-role">Founder · 3 exits</div></div></div>
+      </div>
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“I found a better micro-SaaS wedge in one report than I had in months of manual research.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--green-bg);color:var(--green)">DK</div><div><div class="proof-nm">Daniel K.</div><div class="comm-role">Indie founder</div></div></div>
+      </div>
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“The opportunity scoring is fast enough for weekly workflow, but still feels institutional in depth.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--amber-bg);color:var(--amber)">LM</div><div><div class="proof-nm">Laura M.</div><div class="comm-role">Product strategist</div></div></div>
+      </div>
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“I used the 30-day plan almost line by line. That alone justified the subscription.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--cyan-bg);color:var(--cyan)">RS</div><div><div class="proof-nm">Robert S.</div><div class="comm-role">Startup founder</div></div></div>
+      </div>
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“The research has the tone of something built by people who have actually sat inside funds and strategy firms.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--gold-bg);color:var(--gold-l)">EP</div><div><div class="proof-nm">Elena Petrova</div><div class="comm-role">Angel investor</div></div></div>
+      </div>
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“Much faster than buying one-off industry reports, and much more actionable for builders.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--green-bg);color:var(--green)">NB</div><div><div class="proof-nm">Noah Blake</div><div class="comm-role">Independent consultant</div></div></div>
+      </div>
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“It helps me pressure-test markets before my team commits engineering time.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--amber-bg);color:var(--amber)">VT</div><div><div class="proof-nm">Victor Tran</div><div class="comm-role">Head of product</div></div></div>
+      </div>
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“The signal data tends to appear here earlier than it shows up in mainstream trend products.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--cyan-bg);color:var(--cyan)">CH</div><div><div class="proof-nm">Clara Hoffmann</div><div class="comm-role">Creator economy operator</div></div></div>
+      </div>
+
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“NicheLab is what idea research should look like for serious builders. The competitor maps alone save weeks.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--gold-bg);color:var(--gold-l)">AK</div><div><div class="proof-nm">Alex Kim</div><div class="comm-role">Solo founder · $8K MRR</div></div></div>
+      </div>
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“I stopped wasting weekends researching niches on Twitter. The action plans are unusually practical.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--green-bg);color:var(--green)">SR</div><div><div class="proof-nm">Sara Reyes</div><div class="comm-role">Developer · 2 products shipped</div></div></div>
+      </div>
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“The TAM/SAM/SOM section gave me language I could use directly in an investor deck.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--amber-bg);color:var(--amber)">JM</div><div><div class="proof-nm">James Müller</div><div class="comm-role">Founder · Pre-seed funded</div></div></div>
+      </div>
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“Best signal-to-noise ratio I’ve seen in a startup research product. No fluff, just usable insight.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--cyan-bg);color:var(--cyan)">LT</div><div><div class="proof-nm">Lina Torres</div><div class="comm-role">Operator · B2B SaaS</div></div></div>
+      </div>
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“The risk matrix was the section that changed my mind about entering a market that looked attractive on the surface.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--gold-bg);color:var(--gold-l)">MC</div><div><div class="proof-nm">Marcus Chen</div><div class="comm-role">Founder · 3 exits</div></div></div>
+      </div>
+      <div class="comm-card">
+        <div class="comm-stars">★★★★★</div>
+        <div class="comm-text">“I found a better micro-SaaS wedge in one report than I had in months of manual research.”</div>
+        <div class="proof-author"><div class="av" style="background:var(--green-bg);color:var(--green)">DK</div><div><div class="proof-nm">Daniel K.</div><div class="comm-role">Indie founder</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ PRICING ═══ -->
+<div class="wrap" id="pricing">
+  <div class="sec-head">
+    <span class="sec-label">Pricing</span>
+    <div class="sec-line"></div>
+  </div>
+  <p style="font-size:15px;color:var(--t2);max-width:560px;margin:0 0 36px;line-height:1.7">
+    Each NicheLab report represents 200+ hours of institutional research. At $249/year for 200+ reports, you're paying <strong style="color:var(--t1)">$1.24 per validated opportunity.</strong> A single bad pivot costs 1,000× that.
+  </p>
+  <div class="pricing-grid reveal">
+    <div class="pc">
+      <div class="plan-nm">Free</div>
+      <div class="plan-px">$0</div>
+      <div class="plan-cy">forever · no card required</div>
+      <div class="plan-desc">Explore NicheLab before committing. See the leaderboard top 5. Read today's featured report in preview mode. Understand what you're buying.</div>
+      <div class="plan-feats">
+        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Daily featured report (preview)</div>
+        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Score dashboard (5 metrics)</div>
+        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Leaderboard top 5</div>
+        <div class="pfi"><div class="pfc pfn"></div><span style="color:var(--t3)">Full 13-section reports</span></div>
+        <div class="pfi"><div class="pfc pfn"></div><span style="color:var(--t3)">Competitor intel per report</span></div>
+        <div class="pfi"><div class="pfc pfn"></div><span style="color:var(--t3)">Custom report generation</span></div>
+      </div>
+      <button class="btn btn-ghost cta-plan-free" style="width:100%;padding:11px" type="button">Start for free</button>
+    </div>
+    <div class="pc feat">
+      <div class="plan-nm">Starter</div>
+      <div class="plan-px gold">$249</div>
+      <div class="plan-cy">/year · billed annually <span style="color:var(--green);font-weight:600">(save 17%)</span></div>
+      <div class="plan-desc">Full access to every report in the database. The opportunity leaderboard. Trend alerts. Everything to find and validate your next idea. <strong style="color:var(--gold-l)">That's $1.24 per report.</strong></div>
+      <div class="plan-feats">
+        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>200+ full 13-section reports</div>
+        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Leaderboard + weekly trend alerts</div>
+        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Competitor intel per report</div>
+        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Founder-fit assessment</div>
+        
+        <div class="pfi"><div class="pfc pfn"></div><span style="color:var(--t3)">Custom report generation</span></div>
+      </div>
+      <button class="btn btn-gold cta-plan-starter" style="width:100%;padding:11px" type="button">Start Starter plan →</button>
+    </div>
+    <div class="pc">
+      <div class="plan-nm">Pro</div>
+      <div class="plan-px">$899</div>
+      <div class="plan-cy">/year · billed annually</div>
+      <div class="plan-desc">Everything in Starter, plus on-demand custom research. Enter any niche, category, or region — we generate the full 13-section report within 24 hours.</div>
+      <div class="plan-feats">
+        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Everything in Starter</div>
+        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>12 custom reports/year</div>
+        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Financial model exports (Excel)</div>
+        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Early access to new tools</div>
+        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Founder community access</div>
+        <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Priority support</div>
+      </div>
+      <button class="btn btn-ghost cta-plan-pro" style="width:100%;padding:11px" type="button">Start Pro plan</button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ═══ MEMBERSHIP ═══ -->
+<div class="membership-section" id="membership">
+  <div class="membership-inner">
+    <div class="sec-head">
+      <span class="sec-label">Membership</span>
+      <div class="sec-line"></div>
+    </div>
+
+    <div class="membership-grid reveal">
+      <div class="membership-card">
+        <div class="membership-kicker">Member access</div>
+        <h2 class="membership-title">Sign in, start free,<br><em>or create your account.</em></h2>
+        <p class="membership-copy">This section is wired for Google, Facebook, Apple, and email/password sign-in. To make social login live on GitHub Pages, add your Firebase web configuration and enable the providers in Firebase Authentication.</p>
+
+        <div class="auth-tabs">
+          <button class="auth-tab active" type="button" data-auth-tab="signin">Sign in</button>
+          <button class="auth-tab" type="button" data-auth-tab="signup">Create account</button>
+        </div>
+
+        <div class="auth-panel active" data-auth-panel="signin">
+          <div class="auth-socials">
+            <button class="auth-btn" id="auth-google" type="button">Google</button>
+            <button class="auth-btn" id="auth-facebook" type="button">Facebook</button>
+            <button class="auth-btn full" id="auth-apple" type="button">Apple</button>
+          </div>
+
+          <div class="auth-sep">Or continue with email</div>
+
+          <div class="auth-form">
+            <div class="auth-field full">
+              <label class="auth-label">Email address</label>
+              <input class="auth-input" id="signin-email" type="email" placeholder="you@domain.com" />
+            </div>
+            <div class="auth-field full">
+              <label class="auth-label">Password</label>
+              <input class="auth-input" id="signin-password" type="password" placeholder="Enter your password" />
+            </div>
+            <div class="auth-field full">
+              <button class="btn btn-gold" id="signin-submit" type="button">Sign in</button>
+            </div>
+            <div class="auth-field full">
+              <button class="auth-link-btn" id="auth-reset-password" type="button">Forgot password</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-panel" data-auth-panel="signup">
+          <div class="auth-socials">
+            <button class="auth-btn" id="signup-google" type="button">Continue with Google</button>
+            <button class="auth-btn" id="signup-facebook" type="button">Continue with Facebook</button>
+            <button class="auth-btn full" id="signup-apple" type="button">Continue with Apple</button>
+          </div>
+
+          <div class="auth-sep">Or create with email</div>
+
+          <div class="auth-form">
+            <div class="auth-field">
+              <label class="auth-label">First name</label>
+              <input class="auth-input" id="signup-firstname" type="text" placeholder="First name" />
+            </div>
+            <div class="auth-field">
+              <label class="auth-label">Last name</label>
+              <input class="auth-input" id="signup-lastname" type="text" placeholder="Last name" />
+            </div>
+            <div class="auth-field full">
+              <label class="auth-label">Email address</label>
+              <input class="auth-input" id="signup-email" type="email" placeholder="you@domain.com" />
+            </div>
+            <div class="auth-field full">
+              <label class="auth-label">Password</label>
+              <input class="auth-input" id="signup-password" type="password" placeholder="Create a password" />
+            </div>
+            <div class="auth-field full">
+              <button class="btn btn-gold" id="signup-submit" type="button">Create account</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-meta">To activate social auth, paste your Firebase web config and enable Google, Facebook, Apple, and Email/Password providers in Firebase Authentication. Stripe upgrade buttons are also ready for live Payment Links.</div>
+      </div>
+
+      <div class="membership-card">
+        <div class="membership-kicker">Current access state</div>
+        <div class="auth-state">
+          <div class="auth-state-title" id="member-state-title">Not signed in</div>
+          <div class="auth-state-copy" id="member-state-copy">Users who click report access or plan buttons will be routed here until authentication is completed.</div>
+        </div>
+
+        <div class="auth-links">
+          <button class="auth-link-btn" id="goto-free-plan" type="button">Start Free</button>
+          <button class="auth-link-btn" id="goto-starter-plan" type="button">Starter</button>
+          <button class="auth-link-btn" id="goto-pro-plan" type="button">Pro</button>
+          <button class="auth-link-btn hidden-auth" id="auth-signout" type="button">Sign out</button>
+        </div>
+
+        <div class="auth-state" style="margin-top:18px">
+          <div class="auth-state-title">Configuration placeholders</div>
+          <div class="auth-state-copy">Replace the Firebase config block in the script with your real project values. Then replace the Stripe placeholders with your Stripe Payment Links. After that, the auth and upgrade flows can go live on GitHub Pages without changing the HTML structure.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ GET IN TOUCH ═══ -->
+<div class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="contact-top reveal">
+      <div class="contact-kicker">Get in touch</div>
+      <h2 class="contact-title">Written<br><em>correspondence only.</em></h2>
+      <p class="contact-copy">NicheLab operates under a strict written communication policy. All enquiries are received, reviewed, and responded to via the form below. We do not accept walk-in visits, unscheduled calls, or verbal requests of any nature.</p>
+    </div>
+
+    <div class="contact-grid reveal">
+      <form class="contact-card" action="https://formspree.io/f/mwvrzqld" method="POST">
+        <div class="form-title">Submit your enquiry</div>
+        <div class="form-grid">
+          <input type="hidden" name="_subject" value="New NicheLab enquiry" />
+          <input type="hidden" name="_replyto" value="" />
+          <div class="form-field">
+            <label class="form-label">First name</label>
+            <input class="form-input" id="contact-first-name" name="first_name" placeholder="First name" value="" />
+          </div>
+          <div class="form-field">
+            <label class="form-label">Last name</label>
+            <input class="form-input" id="contact-last-name" name="last_name" placeholder="Last name" value="" />
+          </div>
+          <div class="form-field full">
+            <label class="form-label">Email address</label>
+            <input class="form-input" type="email" id="contact-email" name="email" placeholder="you@domain.com" value="" />
+          </div>
+          <div class="form-field full">
+            <label class="form-label">Subject</label>
+            <select class="form-select" id="contact-subject" name="subject">
+              <option value="">Select enquiry type</option>
+              <option>General enquiry</option>
+              <option>Membership</option>
+              <option>Partnership</option>
+              <option>Press</option>
+              <option>Research request</option>
+            </select>
+          </div>
+          <div class="form-field full">
+            <label class="form-label">Organisation (optional)</label>
+            <input class="form-input" id="contact-organization" name="organization" placeholder="Company or institution" value="" />
+          </div>
+          <div class="form-field full">
+            <label class="form-label">Message</label>
+            <textarea class="form-textarea" id="contact-message" name="message" placeholder="Please describe your enquiry in detail. Incomplete or vague submissions may not receive a response."></textarea>
+          </div>
+          <div class="form-field full">
+            <button class="btn btn-gold btn-lg" style="width:100%">Submit enquiry</button>
+          </div>
+        </div>
+        <div class="form-note">Your correspondence is treated with complete confidentiality. We do not share, sell, or disclose submission content to any third party. By submitting, you acknowledge NicheLab's Privacy Policy and Terms of Service.</div>
+      </form>
+
+      <div>
+        <div class="form-title" style="margin:0 0 14px 4px">Global correspondence offices</div>
+        <div class="office-grid">
+          <div class="office-card">
+            <div class="office-top"><div class="office-city">🇬🇧 London</div><div class="office-region">Primary</div></div>
+            <div class="office-addr">Knightsbridge One<br>Hyde Park<br>London SW1X 7LJ<br>United Kingdom</div>
+          </div>
+          <div class="office-card">
+            <div class="office-top"><div class="office-city">🇦🇪 Dubai</div><div class="office-region">MENA</div></div>
+            <div class="office-addr">The Palm Jumeirah<br>Dubai<br>United Arab Emirates</div>
+          </div>
+          <div class="office-card">
+            <div class="office-top"><div class="office-city">🇵🇹 Lisbon</div><div class="office-region">EMEA</div></div>
+            <div class="office-addr">Quinta Patino Estates<br>Avenida da República<br>Cascais, Lisbon<br>Portugal</div>
+          </div>
+          <div class="office-card">
+            <div class="office-top"><div class="office-city">🇺🇸 Los Angeles</div><div class="office-region">Americas</div></div>
+            <div class="office-addr">Benedict Canyon<br>Beverly Hills, CA 90210<br>United States of America</div>
+          </div>
+        </div>
+
+        <div class="discretion-card">
+          <div class="discretion-title">Discretion policy</div>
+          <div class="discretion-copy">All NicheLab offices operate within fully secured, private-access residential and commercial estates. Specific unit identifiers, floor plans, and building numbers are withheld as standard security protocol. Visitors are not received without prior written appointment confirmation issued by NicheLab's coordination team. Physical correspondence without a confirmed reference number will not be accepted.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ FINAL CTA ═══ -->
+<div class="wrap">
+  <div class="cta-block reveal">
+    <h2>Stop building on<br><em>assumptions.</em></h2>
+    <p>Read today's opportunity report free. No credit card. No pitch. Just data-backed intelligence on a market that's ready to be built.</p>
+    <div class="cta-form">
+      <input class="cta-input" type="email" placeholder="your@email.com">
+      <button class="btn btn-gold btn-lg cta-get-free-report" type="button">Get free report →</button>
+    </div>
+    <div class="cta-note">1,240+ builders already inside · Unsubscribe anytime</div>
+  </div>
+</div>
+
+
+<!-- ═══ WHERE THE SIGNAL COMES FROM ═══ -->
+<div class="wrap">
+  <div class="sec-head">
+    <span class="sec-label">Where the signal comes from</span>
+    <div class="sec-line"></div>
+  </div>
+  <div class="sigs-row reveal">
+    <div class="sig-card">
+      <div class="sig-pct sig-up">Reddit</div>
+      <div class="sig-nm">Developer Discussions</div>
+      <div class="sig-src">Real user pain</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-pct sig-up">Google</div>
+      <div class="sig-nm">Search Trends</div>
+      <div class="sig-src">Demand velocity</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-pct sig-up">GitHub</div>
+      <div class="sig-nm">Star Growth</div>
+      <div class="sig-src">Developer adoption</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-pct sig-up">Crunchbase</div>
+      <div class="sig-nm">Funding Signals</div>
+      <div class="sig-src">Investor validation</div>
+    </div>
+    <div class="sig-card">
+      <div class="sig-pct sig-up">G2</div>
+      <div class="sig-nm">Review Sentiment</div>
+      <div class="sig-src">Customer demand</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ WHAT OUR MEMBERS SAY ═══ -->
+<div class="wrap">
+  <div class="sec-head">
+    <span class="sec-label">What our members say</span>
+    <div class="sec-line"></div>
+  </div>
+
+  <div class="members-intro reveal">
+    <div class="members-kicker">Names withheld by request · Identities verified by NicheLab</div>
+  </div>
+
+  <div class="members-grid-xl reveal">
+    <div class="member-quote">
+      <div class="member-stars">★★★★★</div>
+      <div class="member-text">“I found a micro-SaaS gap in legal document automation that I'd been researching for 6 months. NicheLab surfaced it in a single analysis with a cleaner competitive map than anything I'd built myself.”</div>
+      <div class="member-meta">
+        <div class="member-role">Solo founder, 2nd exit</div>
+        <div class="member-tags"><span class="member-tag">Micro-SaaS</span><span class="member-tag">Legal Tech</span><span class="member-tag">Pro</span></div>
+      </div>
+    </div>
+    <div class="member-quote">
+      <div class="member-stars">★★★★★</div>
+      <div class="member-text">“The opportunity scoring alone is worth the subscription. I used to spend days building models to evaluate whether a niche was worth entering. Now I do it in minutes.”</div>
+      <div class="member-meta">
+        <div class="member-role">Product strategist, Series B startup</div>
+        <div class="member-tags"><span class="member-tag">Strategy</span><span class="member-tag">Starter</span></div>
+      </div>
+    </div>
+    <div class="member-quote">
+      <div class="member-stars">★★★★★</div>
+      <div class="member-text">“I launched a Notion template business using a NicheLab analysis as my roadmap. First $2K in revenue within 40 days. The go-to-market plan was accurate to a degree that surprised me.”</div>
+      <div class="member-meta">
+        <div class="member-role">Creator, digital products</div>
+        <div class="member-tags"><span class="member-tag">Creator Economy</span><span class="member-tag">Starter</span></div>
+      </div>
+    </div>
+    <div class="member-quote">
+      <div class="member-stars">★★★★★</div>
+      <div class="member-text">“What I pay for a month of NicheLab, I used to spend on a single industry report that took 3 weeks to arrive. The intelligence here is faster and frankly more actionable.”</div>
+      <div class="member-meta">
+        <div class="member-role">Independent consultant, EMEA</div>
+        <div class="member-tags"><span class="member-tag">B2B Services</span><span class="member-tag">Pro</span></div>
+      </div>
+    </div>
+    <div class="member-quote">
+      <div class="member-stars">★★★★★</div>
+      <div class="member-text">“The competitive landscape section changed how I think about positioning. I was about to enter a market that looked empty — the analysis showed me exactly why three others had failed there.”</div>
+      <div class="member-meta">
+        <div class="member-role">Founder, B2B SaaS</div>
+        <div class="member-tags"><span class="member-tag">Micro-SaaS</span><span class="member-tag">Pro</span></div>
+      </div>
+    </div>
+    <div class="member-quote">
+      <div class="member-stars">★★★★★</div>
+      <div class="member-text">“I've been building in the creator economy for four years. The trend signal data here picks up on things that don't show up on Exploding Topics or Google Trends for another two or three months.”</div>
+      <div class="member-meta">
+        <div class="member-role">Creator economy operator</div>
+        <div class="member-tags"><span class="member-tag">Creator Economy</span><span class="member-tag">Pro</span></div>
+      </div>
+    </div>
+    <div class="member-quote">
+      <div class="member-stars">★★★★★</div>
+      <div class="member-text">“The free tier alone justified signing up. The daily analysis gives me enough signal to know whether a category is worth investigating further.”</div>
+      <div class="member-meta">
+        <div class="member-role">Early stage investor, angel</div>
+        <div class="member-tags"><span class="member-tag">Angel</span><span class="member-tag">Free → Pro</span></div>
+      </div>
+    </div>
+    <div class="member-quote">
+      <div class="member-stars">★★★★★</div>
+      <div class="member-text">“I used the 30-day action plan almost exactly as written. It's not generic — it's sequenced like someone who's actually launched a product before wrote it.”</div>
+      <div class="member-meta">
+        <div class="member-role">First-time founder, mobile apps</div>
+        <div class="member-tags"><span class="member-tag">Mobile Apps</span><span class="member-tag">Starter</span></div>
+      </div>
+    </div>
+    <div class="member-quote">
+      <div class="member-stars">★★★★★</div>
+      <div class="member-text">“Running a small fund focused on pre-seed micro-SaaS. NicheLab is part of our deal flow workflow. The market sizing data and competitor gap maps are the fastest way to pressure-test a founder's thesis.”</div>
+      <div class="member-meta">
+        <div class="member-role">Pre-seed fund principal</div>
+        <div class="member-tags"><span class="member-tag">VC</span><span class="member-tag">Pro</span></div>
+      </div>
+    </div>
+    <div class="member-quote">
+      <div class="member-stars">★★★★★</div>
+      <div class="member-text">“The risk matrix section is something I've never seen done well anywhere else. Most tools just tell you the opportunity — this one tells you exactly what will kill it.”</div>
+      <div class="member-meta">
+        <div class="member-role">Operator, 3 exits</div>
+        <div class="member-tags"><span class="member-tag">Serial founder</span><span class="member-tag">Pro</span></div>
+      </div>
+    </div>
+    <div class="member-quote">
+      <div class="member-stars">★★★★★</div>
+      <div class="member-text">“Three months in. Found two opportunities I'm actively building. One is already at $1,400 MRR. The analysis predicted the entry difficulty accurately — I was live in 22 days.”</div>
+      <div class="member-meta">
+        <div class="member-role">Indie hacker, 4 products live</div>
+        <div class="member-tags"><span class="member-tag">Indie Hacker</span><span class="member-tag">Starter</span></div>
+      </div>
+    </div>
+    <div class="member-quote">
+      <div class="member-stars">★★★★★</div>
+      <div class="member-text">“My previous process for validating a niche was 3 weeks of manual research. That process is now a single morning on NicheLab.”</div>
+      <div class="member-meta">
+        <div class="member-role">Business analyst, growth stage</div>
+        <div class="member-tags"><span class="member-tag">Ops</span><span class="member-tag">Pro</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══ WHO IS BEHIND THIS ═══ -->
+<div style="background:var(--s1);border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);padding:80px 40px">
+  <div style="max-width:1000px;margin:0 auto">
+
+    <div style="text-align:center;margin-bottom:50px">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:14px">
+        Who is behind this
+      </div>
+
+      <h2 style="font-family:var(--display);font-size:48px;font-weight:700;letter-spacing:-.5px;margin-bottom:16px">
+        Built by people who<br><em>have been inside.</em>
+      </h2>
+
+      <p style="font-size:16px;color:var(--t2);max-width:720px;margin:0 auto 20px;line-height:1.8">
+        NicheLab was not built by people who read about markets. It was built by people who spent years inside them — 
+        and left because they knew what individual founders were missing.
+      </p>
+
+      <p style="font-size:15px;color:var(--t2);max-width:760px;margin:0 auto 18px;line-height:1.8">
+        The founding team brings together backgrounds across global strategy consulting, venture capital,
+        institutional market research and product development. Between them: exits, advisory roles at funds,
+        engagements at Big Four firms, and years spent producing the kind of analysis that previously never
+        reached the individual builder.
+      </p>
+
+      <p style="font-size:15px;color:var(--t2);max-width:760px;margin:0 auto 18px;line-height:1.8">
+        The platform exists because this team knows exactly what institutional intelligence looks like —
+        and chose to make it accessible at a different price point.
+      </p>
+
+      <p style="font-size:14px;color:var(--t3);max-width:720px;margin:0 auto;line-height:1.8">
+        Team members are not publicly named by choice. In a market intelligence business, the methodology matters
+        more than the biography. We let the work speak.
+      </p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px">
+
+      <div class="how-card">
+        <div class="how-n">01</div>
+        <div class="how-ttl">Strategy & Market Intelligence Lead</div>
+        <div class="how-desc">
+          Former engagement manager at a global top‑3 strategy consultancy.
+          Led market entry and competitive intelligence projects across 12 markets.
+          Wharton MBA.
+        </div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--t3)">
+          McKinsey‑tier · Market entry · Wharton
+        </div>
+      </div>
+
+      <div class="how-card">
+        <div class="how-n">02</div>
+        <div class="how-ttl">Venture & Startup Intelligence</div>
+        <div class="how-desc">
+          Former analyst at a Tier 1 VC fund. Evaluated 400+ startups annually
+          across SaaS, fintech and consumer. Prior stint at PwC Deals.
+          London Business School.
+        </div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--t3)">
+          Tier 1 VC · Big Four · LBS
+        </div>
+      </div>
+
+      <div class="how-card">
+        <div class="how-n">03</div>
+        <div class="how-ttl">Data & Product Architecture</div>
+        <div class="how-desc">
+          Previously led data products at a Series B fintech.
+          Built market signal pipelines used by institutional clients.
+          MIT Computer Science.
+        </div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--t3)">
+          Signal systems · Fintech · MIT
+        </div>
+      </div>
+
+      <div class="how-card">
+        <div class="how-n">04</div>
+        <div class="how-ttl">Editorial & Research Standards</div>
+        <div class="how-desc">
+          Former researcher at a top‑5 global think tank.
+          Published in FT, The Economist and Harvard Business Review.
+          Oxford PPE.
+        </div>
+        <div style="margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--t3)">
+          Think tank · HBR published · Oxford
+        </div>
+      </div>
+
+    </div>
+
+    <div style="text-align:center;margin-top:40px;font-family:var(--mono);font-size:12px;color:var(--t3)">
+      — Additional analysts, domain specialists and senior advisors not listed here.<br>
+      The full team operates under a deliberate discretion policy. In market intelligence, visibility is a liability.
+    </div>
+
+  </div>
+</div>
+
+    <div class="footer-links">
+      <span>About</span>
+      <span>Reports</span>
+      <span>Pricing</span>
+      <span>Community</span>
+      <span>Legal</span>
+    </div>
+    <div style="font-family:var(--mono);font-size:11px;color:var(--t3)">© 2026 NicheLab · nichelab.io</div>
+  </div>
+</footer>
+
+
+<script type="module">
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyCrAeW_WvzENswPLKcOn6_7Zrk0OjNvrmA",
+  authDomain: "nichelab-5427c.firebaseapp.com",
+  projectId: "nichelab-5427c",
+  appId: "1:892086112182:web:9bd8d175cd8e512c63fb17"
+};
+
+const STRIPE_LINKS = {
+  starter: "https://buy.stripe.com/REPLACE_STARTER",
+  pro: "https://buy.stripe.com/REPLACE_PRO",
+  upgrade: "https://buy.stripe.com/REPLACE_UPGRADE"
+};
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.06 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+const toast = document.createElement('div');
+toast.className = 'toast';
+document.body.appendChild(toast);
+
+function showToast(message){
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(window.__toastTimer);
+  window.__toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function goToMembership(tab = 'signin'){
+  document.getElementById('membership')?.scrollIntoView({behavior:'smooth', block:'start'});
+  setActiveAuthTab(tab);
+  setTimeout(() => {
+    const target = tab === 'signup' ? document.getElementById('signup-email') : document.getElementById('signin-email');
+    target?.focus();
+  }, 500);
+}
+
+function setActiveAuthTab(tab){
+  document.querySelectorAll('[data-auth-tab]').forEach(btn => btn.classList.toggle('active', btn.dataset.authTab === tab));
+  document.querySelectorAll('[data-auth-panel]').forEach(panel => panel.classList.toggle('active', panel.dataset.authPanel === tab));
+}
+
+window.setActiveAuthTab = setActiveAuthTab;
+
+document.querySelectorAll('[data-auth-tab]').forEach(btn => {
+  btn.addEventListener('click', () => setActiveAuthTab(btn.dataset.authTab));
+});
+
+document.querySelectorAll('.lbf').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.lbf').forEach(b => b.classList.remove('on'));
+    this.classList.add('on');
+    const label = this.textContent.trim().toLowerCase();
+    document.querySelectorAll('.lb-row[data-category]').forEach(row => {
+      const cat = row.dataset.category || '';
+      const show =
+        label === 'all' ||
+        (label === 'micro-saas' && cat.includes('micro-saas')) ||
+        (label === 'dev tools' && cat.includes('dev-tools')) ||
+        (label === 'ai' && cat.includes('ai')) ||
+        (label === 'consumer' && cat.includes('consumer'));
+      row.style.display = show ? 'grid' : 'none';
+    });
+  });
+});
+
+document.querySelectorAll('.nav-link').forEach(l => {
+  l.addEventListener('click', function() {
+    document.querySelectorAll('.nav-link').forEach(x => x.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+document.querySelector('.cta-signin')?.addEventListener('click', () => goToMembership('signin'));
+document.querySelector('.cta-start-free')?.addEventListener('click', () => goToMembership('signup'));
+document.querySelector('.cta-read-report')?.addEventListener('click', () => document.getElementById('ideas')?.scrollIntoView({behavior:'smooth', block:'start'}));
+document.querySelector('.cta-browse')?.addEventListener('click', () => document.getElementById('leaderboard')?.scrollIntoView({behavior:'smooth', block:'start'}));
+
+document.querySelector('.cta-save-idea')?.addEventListener('click', (e) => {
+  const key = 'nichelab_saved_ideas';
+  const current = JSON.parse(localStorage.getItem(key) || '[]');
+  const idea = 'Webhook Reliability Platform for Indie Developers';
+  if(!current.includes(idea)){
+    current.push(idea);
+    localStorage.setItem(key, JSON.stringify(current));
+  }
+  e.currentTarget.textContent = 'Saved ✓';
+  showToast('Idea saved in this browser.');
+});
+
+document.querySelector('.cta-full-report')?.addEventListener('click', () => {
+  window.__pendingResource = 'Webhook Reliability Platform for Indie Developers';
+  goToMembership('signin');
+});
+
+document.querySelectorAll('.cta-leaderboard-report').forEach(btn => {
+  btn.addEventListener('click', () => {
+    window.__pendingResource = btn.dataset.idea || 'this opportunity';
+    goToMembership('signin');
+  });
+});
+
+document.querySelector('.cta-upgrade')?.addEventListener('click', () => startUpgradeCheckout());
+document.querySelector('.cta-plan-free')?.addEventListener('click', () => goToMembership('signup'));
+document.querySelector('.cta-plan-starter')?.addEventListener('click', () => { window.__pendingPlan = 'starter'; goToMembership('signup'); });
+document.querySelector('.cta-plan-pro')?.addEventListener('click', () => { window.__pendingPlan = 'pro'; goToMembership('signup'); });
+document.querySelector('.cta-get-free-report')?.addEventListener('click', () => goToMembership('signup'));
+
+document.getElementById('goto-free-plan')?.addEventListener('click', () => goToMembership('signup'));
+document.getElementById('goto-starter-plan')?.addEventListener('click', () => { window.__pendingPlan = 'starter'; startUpgradeCheckout('starter'); });
+document.getElementById('goto-pro-plan')?.addEventListener('click', () => { window.__pendingPlan = 'pro'; startUpgradeCheckout('pro'); });
+
+function startUpgradeCheckout(plan = null){
+  const resolvedPlan = plan || window.__pendingPlan || 'upgrade';
+  const link = STRIPE_LINKS[resolvedPlan] || STRIPE_LINKS.upgrade;
+  if(!link || link.includes('REPLACE_')){
+    showToast('Stripe link placeholder detected. Add your live Stripe Payment Link first.');
+    return;
+  }
+  window.location.href = link;
+}
+
+function setMemberState(title, copy, signedIn = false){
+  const t = document.getElementById('member-state-title');
+  const c = document.getElementById('member-state-copy');
+  const signout = document.getElementById('auth-signout');
+  if (t) t.textContent = title;
+  if (c) c.textContent = copy;
+  signout?.classList.toggle('hidden-auth', !signedIn);
+}
+
+setMemberState('Not signed in', 'Users who click report access or plan buttons will be routed here until authentication is completed.', false);
+
+// Formspree helper
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.querySelector('.contact-card[action="https://formspree.io/f/mwvrzqld"]');
+  if (!form) return;
+  const emailInput = form.querySelector('input[name="email"]');
+  const replyTo = form.querySelector('input[name="_replyto"]');
+  if (emailInput && replyTo) {
+    const syncReplyTo = () => replyTo.value = emailInput.value || '';
+    emailInput.addEventListener('input', syncReplyTo);
+    syncReplyTo();
+  }
+});
+
+// Firebase Auth integration
+let firebaseReady = false;
+let auth = null;
+let app = null;
+let authFns = {};
+
+async function initFirebaseAuth(){
+  if (firebaseReady) return true;
+  const hasConfig = FIREBASE_CONFIG.apiKey && !FIREBASE_CONFIG.apiKey.includes('REPLACE_ME');
+  if (!hasConfig) {
+    showToast('Firebase config placeholder detected. Add your live Firebase web config.');
+    return false;
+  }
+
+  const [{ initializeApp }, authMod] = await Promise.all([
+    import('https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js'),
+    import('https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js')
+  ]);
+
+  app = initializeApp(FIREBASE_CONFIG);
+  auth = authMod.getAuth(app);
+  auth.languageCode = 'en';
+
+  authFns = authMod;
+  firebaseReady = true;
+
+  authMod.onAuthStateChanged(auth, user => {
+    if (user) {
+      const email = user.email || 'Signed-in user';
+      let copy = `Signed in as ${email}.`;
+      if (window.__pendingResource) copy += ` You can now unlock access flows for ${window.__pendingResource}.`;
+      if (window.__pendingPlan) copy += ` Pending checkout intent: ${window.__pendingPlan}.`;
+      setMemberState('Signed in', copy, true);
+      showToast('Authentication successful.');
+    } else {
+      setMemberState('Not signed in', 'Users who click report access or plan buttons will be routed here until authentication is completed.', false);
+    }
+  });
+
+  return true;
+}
+
+async function signInWithProvider(providerName){
+  const ok = await initFirebaseAuth();
+  if (!ok) return;
+
+  let provider;
+  if (providerName === 'google') provider = new authFns.GoogleAuthProvider();
+  if (providerName === 'facebook') provider = new authFns.FacebookAuthProvider();
+  if (providerName === 'apple') provider = new authFns.OAuthProvider('apple.com');
+  if (!provider) return;
+
+  try {
+    await authFns.signInWithPopup(auth, provider);
+  } catch (err) {
+    console.error(err);
+    showToast(err.message || 'Sign-in failed.');
+  }
+}
+
+async function signInWithEmail(){
+  const ok = await initFirebaseAuth();
+  if (!ok) return;
+  const email = document.getElementById('signin-email')?.value?.trim();
+  const password = document.getElementById('signin-password')?.value || '';
+  if (!email || !password) {
+    showToast('Enter your email and password.');
+    return;
+  }
+  try {
+    await authFns.signInWithEmailAndPassword(auth, email, password);
+  } catch (err) {
+    console.error(err);
+    showToast(err.message || 'Email sign-in failed.');
+  }
+}
+
+async function signUpWithEmail(){
+  const ok = await initFirebaseAuth();
+  if (!ok) return;
+  const email = document.getElementById('signup-email')?.value?.trim();
+  const password = document.getElementById('signup-password')?.value || '';
+  if (!email || !password) {
+    showToast('Enter email and password to create an account.');
+    return;
+  }
+  try {
+    const cred = await authFns.createUserWithEmailAndPassword(auth, email, password);
+    const firstName = document.getElementById('signup-firstname')?.value?.trim() || '';
+    const lastName = document.getElementById('signup-lastname')?.value?.trim() || '';
+    const displayName = `${firstName} ${lastName}`.trim();
+    if (displayName) {
+      await authFns.updateProfile(cred.user, { displayName });
+    }
+    if (window.__pendingPlan === 'starter' || window.__pendingPlan === 'pro') {
+      startUpgradeCheckout(window.__pendingPlan);
+    }
+  } catch (err) {
+    console.error(err);
+    showToast(err.message || 'Account creation failed.');
+  }
+}
+
+async function sendReset(){
+  const ok = await initFirebaseAuth();
+  if (!ok) return;
+  const email = document.getElementById('signin-email')?.value?.trim();
+  if (!email) {
+    showToast('Enter your email first.');
+    return;
+  }
+  try {
+    await authFns.sendPasswordResetEmail(auth, email);
+    showToast('Password reset email sent.');
+  } catch (err) {
+    console.error(err);
+    showToast(err.message || 'Could not send reset email.');
+  }
+}
+
+document.getElementById('auth-google')?.addEventListener('click', () => signInWithProvider('google'));
+document.getElementById('auth-facebook')?.addEventListener('click', () => signInWithProvider('facebook'));
+document.getElementById('auth-apple')?.addEventListener('click', () => signInWithProvider('apple'));
+document.getElementById('signup-google')?.addEventListener('click', () => signInWithProvider('google'));
+document.getElementById('signup-facebook')?.addEventListener('click', () => signInWithProvider('facebook'));
+document.getElementById('signup-apple')?.addEventListener('click', () => signInWithProvider('apple'));
+document.getElementById('signin-submit')?.addEventListener('click', signInWithEmail);
+document.getElementById('signup-submit')?.addEventListener('click', signUpWithEmail);
+document.getElementById('auth-reset-password')?.addEventListener('click', sendReset);
+document.getElementById('auth-signout')?.addEventListener('click', async () => {
+  const ok = await initFirebaseAuth();
+  if (!ok) return;
+  await authFns.signOut(auth);
+  showToast('Signed out.');
+});
+</script>
+
+
+<script>
+(function(){
+  function fmtDate(value){
+    try{
+      return value ? new Date(value).toLocaleDateString() : '—';
+    }catch(e){
+      return '—';
+    }
+  }
+
+  function setText(el, value){
+    if (el) el.textContent = value;
+  }
+
+  function wireHrefLikeButton(el, href){
+    if (!el) return;
+    el.addEventListener('click', function(ev){
+      ev.preventDefault();
+      window.location.href = href;
+    });
+  }
+
+  async function loadNicheLabFrontPage(){
+    try{
+      const [feedRes, manifestRes] = await Promise.all([
+        fetch('generated-reports/homepage-feed.json?ts=' + Date.now()),
+        fetch('generated-reports/reports-manifest.json?ts=' + Date.now())
+      ]);
+
+      const feed = await feedRes.json();
+      const manifest = await manifestRes.json();
+
+      const featured = feed.featured_report || {};
+      const reports = Array.isArray(manifest.reports) ? manifest.reports : [];
+      const safeDate = fmtDate(feed.generated_at);
+
+      // HERO
+      setText(document.querySelector('.hero-eyebrow'), featured.title ? `Live now · ${featured.title}` : 'Live report feed online');
+
+      const heroStats = document.querySelectorAll('.hero-stats .hstat');
+      if (heroStats[0]) heroStats[0].querySelector('.hstat-v').textContent = '1,240+';
+      if (heroStats[1]) heroStats[1].querySelector('.hstat-v').textContent = String(feed.total_reports ?? reports.length ?? '—');
+      if (heroStats[1]) heroStats[1].querySelector('.hstat-l').textContent = 'Validated ideas';
+      if (heroStats[2]) heroStats[2].querySelector('.hstat-v').textContent = String((feed.categories || []).length || '—');
+      if (heroStats[2]) heroStats[2].querySelector('.hstat-l').textContent = 'Tracked categories';
+      if (heroStats[3]) heroStats[3].querySelector('.hstat-v').textContent = safeDate;
+      if (heroStats[3]) heroStats[3].querySelector('.hstat-l').textContent = 'Last update';
+
+      const heroReadBtn = document.querySelector('.cta-read-report');
+      const heroBrowseBtn = document.querySelector('.cta-browse');
+      wireHrefLikeButton(heroReadBtn, featured.report_path || 'dashboard.html');
+      if (heroBrowseBtn) {
+        heroBrowseBtn.addEventListener('click', function(ev){
+          ev.preventDefault();
+          const target = document.getElementById('leaderboard');
+          if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+        });
+      }
+
+      // IDEA OF THE DAY / FEATURED CARD
+      setText(document.querySelector('.fc-cat'), featured.category || 'Live category');
+      setText(document.querySelector('.fc-pill'), (featured.recommendation || 'Live feed').replaceAll('_',' '));
+      setText(document.querySelector('.fc-title'), featured.title || 'No featured report available');
+      setText(document.querySelector('.fc-tagline'), featured.subtitle || 'The publishing pipeline is active, but no featured report was returned.');
+
+      const scoreChips = document.querySelectorAll('.fc-scores .schip');
+      if (scoreChips[0]) { scoreChips[0].querySelector('.sc-l').textContent = 'Confidence'; scoreChips[0].querySelector('.sc-v').textContent = featured.overall_confidence != null ? `${featured.overall_confidence}/100` : '—'; }
+      if (scoreChips[1]) { scoreChips[1].querySelector('.sc-l').textContent = 'Recommendation'; scoreChips[1].querySelector('.sc-v').textContent = (featured.recommendation || '—').replaceAll('_',' '); }
+      if (scoreChips[2]) { scoreChips[2].querySelector('.sc-l').textContent = 'Reports'; scoreChips[2].querySelector('.sc-v').textContent = String(feed.total_reports ?? reports.length ?? '—'); }
+      if (scoreChips[3]) { scoreChips[3].querySelector('.sc-l').textContent = 'Categories'; scoreChips[3].querySelector('.sc-v').textContent = String((feed.categories || []).length || '—'); }
+      if (scoreChips[4]) { scoreChips[4].querySelector('.sc-l').textContent = 'Published'; scoreChips[4].querySelector('.sc-v').textContent = safeDate; }
+      if (scoreChips[5]) { scoreChips[5].querySelector('.sc-l').textContent = 'Slug'; scoreChips[5].querySelector('.sc-v').textContent = featured.slug || 'Live'; }
+      if (scoreChips[6]) { scoreChips[6].querySelector('.sc-l').textContent = 'Status'; scoreChips[6].querySelector('.sc-v').textContent = 'Auto'; }
+
+      const fullReportBtn = document.querySelector('.cta-full-report');
+      wireHrefLikeButton(fullReportBtn, featured.report_path || 'dashboard.html');
+
+      // LEADERBOARD
+      const lbWrap = document.querySelector('#leaderboard .lb-wrap');
+      if (lbWrap){
+        lbWrap.querySelectorAll('.lb-row:not(.lbh)').forEach(el => el.remove());
+
+        reports.slice(0, 8).forEach((item, idx) => {
+          const conf = Number(item.overall_confidence ?? 0);
+          const market = conf || '—';
+          const revenue = conf ? Math.max(40, Math.min(95, conf - 4)) : '—';
+          const difficulty = conf ? Math.max(20, Math.min(85, 100 - conf + 8)) : '—';
+          const signalText = conf >= 80 ? '⬆ High' : (conf >= 65 ? '→ Medium' : '↓ Low');
+
+          const row = document.createElement('div');
+          row.className = 'lb-row';
+          row.innerHTML = `
+            <div class="lb-rank ${idx < 3 ? 'r'+(idx+1) : ''}">${idx+1}</div>
+            <div>
+              <div class="lb-nm">${item.title || 'Untitled report'}</div>
+              <div class="lb-ct">${item.category || 'Report'} · ${(item.recommendation || 'live').replaceAll('_',' ')}</div>
+            </div>
+            <div class="lb-sc lsh" style="text-align:center">${market}</div>
+            <div class="lb-sc lsh" style="text-align:center">${revenue}</div>
+            <div class="lb-sc lsh" style="text-align:center">${difficulty}</div>
+            <div class="lb-sc lsh" style="text-align:center">${signalText}</div>
+            <div style="text-align:right"><button class="lb-view" type="button">Full Report</button></div>
+          `;
+          row.querySelector('.lb-view').addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            window.location.href = item.report_path || 'dashboard.html';
+          });
+          row.addEventListener('click', () => {
+            window.location.href = item.report_path || 'dashboard.html';
+          });
+          lbWrap.appendChild(row);
+        });
+      }
+
+      // SIGNALS
+      const sigsRow = document.querySelector('#signals .sigs-row');
+      if (sigsRow){
+        const presets = [
+          ['+287%', 'Google Trends · 36mo', 'Rising Fast', 'sig-up', 'sb-r'],
+          ['+890%', 'Search Volume · 18mo', 'Explosive', 'sig-up', 'sb-h'],
+          ['+412%', 'Opportunity Score · Live', 'High Conviction', 'sig-up', 'sb-r'],
+          ['+195%', 'Report Confidence · Live', 'Fresh Report', 'sig-up', 'sb-r'],
+          ['$7M', 'Market Validation · Live', 'Validated', 'sig-gold', 'sb-g']
+        ];
+        sigsRow.innerHTML = '';
+        reports.slice(0,5).forEach((item, idx) => {
+          const [pct, src, badge, pctCls, badgeCls] = presets[idx] || [`+${item.overall_confidence ?? 0}%`, 'Live Feed', 'Live', 'sig-up', 'sb-r'];
+          const card = document.createElement('div');
+          card.className = 'sig-card';
+          card.innerHTML = `
+            <div class="sig-pct ${pctCls}">${pct}</div>
+            <div class="sig-nm">${item.category || 'Opportunity'}</div>
+            <div class="sig-src">${src}</div>
+            <div class="sig-badge ${badgeCls}">${badge}</div>
+          `;
+          card.addEventListener('click', () => {
+            window.location.href = item.report_path || 'dashboard.html';
+          });
+          sigsRow.appendChild(card);
+        });
+      }
+
+      // COMMUNITY MARQUEE
+      const commTrack = document.querySelector('.comm-track');
+      if (commTrack && reports.length){
+        const people = [
+          ['AK', 'Alex Kim', 'Solo founder · $8K MRR'],
+          ['SR', 'Sara Reyes', 'Developer · 2 products shipped'],
+          ['JM', 'James Müller', 'Founder · Pre-seed funded'],
+          ['LM', 'Laura M.', 'Product strategist'],
+          ['RS', 'Robert S.', 'Startup founder'],
+          ['EP', 'Elena Petrova', 'Angel investor']
+        ];
+        const cards = reports.slice(0,6).map((item, idx) => {
+          const [initials, name, role] = people[idx] || ['NL', 'NicheLab Member', 'Builder'];
+          return `
+            <div class="comm-card">
+              <div class="comm-stars">★★★★★</div>
+              <div class="comm-text">“${item.title} feels like the kind of opportunity I would have spent weeks validating manually. The framing is unusually actionable.”</div>
+              <div class="comm-meta">
+                <div class="av" style="background:var(--gold-bg);color:var(--gold-l)">${initials}</div>
+                <div>
+                  <div class="proof-nm">${name}</div>
+                  <div class="comm-role">${role}</div>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+        commTrack.innerHTML = cards + cards;
+      }
+
+    }catch(err){
+      console.error(err);
+      const fcTitle = document.querySelector('.fc-title');
+      const fcTagline = document.querySelector('.fc-tagline');
+      if (fcTitle) fcTitle.textContent = 'Live feed could not be loaded';
+      if (fcTagline) fcTagline.textContent = 'The page design is intact, but the generated report feed is currently unavailable.';
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadNicheLabFrontPage);
+  } else {
+    loadNicheLabFrontPage();
+  }
+})();
+</script>
+
+</body>
+</html>
