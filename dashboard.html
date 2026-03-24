@@ -6,6 +6,7 @@
 <title>NicheLab Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#07080C;--s1:#0B0D15;--s2:#10131E;--s3:#161B28;
@@ -24,7 +25,26 @@
 }
 body{font-family:var(--body);background:var(--bg);color:var(--t1);line-height:1.6;font-size:15px;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
-button{font:inherit}
+button,input,textarea,select{font:inherit}
+.btn{padding:10px 14px;border-radius:10px;border:1px solid var(--b2);background:transparent;color:var(--t2);cursor:pointer;font-weight:600;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,color .16s ease,background-color .16s ease}
+.btn:hover{color:var(--t1);border-color:var(--b3);transform:translateY(-1px)}
+.btn:active{transform:translateY(0)}
+.btn-gold{background:linear-gradient(180deg,var(--gold-l),var(--gold));color:#FFFDF7;border:none;box-shadow:0 10px 24px rgba(200,134,26,.18)}
+.btn-gold:hover{box-shadow:0 14px 30px rgba(200,134,26,.22)}
+.kicker{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.card{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:20px}
+.item-title{font-size:16px;font-weight:700}
+.note{font-size:13px;color:var(--t2)}
+.small-item{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:16px}
+.chip{font-family:var(--mono);font-size:11px;padding:5px 9px;border-radius:8px;background:var(--s2);border:1px solid var(--b2)}
+.tag{font-family:var(--mono);font-size:10px;padding:4px 8px;border-radius:999px;border:1px solid var(--b2);color:var(--t3);background:var(--s2)}
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+.field label{font-size:12px;color:var(--t2);font-weight:600}
+.field input,.field textarea,.field select{width:100%;padding:11px 12px;background:var(--s2);border:1px solid var(--b2);border-radius:10px;color:var(--t1)}
+.field textarea{min-height:120px;resize:vertical}
+.toast{position:fixed;right:24px;bottom:24px;z-index:1000;background:rgba(11,13,21,.96);color:var(--t1);border:1px solid var(--b2);border-radius:12px;padding:12px 14px;font-size:13px;box-shadow:0 14px 36px rgba(0,0,0,.28);opacity:0;transform:translateY(8px);pointer-events:none;transition:.22s}
+.toast.show{opacity:1;transform:none}
+
 .app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
 .sidebar{background:var(--s1);border-right:1px solid var(--b1);padding:24px 18px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
 .logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
@@ -40,20 +60,13 @@ button{font:inherit}
 .topbar{display:flex;align-items:center;gap:14px;justify-content:space-between;margin-bottom:22px}
 .search{flex:1;max-width:620px;background:var(--s1);border:1px solid var(--b1);border-radius:999px;padding:12px 16px;color:var(--t2)}
 .top-actions{display:flex;gap:10px;flex-wrap:wrap}
-.btn{padding:10px 14px;border-radius:10px;border:1px solid var(--b2);background:transparent;color:var(--t2);cursor:pointer;font-weight:600;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,color .16s ease,background-color .16s ease}
-.btn:hover{color:var(--t1);border-color:var(--b3);transform:translateY(-1px)}
-.btn:active{transform:translateY(0)}
-.btn-gold{background:linear-gradient(180deg,var(--gold-l),var(--gold));color:#FFFDF7;border:none;box-shadow:0 10px 24px rgba(200,134,26,.18)}
-.btn-gold:hover{box-shadow:0 14px 30px rgba(200,134,26,.22)}
 .hero{background:linear-gradient(160deg,#120F05,var(--s1));border:1px solid var(--gold-br);border-radius:20px;padding:28px;position:relative;overflow:hidden;margin-bottom:18px}
 .hero::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--cyan))}
-.kicker{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
 .hero h1{font-family:var(--display);font-size:42px;line-height:1.05;letter-spacing:-.5px;margin-bottom:12px}
 .hero p{color:var(--t2);max-width:760px}
 .page{display:none}
 .page.active{display:block}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
-.card{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:20px}
 .metric{font-family:var(--mono);font-size:28px;color:var(--gold-l);margin-bottom:6px}
 .label{font-size:12px;color:var(--t3);text-transform:uppercase;letter-spacing:.8px;font-family:var(--mono)}
 .value{font-size:14px;color:var(--t2)}
@@ -65,14 +78,7 @@ button{font:inherit}
 .list{display:flex;flex-direction:column;gap:12px}
 .item{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:18px}
 .item-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:8px}
-.item-title{font-size:16px;font-weight:700}
-.tag{font-family:var(--mono);font-size:10px;padding:4px 8px;border-radius:999px;border:1px solid var(--b2);color:var(--t3);background:var(--s2)}
 .meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.chip{font-family:var(--mono);font-size:11px;padding:5px 9px;border-radius:8px;background:var(--s2);border:1px solid var(--b2)}
-.small-list{display:flex;flex-direction:column;gap:10px}
-.small-item{background:var(--s1);border:1px solid var(--b1);border-radius:14px;padding:16px}
-.small-item strong{display:block;margin-bottom:4px}
-.note{font-size:13px;color:var(--t2)}
 .toolbar{display:flex;align-items:center;gap:10px;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap}
 .filter-row{display:flex;gap:10px;flex-wrap:wrap}
 .select,.input{background:var(--s1);border:1px solid var(--b1);border-radius:10px;padding:11px 12px;color:var(--t2)}
@@ -91,20 +97,18 @@ button{font:inherit}
 .signal-value{font-family:var(--mono);font-size:26px;margin-bottom:6px;color:var(--cyan)}
 .research-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .form-card{background:var(--s1);border:1px solid var(--b1);border-radius:16px;padding:20px}
-.field{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
-.field label{font-size:12px;color:var(--t2);font-weight:600}
-.field input,.field textarea,.field select{width:100%;padding:11px 12px;background:var(--s2);border:1px solid var(--b2);border-radius:10px;color:var(--t1)}
-.field textarea{min-height:120px;resize:vertical}
 .saved-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .account-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .stack{display:flex;flex-direction:column;gap:12px}
-.toast{position:fixed;right:24px;bottom:24px;z-index:1000;background:rgba(11,13,21,.96);color:var(--t1);border:1px solid var(--b2);border-radius:12px;padding:12px 14px;font-size:13px;box-shadow:0 14px 36px rgba(0,0,0,.28);opacity:0;transform:translateY(8px);pointer-events:none;transition:.22s}
-.toast.show{opacity:1;transform:none}
-@media (max-width: 1180px){
+.account-actions .btn{width:100%;padding:14px 16px;justify-content:center}
+.linkish{color:var(--cyan);font-weight:600}
+.report-link{display:inline-flex;align-items:center;gap:8px;color:var(--t1);font-weight:600;margin-top:12px}
+.report-link:hover{color:var(--gold-l)}
+@media (max-width: 1180px) {
   .grid{grid-template-columns:repeat(2,1fr)}
   .signal-grid,.saved-grid,.account-grid,.research-grid,.two-col{grid-template-columns:1fr}
 }
-@media (max-width: 900px){
+@media (max-width: 900px) {
   .app{grid-template-columns:1fr}
   .sidebar{position:relative;height:auto}
   .main{padding:20px}
@@ -131,9 +135,7 @@ button{font:inherit}
       <button class="side-link" data-page="account">Account</button>
       <a class="side-link" href="index.html">Back to site</a>
     </nav>
-    <div class="sidebar-foot">
-      <div class="mini-note">Member area is separate from the public landing page.</div>
-    </div>
+    <div class="sidebar-foot"><div class="mini-note">Member area is separate from the public landing page.</div></div>
   </aside>
 
   <main class="main">
@@ -160,10 +162,7 @@ button{font:inherit}
       </div>
 
       <div class="section">
-        <div class="section-head">
-          <div class="section-title">What to look at next</div>
-          <div class="line"></div>
-        </div>
+        <div class="section-head"><div class="section-title">What to look at next</div><div class="line"></div></div>
         <div class="two-col">
           <div class="list">
             <div class="item">
@@ -171,30 +170,27 @@ button{font:inherit}
                 <div><div class="item-title">Webhook Reliability Platform</div><div class="note">Production-grade webhook management for teams that need observability, replay, and debugging without enterprise overhead.</div></div>
                 <div class="tag">Featured report</div>
               </div>
-              <div class="meta">
-                <div class="chip">Market 84</div><div class="chip">Revenue 78</div><div class="chip">Difficulty 42</div><div class="chip">High signal</div>
-              </div>
+              <div class="meta"><div class="chip">Market 84</div><div class="chip">Revenue 78</div><div class="chip">Difficulty 42</div><div class="chip">High signal</div></div>
+              <a class="report-link" href="report-webhook-reliability.html">Open full report →</a>
             </div>
             <div class="item">
               <div class="item-top">
                 <div><div class="item-title">AI Mock API Server (Hosted)</div><div class="note">Strong pull from AI prototyping teams, developer tooling communities, and teams seeking lower-friction testing environments.</div></div>
                 <div class="tag">Rising</div>
               </div>
-              <div class="meta">
-                <div class="chip">Fast to MVP</div><div class="chip">Developer tools</div><div class="chip">Solo-friendly</div>
-              </div>
+              <div class="meta"><div class="chip">Fast to MVP</div><div class="chip">Developer tools</div><div class="chip">Solo-friendly</div></div>
+              <a class="report-link" href="report-ai-mock-api-server.html">Open full report →</a>
             </div>
             <div class="item">
               <div class="item-top">
                 <div><div class="item-title">EU AI Act Compliance Logger</div><div class="note">Compliance-driven demand with expanding urgency as auditability expectations move into procurement and platform requirements.</div></div>
                 <div class="tag">Regulatory tailwind</div>
               </div>
-              <div class="meta">
-                <div class="chip">Compliance</div><div class="chip">B2B SaaS</div><div class="chip">Emerging</div>
-              </div>
+              <div class="meta"><div class="chip">Compliance</div><div class="chip">B2B SaaS</div><div class="chip">Emerging</div></div>
+              <a class="report-link" href="report-eu-ai-act-compliance-logger.html">Open full report →</a>
             </div>
           </div>
-          <div class="small-list">
+          <div class="stack">
             <div class="small-item"><strong>Today’s featured report</strong><div class="note">Webhook Reliability Platform</div></div>
             <div class="small-item"><strong>Rising signal</strong><div class="note">AI agent debugging queries are accelerating faster than incumbent tooling is adapting.</div></div>
             <div class="small-item"><strong>Operator note</strong><div class="note">Build the wedge, not the full platform. Early conviction is strongest in narrowly painful workflow categories.</div></div>
@@ -216,15 +212,13 @@ button{font:inherit}
       </div>
       <div class="table-wrap">
         <table class="table">
-          <thead>
-            <tr><th>Opportunity</th><th>Category</th><th>Market</th><th>Revenue</th><th>Competition</th><th>Difficulty</th><th>Signal</th></tr>
-          </thead>
+          <thead><tr><th>Opportunity</th><th>Category</th><th>Market</th><th>Revenue</th><th>Competition</th><th>Difficulty</th><th>Signal</th><th>Report</th></tr></thead>
           <tbody>
-            <tr><td>Webhook Reliability Platform</td><td>Dev Tools</td><td><span class="score good">84</span></td><td><span class="score good">78</span></td><td><span class="score mid">61</span></td><td><span class="score good">42</span></td><td><span class="score good">High</span></td></tr>
-            <tr><td>AI Mock API Server (Hosted)</td><td>Dev Tools / AI</td><td><span class="score good">81</span></td><td><span class="score good">76</span></td><td><span class="score mid">58</span></td><td><span class="score good">39</span></td><td><span class="score good">High</span></td></tr>
-            <tr><td>EU AI Act Compliance Logger</td><td>Compliance SaaS</td><td><span class="score good">74</span></td><td><span class="score mid">69</span></td><td><span class="score mid">57</span></td><td><span class="score mid">58</span></td><td><span class="score mid">Emerging</span></td></tr>
-            <tr><td>Rate Limit Management Proxy</td><td>Infrastructure</td><td><span class="score mid">68</span></td><td><span class="score mid">64</span></td><td><span class="score good">31</span></td><td><span class="score good">36</span></td><td><span class="score mid">Rising</span></td></tr>
-            <tr><td>Client Onboarding Workflow Suite</td><td>B2B SaaS</td><td><span class="score good">79</span></td><td><span class="score good">74</span></td><td><span class="score mid">63</span></td><td><span class="score mid">49</span></td><td><span class="score good">High</span></td></tr>
+            <tr><td>Webhook Reliability Platform</td><td>Dev Tools</td><td><span class="score good">84</span></td><td><span class="score good">78</span></td><td><span class="score mid">61</span></td><td><span class="score good">42</span></td><td><span class="score good">High</span></td><td><a class="linkish" href="report-webhook-reliability.html">Open</a></td></tr>
+            <tr><td>AI Mock API Server (Hosted)</td><td>Dev Tools / AI</td><td><span class="score good">81</span></td><td><span class="score good">76</span></td><td><span class="score mid">58</span></td><td><span class="score good">39</span></td><td><span class="score good">High</span></td><td><a class="linkish" href="report-ai-mock-api-server.html">Open</a></td></tr>
+            <tr><td>EU AI Act Compliance Logger</td><td>Compliance SaaS</td><td><span class="score good">74</span></td><td><span class="score mid">69</span></td><td><span class="score mid">57</span></td><td><span class="score mid">58</span></td><td><span class="score mid">Emerging</span></td><td><a class="linkish" href="report-eu-ai-act-compliance-logger.html">Open</a></td></tr>
+            <tr><td>Rate Limit Management Proxy</td><td>Infrastructure</td><td><span class="score mid">68</span></td><td><span class="score mid">64</span></td><td><span class="score good">31</span></td><td><span class="score good">36</span></td><td><span class="score mid">Rising</span></td><td><a class="linkish" href="report-rate-limit-management-proxy.html">Open</a></td></tr>
+            <tr><td>Client Onboarding Workflow Suite</td><td>B2B SaaS</td><td><span class="score good">79</span></td><td><span class="score good">74</span></td><td><span class="score mid">63</span></td><td><span class="score mid">49</span></td><td><span class="score good">High</span></td><td><a class="linkish" href="report-client-onboarding-workflow-suite.html">Open</a></td></tr>
           </tbody>
         </table>
       </div>
@@ -268,7 +262,7 @@ button{font:inherit}
       <div class="saved-grid">
         <div class="card"><div class="item-title">Saved ideas</div><div class="note" style="margin-top:8px">Webhook Reliability Platform<br>AI Mock API Server<br>Client Onboarding Workflow Suite</div></div>
         <div class="card"><div class="item-title">Watchlists</div><div class="note" style="margin-top:8px">Dev Tools<br>Compliance SaaS<br>Creator Economy<br>Agency workflow</div></div>
-        <div class="card"><div class="item-title">Recently viewed</div><div class="note" style="margin-top:8px">EU AI Act Compliance Logger<br>Rate Limit Management Proxy<br>Legal document automation wedge</div></div>
+        <div class="card"><div class="item-title">Notes</div><textarea id="saved-notes" style="margin-top:10px;width:100%;min-height:160px;background:var(--s2);border:1px solid var(--b2);border-radius:10px;color:var(--t1);padding:12px">Validate legal-tech automation wedge against agency workflow market. Compare switching costs and expansion paths.</textarea><button class="btn" id="btn-save-notes" style="margin-top:10px;width:100%">Save notes</button></div>
       </div>
     </section>
 
@@ -282,14 +276,22 @@ button{font:inherit}
             <div class="small-item"><strong>Billing cadence</strong><div class="note">Annual</div></div>
             <div class="small-item"><strong>Research credits</strong><div class="note">12 remaining this cycle</div></div>
           </div>
+          <div class="item-title" style="margin:18px 0 10px">Profile</div>
+          <div class="field"><label>Full name</label><input id="profile-name" value="Erman"></div>
+          <div class="field"><label>Email</label><input id="profile-email" value="you@domain.com"></div>
+          <div class="field"><label>Focus areas</label><input id="profile-focus" value="Micro-SaaS, Dev Tools, AI Infrastructure"></div>
         </div>
-        <div class="card">
-          <div class="item-title">Actions</div>
-          <div class="stack" style="margin-top:12px">
+        <div class="card account-actions">
+          <div class="item-title" style="margin-bottom:12px">Actions</div>
+          <div class="stack">
             <button class="btn" id="btn-manage-billing">Manage billing</button>
             <button class="btn" id="btn-update-profile">Update profile</button>
             <button class="btn" id="btn-export-notes">Export notes</button>
             <button class="btn" id="btn-signout">Sign out</button>
+          </div>
+          <div class="small-item" id="account-action-output" style="margin-top:14px">
+            <strong>Action panel</strong>
+            <div class="note">Use the actions above to manage billing, save profile changes, export saved notes, or sign out.</div>
           </div>
         </div>
       </div>
@@ -312,23 +314,54 @@ function showToast(message){
 function openPage(page){
   document.querySelectorAll('.side-link[data-page]').forEach(btn => btn.classList.toggle('active', btn.dataset.page === page));
   document.querySelectorAll('.page').forEach(section => section.classList.toggle('active', section.id === 'page-' + page));
-  window.location.hash = page;
+  if(history.replaceState) history.replaceState(null, '', '#' + page);
 }
 
 document.querySelectorAll('.side-link[data-page]').forEach(btn => {
   btn.addEventListener('click', () => openPage(btn.dataset.page));
 });
 
+const starterYearly = "https://buy.stripe.com/aFa4gAdmT8SS5hB1igebu01";
+const proYearly = "https://buy.stripe.com/aFa6oI0A7glk6lFf96ebu03";
+
 document.getElementById('btn-notifications').addEventListener('click', () => showToast('3 unread intelligence alerts.'));
-document.getElementById('btn-run-research').addEventListener('click', () => {
-  openPage('research');
-  showToast('Moved to custom research.');
-});
+document.getElementById('btn-run-research').addEventListener('click', () => { openPage('research'); showToast('Moved to custom research.'); });
 document.getElementById('btn-export-db').addEventListener('click', () => showToast('Shortlist export queued.'));
-document.getElementById('btn-manage-billing').addEventListener('click', () => showToast('Billing portal placeholder.'));
-document.getElementById('btn-update-profile').addEventListener('click', () => showToast('Profile editor placeholder.'));
-document.getElementById('btn-export-notes').addEventListener('click', () => showToast('Notes export prepared.'));
+document.getElementById('btn-save-notes').addEventListener('click', () => {
+  localStorage.setItem('nichelab_saved_notes', document.getElementById('saved-notes').value);
+  showToast('Notes saved locally.');
+});
+document.getElementById('btn-manage-billing').addEventListener('click', () => {
+  const panel = document.getElementById('account-action-output');
+  panel.innerHTML = `<strong>Billing options</strong><div class="note">Choose where to go next.</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+      <a class="btn" href="${starterYearly}">Starter yearly checkout</a>
+      <a class="btn btn-gold" href="${proYearly}">Pro yearly checkout</a>
+    </div>`;
+  showToast('Billing actions loaded.');
+});
+document.getElementById('btn-update-profile').addEventListener('click', () => {
+  const profile = {
+    name: document.getElementById('profile-name').value,
+    email: document.getElementById('profile-email').value,
+    focus: document.getElementById('profile-focus').value
+  };
+  localStorage.setItem('nichelab_profile', JSON.stringify(profile));
+  document.getElementById('account-action-output').innerHTML = `<strong>Profile updated</strong><div class="note">Saved for ${profile.name} · ${profile.email}. Focus areas: ${profile.focus}.</div>`;
+  showToast('Profile saved locally.');
+});
+document.getElementById('btn-export-notes').addEventListener('click', () => {
+  const notes = document.getElementById('saved-notes').value || localStorage.getItem('nichelab_saved_notes') || 'No notes available.';
+  const blob = new Blob([notes], {type: 'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'nichelab-notes.txt'; a.click();
+  URL.revokeObjectURL(url);
+  document.getElementById('account-action-output').innerHTML = `<strong>Notes exported</strong><div class="note">A text export of your saved notes has been prepared and downloaded.</div>`;
+  showToast('Notes exported.');
+});
 document.getElementById('btn-signout').addEventListener('click', () => {
+  localStorage.removeItem('nichelab_profile');
   showToast('Signed out locally.');
   setTimeout(() => window.location.href = 'index.html', 500);
 });
@@ -350,10 +383,19 @@ const plan = params.get('plan');
 if(plan){
   document.getElementById('pending-plan').textContent = plan;
 }
-const initialPage = window.location.hash ? window.location.hash.replace('#','') : 'dashboard';
-if(document.getElementById('page-' + initialPage)){
-  openPage(initialPage);
+const savedNotes = localStorage.getItem('nichelab_saved_notes');
+if(savedNotes) document.getElementById('saved-notes').value = savedNotes;
+const profileRaw = localStorage.getItem('nichelab_profile');
+if(profileRaw){
+  try{
+    const p = JSON.parse(profileRaw);
+    if(p.name) document.getElementById('profile-name').value = p.name;
+    if(p.email) document.getElementById('profile-email').value = p.email;
+    if(p.focus) document.getElementById('profile-focus').value = p.focus;
+  }catch(e){}
 }
+const initialPage = window.location.hash ? window.location.hash.replace('#','') : 'dashboard';
+if(document.getElementById('page-' + initialPage)) openPage(initialPage);
 </script>
 </body>
 </html>
