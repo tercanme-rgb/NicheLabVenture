@@ -83,6 +83,13 @@ button,input,textarea,select{font:inherit}
 .score.good{color:var(--green);background:var(--green-bg);border-color:var(--green-br)}
 .score.mid{color:var(--amber);background:var(--amber-bg);border-color:var(--amber-br)}
 .small-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.research-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.account-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.stack{display:flex;flex-direction:column;gap:12px}
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+.field label{font-size:12px;color:var(--t2);font-weight:600}
+.field input,.field textarea,.field select{width:100%;padding:11px 12px;background:var(--s2);border:1px solid var(--b2);border-radius:10px;color:var(--t1)}
+.field textarea{min-height:120px;resize:vertical}
 .tab-page{display:none}
 .tab-page.active{display:block}
 
@@ -103,7 +110,9 @@ button,input,textarea,select{font:inherit}
       <button class="side-link active" data-tab="dashboard">Dashboard</button>
       <button class="side-link" data-tab="opportunities">Opportunities</button>
       <button class="side-link" data-tab="signals">Signals</button>
+      <button class="side-link" data-tab="research">Research</button>
       <button class="side-link" data-tab="saved">Saved</button>
+      <button class="side-link" data-tab="account">Account</button>
       <button class="side-link js-upgrade hidden" id="upgrade-nav">Upgrade to PRO</button>
       <a class="side-link" href="index.html">Back to site</a>
     </nav>
@@ -233,6 +242,64 @@ button,input,textarea,select{font:inherit}
     </div>
 
 </div>
+
+<div class="tab-page" id="tab-research">
+  <div class="section" id="research-section">
+    <div class="section-head"><div class="section-title">Custom research</div><div class="line"></div></div>
+    <div class="research-grid">
+      <div class="card">
+        <div class="item-title" style="margin-bottom:12px">Run a niche search</div>
+        <div class="field"><label>Niche or market</label><input id="research-topic" value="AI workflow audit platform for agencies"></div>
+        <div class="field"><label>Region</label><select id="research-region"><option>Global</option><option>United States</option><option>Europe</option><option>MENA</option></select></div>
+        <div class="field"><label>Focus</label><select id="research-focus"><option>Demand validation</option><option>Competitor map</option><option>Pricing structure</option><option>Go-to-market</option></select></div>
+        <button class="btn btn-gold" id="btn-run-brief">Generate brief</button>
+      </div>
+      <div class="card">
+        <div class="item-title" style="margin-bottom:12px">Generated brief</div>
+        <div class="stack" id="research-output">
+          <div class="small-item"><strong>Thesis</strong><div class="note">An audit and QA platform for agencies managing multi-client AI workflows could win by reducing delivery risk and proving output quality.</div></div>
+          <div class="small-item"><strong>Why now</strong><div class="note">AI service delivery is scaling faster than agencies' internal control layers.</div></div>
+          <div class="small-item"><strong>Commercial angle</strong><div class="note">Sell to agencies first, then expand into enterprise workflow governance.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="tab-page" id="tab-account">
+  <div class="section" id="account-section">
+    <div class="section-head"><div class="section-title">Account</div><div class="line"></div></div>
+    <div class="account-grid">
+      <div class="card">
+        <div class="item-title">Membership details</div>
+        <div class="stack" style="margin-top:12px">
+          <div class="small-item"><strong>Plan</strong><div class="note" id="account-plan-label">PRO</div></div>
+          <div class="small-item"><strong>Billing cadence</strong><div class="note" id="account-billing-label">Annual</div></div>
+          <div class="small-item"><strong>Research credits</strong><div class="note" id="account-credits-label">12 remaining this cycle</div></div>
+        </div>
+        <div class="item-title" style="margin:18px 0 10px">Profile</div>
+        <div class="field"><label>Full name</label><input id="profile-name" value="Erman"></div>
+        <div class="field"><label>Email</label><input id="profile-email" value="you@domain.com"></div>
+        <div class="field"><label>Focus areas</label><input id="profile-focus" value="Micro-SaaS, Dev Tools, AI Infrastructure"></div>
+      </div>
+      <div class="card">
+        <div class="item-title" style="margin-bottom:12px">Actions</div>
+        <div class="stack">
+          <button class="btn" id="btn-manage-billing">Manage billing</button>
+          <button class="btn" id="btn-update-profile">Update profile</button>
+          <button class="btn" id="btn-export-notes">Export notes</button>
+          <button class="btn" id="btn-signout">Sign out</button>
+        </div>
+        <div class="small-item" id="account-action-output" style="margin-top:14px">
+          <strong>Action panel</strong>
+          <div class="note">Use the actions above to manage billing, save profile changes, export saved notes, or sign out.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
   </main>
 </div>
 
@@ -310,6 +377,85 @@ document.querySelectorAll('.side-link[data-tab]').forEach(btn => {
 const initialTab = window.location.hash ? window.location.hash.replace('#','') : 'dashboard';
 if (document.getElementById('tab-' + initialTab)) {
   openTab(initialTab);
+}
+
+
+document.getElementById('btn-run-research')?.addEventListener('click', () => {
+  openTab('research');
+  showToast('Moved to custom research.');
+});
+
+document.getElementById('btn-run-brief')?.addEventListener('click', () => {
+  const topic = document.getElementById('research-topic').value || 'Selected niche';
+  const region = document.getElementById('research-region').value || 'Global';
+  const focus = document.getElementById('research-focus').value || 'Demand validation';
+  document.getElementById('research-output').innerHTML = `
+    <div class="small-item"><strong>Thesis</strong><div class="note">${topic} shows promising commercial structure for ${region.toLowerCase()} buyers when framed around operational risk reduction.</div></div>
+    <div class="small-item"><strong>Why now</strong><div class="note">The category is benefiting from workflow complexity, fragmented tooling, and increasing buyer urgency around measurable outcomes.</div></div>
+    <div class="small-item"><strong>Analyst angle</strong><div class="note">Priority analysis requested: ${focus}. Initial recommendation is to validate customer pain intensity before broadening feature scope.</div></div>
+  `;
+  showToast('Custom brief generated.');
+});
+
+const starterYearly = "https://buy.stripe.com/aFa4gAdmT8SS5hB1igebu01";
+const proYearly = "https://buy.stripe.com/aFa6oI0A7glk6lFf96ebu03";
+
+document.getElementById('btn-manage-billing')?.addEventListener('click', () => {
+  const panel = document.getElementById('account-action-output');
+  panel.innerHTML = `<strong>Billing options</strong><div class="note">Choose where to go next.</div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+      <a class="btn" href="${starterYearly}">Starter yearly checkout</a>
+      <a class="btn btn-gold" href="${proYearly}">Pro yearly checkout</a>
+    </div>`;
+  showToast('Billing actions loaded.');
+});
+
+document.getElementById('btn-update-profile')?.addEventListener('click', () => {
+  const profile = {
+    name: document.getElementById('profile-name').value,
+    email: document.getElementById('profile-email').value,
+    focus: document.getElementById('profile-focus').value
+  };
+  localStorage.setItem('nichelab_profile', JSON.stringify(profile));
+  document.getElementById('account-action-output').innerHTML = `<strong>Profile updated</strong><div class="note">Saved for ${profile.name} · ${profile.email}. Focus areas: ${profile.focus}.</div>`;
+  showToast('Profile saved locally.');
+});
+
+document.getElementById('btn-export-notes')?.addEventListener('click', () => {
+  const notes = `Saved ideas:\nWebhook Reliability Platform\nAI Mock API Server\n\nSaved profile:\n${document.getElementById('profile-name').value}\n${document.getElementById('profile-email').value}\n${document.getElementById('profile-focus').value}`;
+  const blob = new Blob([notes], {type: 'text/plain;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'nichelab-notes.txt'; a.click();
+  URL.revokeObjectURL(url);
+  document.getElementById('account-action-output').innerHTML = `<strong>Notes exported</strong><div class="note">A text export of your saved notes has been prepared and downloaded.</div>`;
+  showToast('Notes exported.');
+});
+
+document.getElementById('btn-signout')?.addEventListener('click', () => {
+  localStorage.removeItem('nichelab_profile');
+  localStorage.removeItem('nichelab_plan');
+  showToast('Signed out locally.');
+  setTimeout(() => window.location.href = 'index.html', 500);
+});
+
+const profileRaw = localStorage.getItem('nichelab_profile');
+if(profileRaw){
+  try{
+    const p = JSON.parse(profileRaw);
+    if(p.name) document.getElementById('profile-name').value = p.name;
+    if(p.email) document.getElementById('profile-email').value = p.email;
+    if(p.focus) document.getElementById('profile-focus').value = p.focus;
+  }catch(e){}
+}
+
+if (plan === 'starter') {
+  const planLabel = document.getElementById('account-plan-label');
+  const billingLabel = document.getElementById('account-billing-label');
+  const creditsLabel = document.getElementById('account-credits-label');
+  if (planLabel) planLabel.textContent = 'Starter';
+  if (billingLabel) billingLabel.textContent = 'Annual';
+  if (creditsLabel) creditsLabel.textContent = 'Custom research locked on Starter';
 }
 
 </script>
