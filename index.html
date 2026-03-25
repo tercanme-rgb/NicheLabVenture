@@ -1739,7 +1739,7 @@ async function signInWithProvider(providerName){
 
   try {
     sessionStorage.setItem('nl_auth_redirect', providerName);
-    await authFns.signInWithRedirect(auth, provider);
+    await authFns.signInWithPopup(auth, provider);
   } catch (err) {
     console.error('Google sign-in error:', err);
     showToast(err?.message || 'Google sign-in failed.');
