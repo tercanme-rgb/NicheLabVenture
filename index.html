@@ -1509,11 +1509,11 @@ footer{border-top:1px solid var(--b1)}
 </div>
 
     <div class="footer-links">
-      <span>About</span>
-      <span>Reports</span>
-      <span>Pricing</span>
-      <span>Community</span>
-      <span>Legal</span>
+      <a href="./about/"><span>About</span></a>
+      <a href="./reports/"><span>Reports</span></a>
+      <a href="./pricing/"><span>Pricing</span></a>
+      <a href="./community/"><span>Community</span></a>
+      <a href="./legal/"><span>Legal</span></a>
     </div>
     <div style="font-family:var(--mono);font-size:11px;color:var(--t3)">© 2026 NicheLab · nichelab.io</div>
   </div>
@@ -1595,49 +1595,34 @@ document.querySelectorAll('.nav-link').forEach(l => {
   });
 });
 
-document.querySelector('.cta-signin')?.addEventListener('click', () => goToMembership('signin'));
-document.querySelector('.cta-start-free')?.addEventListener('click', () => { localStorage.setItem('nichelab_dashboard_focus', 'reports'); window.location.href = 'dashboard.html'; });
-document.querySelector('.cta-read-report')?.addEventListener('click', () => document.getElementById('ideas')?.scrollIntoView({behavior:'smooth', block:'start'}));
-document.querySelector('.cta-browse')?.addEventListener('click', () => document.getElementById('leaderboard')?.scrollIntoView({behavior:'smooth', block:'start'}));
+document.querySelector('.cta-signin')?.addEventListener('click', () => { window.location.href = './login/'; });
+document.querySelector('.cta-start-free')?.addEventListener('click', () => { window.location.href = './signup/'; });
+document.querySelector('.cta-read-report')?.addEventListener('click', () => { window.location.href = './today/'; });
+document.querySelector('.cta-browse')?.addEventListener('click', () => { window.location.href = './ideas/'; });
 
-document.querySelector('.cta-save-idea')?.addEventListener('click', (e) => {
-  const key = 'nichelab_saved_ideas';
-  const current = JSON.parse(localStorage.getItem(key) || '[]');
-  const idea = 'Webhook Reliability Platform for Indie Developers';
-  if(!current.includes(idea)){
-    current.push(idea);
-    localStorage.setItem(key, JSON.stringify(current));
-  }
-  localStorage.setItem('nichelab_last_saved_idea', idea);
-  e.currentTarget.textContent = 'Saved ✓';
-  showToast('Idea saved in this browser.');
+document.querySelector('.cta-save-idea')?.addEventListener('click', () => {
+  window.location.href = './saved/';
 });
 
 document.querySelector('.cta-full-report')?.addEventListener('click', () => {
-  const title = 'Webhook Reliability Platform for Indie Developers';
-  localStorage.setItem('nichelab_selected_report_title', title);
-  localStorage.setItem('nichelab_dashboard_focus', 'reports');
-  window.location.href = 'dashboard.html';
+  window.location.href = './reports/ai-contract-analyzer/';
 });
 
 document.querySelectorAll('.cta-leaderboard-report').forEach(btn => {
   btn.addEventListener('click', () => {
-    const title = btn.dataset.idea || 'this opportunity';
-    localStorage.setItem('nichelab_selected_report_title', title);
-    localStorage.setItem('nichelab_dashboard_focus', 'reports');
-    window.location.href = 'dashboard.html';
+    window.location.href = './reports/ai-contract-analyzer/';
   });
 });
 
-document.querySelector('.cta-upgrade')?.addEventListener('click', () => { window.__pendingPlan = 'starter'; goToMembership('signup'); });
-document.querySelector('.cta-plan-free')?.addEventListener('click', () => goToMembership('signup'));
-document.querySelector('.cta-plan-starter')?.addEventListener('click', () => { window.__pendingPlan = 'starter'; goToMembership('signup'); });
-document.querySelector('.cta-plan-pro')?.addEventListener('click', () => { window.__pendingPlan = 'pro'; goToMembership('signup'); });
-document.querySelector('.cta-get-free-report')?.addEventListener('click', () => goToMembership('signup'));
+document.querySelector('.cta-upgrade')?.addEventListener('click', () => { window.location.href = './pricing/'; });
+document.querySelector('.cta-plan-free')?.addEventListener('click', () => { window.location.href = './pricing/'; });
+document.querySelector('.cta-plan-starter')?.addEventListener('click', () => { window.location.href = './pricing/'; });
+document.querySelector('.cta-plan-pro')?.addEventListener('click', () => { window.location.href = './pricing/'; });
+document.querySelector('.cta-get-free-report')?.addEventListener('click', () => { window.location.href = './today/'; });
 
-document.getElementById('goto-free-plan')?.addEventListener('click', () => { localStorage.setItem('nichelab_dashboard_focus', 'reports'); window.location.href = 'dashboard.html'; });
-document.getElementById('goto-starter-plan')?.addEventListener('click', () => { window.__pendingPlan = 'starter'; startUpgradeCheckout('starter'); });
-document.getElementById('goto-pro-plan')?.addEventListener('click', () => { window.__pendingPlan = 'pro'; startUpgradeCheckout('pro'); });
+document.getElementById('goto-free-plan')?.addEventListener('click', () => { window.location.href = './signup/'; });
+document.getElementById('goto-starter-plan')?.addEventListener('click', () => { window.location.href = './pricing/'; });
+document.getElementById('goto-pro-plan')?.addEventListener('click', () => { window.location.href = './pricing/'; });
 
 function startUpgradeCheckout(plan = null){
   const resolvedPlan = plan || window.__pendingPlan || 'upgrade';
