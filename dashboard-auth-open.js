@@ -60,13 +60,20 @@ function initDashboardWithoutAuthLock(auth, loadDashboard) {
   if (!auth || typeof auth.onAuthStateChanged !== "function") {
     window.currentUser = null;
     updateAuthUI(null);
-    loadDashboardOnce(loadDashboard);
+    // Auth yoksa ana sayfaya yönlendir
+    window.location.href = "index.html";
     return;
   }
 
   auth.onAuthStateChanged((user) => {
-    window.currentUser = user || null;
-    updateAuthUI(user || null);
+    if (!user) {
+      // Giriş yapılmamışsa ana sayfaya yönlendir
+      window.location.href = "index.html";
+      return;
+    }
+
+    window.currentUser = user;
+    updateAuthUI(user);
     loadDashboardOnce(loadDashboard);
   });
 }
