@@ -1694,6 +1694,8 @@ async function initFirebaseAuth(){
   authFns = authMod;
   firebaseReady = true;
 
+  await handleAuthRedirectResult();
+
   authMod.onAuthStateChanged(auth, user => {
     if (user) {
       const email = user.email || 'Signed-in user';
@@ -1710,6 +1712,23 @@ async function initFirebaseAuth(){
   return true;
 }
 
+async function handleAuthRedirectResult(){
+  if (!firebaseReady || !authFns.getRedirectResult) return null;
+  try {
+    const result = await authFns.getRedirectResult(auth);
+    if (result?.user) {
+      showToast('Authentication successful.');
+      return result.user;
+    }
+  } catch (err) {
+    console.error('Redirect result error:', err);
+    showToast(err?.message || 'Google sign-in failed.');
+  } finally {
+    sessionStorage.removeItem('nl_auth_redirect');
+  }
+  return null;
+}
+
 async function signInWithProvider(providerName){
   const ok = await initFirebaseAuth();
   if (!ok) return;
@@ -1719,10 +1738,11 @@ async function signInWithProvider(providerName){
   if (!provider) return;
 
   try {
-    await authFns.signInWithPopup(auth, provider);
+    sessionStorage.setItem('nl_auth_redirect', providerName);
+    await authFns.signInWithRedirect(auth, provider);
   } catch (err) {
-    console.error(err);
-    showToast('Sign-in failed. Try Google sign-in or check your email and password.');
+    console.error('Google sign-in error:', err);
+    showToast(err?.message || 'Google sign-in failed.');
   }
 }
 
