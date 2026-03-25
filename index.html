@@ -449,7 +449,7 @@ footer{border-top:1px solid var(--b1)}
     <div class="hstat"><span class="hstat-v">1,240+</span><span class="hstat-l">Active builders</span></div>
     <div class="hstat"><span class="hstat-v">200+</span><span class="hstat-l">Validated ideas</span></div>
     <div class="hstat"><span class="hstat-v">47</span><span class="hstat-l">Countries</span></div>
-    <div class="hstat"><span class="hstat-v">13</span><span class="hstat-l">Sections per report</span></div>
+    <div class="hstat"><span class="hstat-v">24h</span><span class="hstat-l">Custom research turnaround</span></div>
   </div>
 </section>
 
@@ -1045,7 +1045,7 @@ footer{border-top:1px solid var(--b1)}
       <div class="plan-nm">Pro</div>
       <div class="plan-px">$899</div>
       <div class="plan-cy">/year · billed annually</div>
-      <div class="plan-desc">Everything in Starter, plus on-demand custom research. Enter any niche, category, or region — we generate the full 13-section report within 24 hours.</div>
+      <div class="plan-desc">Everything in Starter, plus on-demand custom research. Enter any niche, category, or region — we generate a custom deep-dive report within 24 hours.</div>
       <div class="plan-feats">
         <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Everything in Starter</div>
         <div class="pfi"><div class="pfc pfy"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>12 custom reports/year</div>
@@ -1073,7 +1073,7 @@ footer{border-top:1px solid var(--b1)}
       <div class="membership-card">
         <div class="membership-kicker">Member access</div>
         <h2 class="membership-title">Sign in, start free,<br><em>or create your account.</em></h2>
-        <p class="membership-copy">This section is wired for Google, Facebook, Apple, and email/password sign-in. To make social login live on GitHub Pages, add your Firebase web configuration and enable the providers in Firebase Authentication.</p>
+        <p class="membership-copy">Use Google or email/password to access your account. Browsing stays open — sign-in is only needed for saved items, billing, and member actions.</p>
 
         <div class="auth-tabs">
           <button class="auth-tab active" type="button" data-auth-tab="signin">Sign in</button>
@@ -1082,9 +1082,7 @@ footer{border-top:1px solid var(--b1)}
 
         <div class="auth-panel active" data-auth-panel="signin">
           <div class="auth-socials">
-            <button class="auth-btn" id="auth-google" type="button">Google</button>
-            <button class="auth-btn" id="auth-facebook" type="button">Facebook</button>
-            <button class="auth-btn full" id="auth-apple" type="button">Apple</button>
+            <button class="auth-btn full" id="auth-google" type="button">Continue with Google</button>
           </div>
 
           <div class="auth-sep">Or continue with email</div>
@@ -1137,7 +1135,7 @@ footer{border-top:1px solid var(--b1)}
           </div>
         </div>
 
-        <div class="auth-meta">To activate social auth, paste your Firebase web config and enable Google and Email/Password providers in Firebase Authentication. Stripe upgrade buttons are also ready for live Payment Links.</div>
+        <div class="auth-meta">Google and email/password are active in the current Firebase setup. Stripe upgrade buttons stay separate and can be connected to live Payment Links when ready.</div>
       </div>
 
       <div class="membership-card">
@@ -1155,8 +1153,8 @@ footer{border-top:1px solid var(--b1)}
         </div>
 
         <div class="auth-state" style="margin-top:18px">
-          <div class="auth-state-title">Configuration placeholders</div>
-          <div class="auth-state-copy">Replace the Firebase config block in the script with your real project values. Then replace the Stripe placeholders with your Stripe Payment Links. After that, the auth and upgrade flows can go live on GitHub Pages without changing the HTML structure.</div>
+          <div class="auth-state-title">Access model</div>
+          <div class="auth-state-copy">The site is open for browsing. Authentication is reserved for account actions, saved items, and billing-related flows.</div>
         </div>
       </div>
     </div>
@@ -1598,7 +1596,7 @@ document.querySelectorAll('.nav-link').forEach(l => {
 });
 
 document.querySelector('.cta-signin')?.addEventListener('click', () => goToMembership('signin'));
-document.querySelector('.cta-start-free')?.addEventListener('click', () => goToMembership('signup'));
+document.querySelector('.cta-start-free')?.addEventListener('click', () => { window.location.href = 'dashboard.html'; });
 document.querySelector('.cta-read-report')?.addEventListener('click', () => document.getElementById('ideas')?.scrollIntoView({behavior:'smooth', block:'start'}));
 document.querySelector('.cta-browse')?.addEventListener('click', () => document.getElementById('leaderboard')?.scrollIntoView({behavior:'smooth', block:'start'}));
 
@@ -1632,7 +1630,7 @@ document.querySelector('.cta-plan-starter')?.addEventListener('click', () => { w
 document.querySelector('.cta-plan-pro')?.addEventListener('click', () => { window.__pendingPlan = 'pro'; goToMembership('signup'); });
 document.querySelector('.cta-get-free-report')?.addEventListener('click', () => goToMembership('signup'));
 
-document.getElementById('goto-free-plan')?.addEventListener('click', () => goToMembership('signup'));
+document.getElementById('goto-free-plan')?.addEventListener('click', () => { window.location.href = 'dashboard.html'; });
 document.getElementById('goto-starter-plan')?.addEventListener('click', () => { window.__pendingPlan = 'starter'; startUpgradeCheckout('starter'); });
 document.getElementById('goto-pro-plan')?.addEventListener('click', () => { window.__pendingPlan = 'pro'; startUpgradeCheckout('pro'); });
 
@@ -1789,8 +1787,6 @@ async function sendReset(){
 }
 
 document.getElementById('auth-google')?.addEventListener('click', () => signInWithProvider('google'));
-document.getElementById('auth-facebook')?.addEventListener('click', () => signInWithProvider('facebook'));
-document.getElementById('auth-apple')?.addEventListener('click', () => signInWithProvider('apple'));
 document.getElementById('signup-google')?.addEventListener('click', () => signInWithProvider('google'));
 document.getElementById('signin-submit')?.addEventListener('click', signInWithEmail);
 document.getElementById('signup-submit')?.addEventListener('click', signUpWithEmail);

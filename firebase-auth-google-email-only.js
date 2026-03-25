@@ -62,7 +62,10 @@ function showAuthError(error) {
     "auth/wrong-password": "The password is incorrect.",
     "auth/invalid-email": "Enter a valid email address.",
     "auth/email-already-in-use": "An account already exists with that email.",
-    "auth/weak-password": "Choose a stronger password."
+    "auth/weak-password": "Choose a stronger password.",
+    "auth/popup-closed-by-user": "The Google sign-in popup was closed before completion.",
+    "auth/popup-blocked": "Your browser blocked the sign-in popup. Allow popups and try again.",
+    "auth/unauthorized-domain": "This domain is not authorized in Firebase Authentication. Add your GitHub Pages domain in Firebase settings."
   };
 
   const message = map[error.code] || "Authentication failed. Please try again.";

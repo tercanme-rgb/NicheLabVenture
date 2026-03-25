@@ -1,4 +1,6 @@
 window.currentUser = null;
+let dashboardActionsWired = false;
+let dashboardLoadedOnce = false;
 
 function openAuthModal() {
   const modal = document.getElementById("auth-modal");
@@ -22,6 +24,9 @@ function updateAuthUI(user) {
 }
 
 function wireProtectedDashboardActions() {
+  if (dashboardActionsWired) return;
+  dashboardActionsWired = true;
+
   document.querySelectorAll(".cta-save-idea,[data-requires-auth='save']").forEach((btn) => {
     btn.addEventListener("click", (e) => {
       if (!requireAuth("save")) e.preventDefault();
@@ -43,19 +48,25 @@ function wireProtectedDashboardActions() {
   }
 }
 
+function loadDashboardOnce(loadDashboard) {
+  if (dashboardLoadedOnce) return;
+  dashboardLoadedOnce = true;
+  if (typeof loadDashboard === "function") loadDashboard();
+}
+
 function initDashboardWithoutAuthLock(auth, loadDashboard) {
+  wireProtectedDashboardActions();
+
   if (!auth || typeof auth.onAuthStateChanged !== "function") {
     window.currentUser = null;
-    if (typeof loadDashboard === "function") loadDashboard();
-    wireProtectedDashboardActions();
     updateAuthUI(null);
+    loadDashboardOnce(loadDashboard);
     return;
   }
 
   auth.onAuthStateChanged((user) => {
     window.currentUser = user || null;
-    if (typeof loadDashboard === "function") loadDashboard();
-    wireProtectedDashboardActions();
     updateAuthUI(user || null);
+    loadDashboardOnce(loadDashboard);
   });
 }
