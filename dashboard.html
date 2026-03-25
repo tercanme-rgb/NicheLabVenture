@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NicheLab — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+:root{
+  --bg:#07080C;--s1:#0B0D15;--s2:#10131E;--s3:#161B28;
+  --b1:#1D2136;--b2:#252B44;--b3:#2E3558;
+  --t1:#ECF0F8;--t2:#8892B0;--t3:#505878;
+  --gold:#C8861A;--gold-l:#E8A832;
+  --gold-bg:rgba(200,134,26,.07);--gold-br:rgba(200,134,26,.22);
+  --cyan:#0BB8D4;--cyan-bg:rgba(11,184,212,.07);--cyan-br:rgba(11,184,212,.2);
+  --green:#22C55E;--green-bg:rgba(34,197,94,.07);--green-br:rgba(34,197,94,.2);
+  --red:#EF4444;--red-bg:rgba(239,68,68,.07);--red-br:rgba(239,68,68,.2);
+  --amber:#F59E0B;--amber-bg:rgba(245,158,11,.07);--amber-br:rgba(245,158,11,.2);
+  --sidebar:240px;
+  --display:'Cormorant Garamond',Georgia,serif;
+  --body:'Plus Jakarta Sans',sans-serif;
+  --mono:'IBM Plex Mono',monospace;
+  --r:8px;--r-lg:12px;--r-xl:16px;--r-2xl:20px;
+}
+body{font-family:var(--body);background:var(--bg);color:var(--t1);line-height:1.6;font-size:15px;overflow-x:hidden;display:flex;flex-direction:column;min-height:100vh}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.018;pointer-events:none;z-index:9999}
+a{color:inherit;text-decoration:none}
+
+/* TOPBAR */
+.topbar{position:sticky;top:0;z-index:200;background:rgba(7,8,12,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--b1);height:56px;display:flex;align-items:center;padding:0 20px;gap:16px;flex-shrink:0}
+.tb-logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:14px;letter-spacing:-.2px;margin-right:auto}
+.logo-mark{width:28px;height:28px;background:var(--gold);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;font-weight:500;color:#FFFDF7;flex-shrink:0}
+.tb-back{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--t3);padding:5px 10px;border-radius:6px;border:1px solid var(--b1);cursor:pointer;transition:.15s;background:transparent}
+.tb-back:hover{color:var(--t1);border-color:var(--b2)}
+.tb-plan{font-family:var(--mono);font-size:10px;padding:3px 9px;border-radius:20px;background:var(--gold-bg);border:1px solid var(--gold-br);color:var(--gold-l)}
+.tb-count{font-family:var(--mono);font-size:10px;color:var(--t3)}
+
+/* LAYOUT */
+.dash-layout{display:flex;flex:1;min-height:0}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar);background:var(--s1);border-right:1px solid var(--b1);display:flex;flex-direction:column;flex-shrink:0;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto}
+.sb-section{padding:14px 12px 10px;border-bottom:1px solid var(--b1)}
+.sb-label{font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:1.1px;text-transform:uppercase;margin-bottom:8px;padding:0 4px}
+.sb-item{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r);cursor:pointer;transition:.12s;font-size:13px;color:var(--t2);font-weight:500}
+.sb-item:hover{background:var(--s2);color:var(--t1)}
+.sb-item.active{background:var(--gold-bg);color:var(--gold-l);border:1px solid var(--gold-br)}
+.sb-item .sb-icon{font-size:14px;flex-shrink:0;width:20px;text-align:center}
+.sb-item .sb-count{margin-left:auto;font-family:var(--mono);font-size:10px;background:var(--s3);border:1px solid var(--b2);border-radius:20px;padding:1px 6px;color:var(--t3)}
+.sb-item.active .sb-count{background:var(--gold-bg);border-color:var(--gold-br);color:var(--gold-l)}
+.sb-spacer{flex:1}
+.sb-upgrade{margin:12px;padding:14px;background:linear-gradient(135deg,#120F05,var(--s1));border:1px solid var(--gold-br);border-radius:var(--r-lg);text-align:center}
+.sb-upgrade-title{font-size:12px;font-weight:700;margin-bottom:4px;color:var(--gold-l)}
+.sb-upgrade-copy{font-size:11px;color:var(--t3);line-height:1.5;margin-bottom:10px}
+.btn-gold-sm{padding:7px 14px;background:var(--gold);color:#FFFDF7;border:none;border-radius:var(--r);font-size:12px;font-weight:600;cursor:pointer;font-family:var(--body);width:100%;transition:.15s}
+.btn-gold-sm:hover{background:var(--gold-l)}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+
+/* PANELS */
+.panel{display:none;flex-direction:column;flex:1}
+.panel.active{display:flex}
+
+/* LOADING STATE */
+.loading-state{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:14px;color:var(--t3)}
+.loading-spinner{width:28px;height:28px;border:2px solid var(--b2);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-state{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:10px;text-align:center;padding:40px}
+.error-icon{font-size:36px;opacity:.4}
+.error-title{font-size:16px;font-weight:700;color:var(--red)}
+.error-copy{font-size:13px;color:var(--t2);max-width:400px;line-height:1.7}
+.error-code{font-family:var(--mono);font-size:11px;color:var(--t3);background:var(--s2);padding:8px 12px;border-radius:var(--r);margin-top:4px}
+
+/* REPORTS PANEL */
+.reports-header{padding:24px 28px 18px;border-bottom:1px solid var(--b1)}
+.rh-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.rh-title{font-family:var(--display);font-size:26px;font-weight:700;letter-spacing:-.3px;line-height:1}
+.rh-sub{font-size:13px;color:var(--t2);margin-left:auto;font-family:var(--mono)}
+.filter-row{display:flex;gap:6px;flex-wrap:wrap}
+.fchip{font-family:var(--mono);font-size:11px;padding:5px 12px;border-radius:20px;border:1px solid var(--b2);color:var(--t3);cursor:pointer;background:transparent;transition:.12s}
+.fchip:hover{color:var(--t1)}
+.fchip.on{background:var(--gold-bg);border-color:var(--gold-br);color:var(--gold-l)}
+.reports-list{padding:20px 28px;display:flex;flex-direction:column;gap:10px}
+.report-row{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--s1);border:1px solid var(--b1);border-radius:var(--r-lg);cursor:pointer;transition:.15s}
+.report-row:hover{border-color:var(--b2);transform:translateX(2px)}
+.report-row.selected{border-color:var(--gold-br);background:var(--gold-bg)}
+.rr-icon{width:40px;height:40px;border-radius:10px;background:var(--s2);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.rr-meta{flex:1;min-width:0}
+.rr-title{font-size:13px;font-weight:700;letter-spacing:-.2px;margin-bottom:3px}
+.rr-cat{font-family:var(--mono);font-size:10px;color:var(--t3)}
+.rr-scores{display:flex;gap:6px;margin-top:5px;flex-wrap:wrap}
+.rr-score{font-family:var(--mono);font-size:10px;padding:2px 6px;border-radius:4px;background:var(--s2);border:1px solid var(--b2)}
+.sc-hi{color:var(--green)}.sc-md{color:var(--amber)}.sc-lo{color:var(--red)}
+.rr-badge{font-family:var(--mono);font-size:10px;padding:3px 8px;border-radius:20px;flex-shrink:0}
+.badge-hot{background:var(--red-bg);color:var(--red);border:1px solid var(--red-br)}
+.badge-new{background:var(--green-bg);color:var(--green);border:1px solid var(--green-br)}
+.badge-emerging{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-br)}
+.badge-pro{background:var(--gold-bg);color:var(--gold-l);border:1px solid var(--gold-br)}
+.rr-arrow{color:var(--t3);font-size:16px;transition:.15s}
+.report-row:hover .rr-arrow{color:var(--gold-l)}
+
+/* REPORT VIEWER */
+.report-viewer{display:none;flex-direction:column;flex:1}
+.report-viewer.active{display:flex}
+.rv-topbar{padding:14px 28px;border-bottom:1px solid var(--b1);display:flex;align-items:center;gap:12px}
+.rv-back{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--t3);cursor:pointer;padding:5px 10px;border-radius:6px;border:1px solid var(--b1);transition:.15s;background:transparent}
+.rv-back:hover{color:var(--t1);border-color:var(--b2)}
+.rv-meta{font-family:var(--mono);font-size:11px;color:var(--t3);margin-left:auto;display:flex;gap:12px;align-items:center}
+.rv-body{padding:28px;overflow-y:auto;flex:1}
+.rv-hero{margin-bottom:28px}
+.rv-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.rv-cat{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.8px;text-transform:uppercase}
+.rv-title{font-family:var(--display);font-size:clamp(26px,4vw,44px);font-weight:700;letter-spacing:-.5px;line-height:1.05;margin-bottom:10px}
+.rv-tagline{font-size:15px;color:var(--t2);line-height:1.75;max-width:760px;margin-bottom:18px}
+.rv-scores-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.rv-chip{display:flex;align-items:center;gap:5px;padding:5px 11px;background:var(--s2);border:1px solid var(--b2);border-radius:7px;font-family:var(--mono);font-size:11px}
+.rv-chip .rl{color:var(--t3)}.rv-chip .rv{font-weight:500;color:var(--t1)}
+.rv-divider{height:1px;background:var(--b1);margin:24px 0}
+.rv-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--b1);border:1px solid var(--b1);border-radius:var(--r-xl);overflow:hidden;margin-bottom:28px}
+.rv-col{background:var(--s1);padding:22px 20px}
+.rv-col-title{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--t3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.rv-col-title::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--gold)}
+.rv-col-body{font-size:13px;color:var(--t2);line-height:1.7}
+.rv-col-body strong{color:var(--t1);font-weight:600}
+.rv-col-body p+p{margin-top:8px}
+.sig-row{display:flex;flex-direction:column;gap:8px}
+.sig-item{display:flex;align-items:flex-start;gap:8px;font-size:12px}
+.sig-dot{width:5px;height:5px;border-radius:50%;background:var(--cyan);margin-top:5px;flex-shrink:0}
+.sig-txt{color:var(--t2)}.sig-txt em{color:var(--cyan);font-style:normal;font-weight:600}
+.exec-steps{display:flex;flex-direction:column;gap:8px}
+.estep{display:flex;align-items:flex-start;gap:8px;font-size:12px}
+.estep-n{width:18px;height:18px;border-radius:5px;background:var(--s3);border:1px solid var(--b2);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--t3);flex-shrink:0;margin-top:1px}
+.estep-t{color:var(--t2);line-height:1.5}.estep-t strong{color:var(--t1);font-weight:600}
+.rv-footer-bar{display:flex;align-items:center;gap:12px;padding:16px 28px;border-top:1px solid var(--b1);background:var(--s1);flex-shrink:0}
+.rv-mrr{display:flex;align-items:center;gap:6px;padding:6px 12px;background:var(--green-bg);border:1px solid var(--green-br);border-radius:6px;font-family:var(--mono);font-size:12px;font-weight:500;color:var(--green)}
+.rv-timing{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--t3)}
+.rv-timing-dot{width:5px;height:5px;border-radius:50%;background:var(--amber)}
+.rv-actions{display:flex;gap:8px;margin-left:auto}
+.btn-outline-sm{padding:7px 14px;background:transparent;color:var(--t2);border:1px solid var(--b2);border-radius:var(--r);font-size:12px;font-weight:600;cursor:pointer;transition:.15s;font-family:var(--body)}
+.btn-outline-sm:hover{color:var(--t1);border-color:var(--b3)}
+.btn-gold-ol{padding:7px 14px;background:var(--gold-bg);color:var(--gold-l);border:1px solid var(--gold-br);border-radius:var(--r);font-size:12px;font-weight:600;cursor:pointer;transition:.15s;font-family:var(--body)}
+.btn-gold-ol:hover{background:rgba(200,134,26,.14)}
+
+/* DEEP DIVE */
+.rv-section{margin-bottom:24px}
+.rv-section-title{font-size:15px;font-weight:700;letter-spacing:-.2px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.rv-section-title::after{content:'';flex:1;height:1px;background:var(--b1)}
+.rv-table{width:100%;border-collapse:collapse;font-size:13px}
+.rv-table th{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.5px;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--b1)}
+.rv-table td{padding:10px 12px;border-bottom:1px solid var(--b1);color:var(--t2);vertical-align:top;line-height:1.55}
+.rv-table td strong{color:var(--t1)}
+.rv-table tr:last-child td{border-bottom:none}
+.rv-table tr:hover td{background:var(--s2)}
+.risk-high{color:var(--red)}.risk-mid{color:var(--amber)}.risk-low{color:var(--green)}
+.tam-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+.tam-card{background:var(--s2);border:1px solid var(--b2);border-radius:var(--r-lg);padding:16px;text-align:center}
+.tam-label{font-family:var(--mono);font-size:10px;color:var(--t3);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+.tam-value{font-family:var(--mono);font-size:22px;font-weight:500;color:var(--t1);line-height:1;margin-bottom:4px}
+.tam-note{font-size:11px;color:var(--t3)}
+.model-row-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--s2);border:1px solid var(--b2);border-radius:var(--r);margin-bottom:8px}
+.model-tier{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--t1);min-width:90px}
+.model-price{font-family:var(--mono);font-size:13px;color:var(--gold-l);font-weight:500;min-width:80px}
+.model-target{font-size:12px;color:var(--t2);flex:1}
+.model-rev{font-family:var(--mono);font-size:11px;color:var(--green);margin-left:auto}
+
+/* SIGNALS PANEL */
+.signals-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:24px 28px}
+.signal-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r-xl);padding:20px}
+.signal-card-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.signal-card-src{font-family:var(--mono);font-size:10px;color:var(--t3);margin-bottom:14px}
+.signal-chart{display:flex;align-items:flex-end;gap:3px;height:48px;margin-bottom:10px}
+.bar{flex:1;background:var(--b2);border-radius:2px}
+.bar.active{background:var(--gold)}
+.signal-pct{font-family:var(--mono);font-size:24px;font-weight:500;color:var(--green);line-height:1;margin-bottom:4px}
+.signal-label{font-size:12px;color:var(--t2)}
+
+/* SAVED PANEL */
+.saved-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:12px;color:var(--t3)}
+.saved-empty-icon{font-size:40px;opacity:.4}
+.saved-empty-text{font-size:14px}
+.saved-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:24px 28px}
+.saved-card{background:var(--s1);border:1px solid var(--b1);border-radius:var(--r-xl);padding:18px;cursor:pointer;transition:.15s}
+.saved-card:hover{border-color:var(--b2)}
+.saved-card-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.saved-card-cat{font-family:var(--mono);font-size:10px;color:var(--t3);margin-bottom:10px}
+.saved-card-footer{display:flex;align-items:center;justify-content:space-between}
+.saved-remove{font-family:var(--mono);font-size:10px;color:var(--t3);cursor:pointer;padding:3px 7px;border-radius:4px;border:1px solid var(--b2);background:transparent;transition:.12s}
+.saved-remove:hover{color:var(--red);border-color:var(--red-br)}
+
+/* TOAST */
+.toast{position:fixed;right:20px;bottom:20px;z-index:10000;background:rgba(11,13,21,.97);color:var(--t1);border:1px solid var(--b2);border-radius:10px;padding:11px 14px;font-size:13px;box-shadow:0 14px 36px rgba(0,0,0,.3);opacity:0;transform:translateY(8px);pointer-events:none;transition:.22s;max-width:320px}
+.toast.show{opacity:1;transform:none}
+
+@media(max-width:900px){
+  .sidebar{display:none}
+  .rv-grid,.tam-grid,.saved-grid,.signals-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-logo">
+    <div class="logo-mark">NL</div>
+    <span>NicheLab</span>
+  </div>
+  <span class="tb-plan">FREE PLAN</span>
+  <span class="tb-count" id="report-count-badge"></span>
+  <button class="tb-back" onclick="window.location.href='index.html'">← Back to site</button>
+</div>
+
+<div class="dash-layout">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-section">
+      <div class="sb-label">Navigation</div>
+      <div class="sb-item active" data-panel="reports">
+        <span class="sb-icon">📋</span>Reports<span class="sb-count" id="sb-report-count">…</span>
+      </div>
+      <div class="sb-item" data-panel="signals">
+        <span class="sb-icon">📡</span>Signals<span class="sb-count">8</span>
+      </div>
+      <div class="sb-item" data-panel="saved">
+        <span class="sb-icon">🔖</span>Saved<span class="sb-count" id="saved-count">0</span>
+      </div>
+    </div>
+    <div class="sb-spacer"></div>
+    <div class="sb-upgrade">
+      <div class="sb-upgrade-title">Unlock all 200+ reports</div>
+      <div class="sb-upgrade-copy">Custom research, financial models, competitor intel.</div>
+      <button class="btn-gold-sm" onclick="window.location.href='index.html#pricing'">Upgrade → $249/yr</button>
+    </div>
+  </aside>
+
+  <main class="main" id="main">
+
+    <!-- REPORTS PANEL -->
+    <div class="panel active" id="panel-reports">
+      <div id="reports-list-view" style="display:flex;flex-direction:column;flex:1">
+        <div class="reports-header">
+          <div class="rh-top">
+            <h1 class="rh-title">Opportunity Reports</h1>
+            <span class="rh-sub" id="rh-sub-count">Loading...</span>
+          </div>
+          <div class="filter-row">
+            <button class="fchip on" data-filter="all">All</button>
+            <button class="fchip" data-filter="micro-saas">Micro-SaaS</button>
+            <button class="fchip" data-filter="dev-tools">Dev Tools</button>
+            <button class="fchip" data-filter="ai">AI</button>
+            <button class="fchip" data-filter="compliance">Compliance</button>
+          </div>
+        </div>
+        <div id="reports-list-container" style="flex:1"></div>
+      </div>
+
+      <div class="report-viewer" id="report-viewer">
+        <div class="rv-topbar">
+          <button class="rv-back" id="rv-back">← All Reports</button>
+          <div class="rv-meta">
+            <span id="rv-date"></span>
+            <span id="rv-report-num"></span>
+          </div>
+        </div>
+        <div class="rv-body" id="rv-body"></div>
+        <div class="rv-footer-bar" id="rv-footer"></div>
+      </div>
+    </div>
+
+    <!-- SIGNALS PANEL -->
+    <div class="panel" id="panel-signals">
+      <div class="reports-header">
+        <div class="rh-top">
+          <h1 class="rh-title">Live Market Signals</h1>
+          <span class="rh-sub">Updated weekly</span>
+        </div>
+      </div>
+      <div class="signals-grid" id="signals-grid"></div>
+    </div>
+
+    <!-- SAVED PANEL -->
+    <div class="panel" id="panel-saved">
+      <div class="reports-header">
+        <div class="rh-top">
+          <h1 class="rh-title">Saved Ideas</h1>
+          <span class="rh-sub" id="saved-header-count">0 saved</span>
+        </div>
+      </div>
+      <div id="saved-content" style="display:flex;flex-direction:column;flex:1"></div>
+    </div>
+
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SIGNALS_DATA = [
+  { title:'Webhook Debugging', src:'Google Trends · 36mo', pct:'+287%', bars:[3,4,5,4,6,7,8,9,10,10], color:'var(--green)' },
+  { title:'AI Agent Debugging', src:'Search Volume · 18mo', pct:'+890%', bars:[1,2,2,3,4,5,7,9,10,10], color:'var(--green)' },
+  { title:'API Rate Limiting SaaS', src:'Search Volume · 12mo', pct:'+412%', bars:[2,3,4,4,5,6,8,9,10,10], color:'var(--green)' },
+  { title:'Mock API Servers', src:'GitHub Stars · 6mo', pct:'+195%', bars:[4,5,5,6,7,7,8,9,9,10], color:'var(--green)' },
+  { title:'EU AI Act Compliance', src:'Google Trends · 18mo', pct:'+890%', bars:[1,1,2,3,5,7,9,10,10,10], color:'var(--amber)' },
+  { title:'Postman Alternatives', src:'Reddit Threads · 90d', pct:'+340%', bars:[3,4,5,6,7,8,9,9,10,10], color:'var(--green)' },
+  { title:'B2B No-Code Tools', src:'Reddit Sentiment', pct:'+63%', bars:[6,6,7,7,7,8,8,8,9,9], color:'var(--cyan)' },
+  { title:'Micro-SaaS Infra', src:'Crunchbase Funding', pct:'+78%', bars:[5,6,6,7,7,8,8,8,9,9], color:'var(--cyan)' },
+];
+
+let REPORTS = [];
+let savedIdeas = JSON.parse(localStorage.getItem('nichelab_saved_ideas') || '[]');
+let currentReport = null;
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window.__tt);
+  window.__tt = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── LOAD REPORTS FROM JSON ──
+async function loadReports() {
+  const container = document.getElementById('reports-list-container');
+
+  // Show loading
+  container.innerHTML = `
+    <div class="loading-state">
+      <div class="loading-spinner"></div>
+      <span style="font-family:var(--mono);font-size:12px">Loading reports...</span>
+    </div>
+  `;
+
+  try {
+    // Cache bust to always get fresh data in GitHub Pages
+    const res = await fetch('reports.json?v=' + Date.now());
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    REPORTS = await res.json();
+
+    // Update counts
+    document.getElementById('sb-report-count').textContent = REPORTS.length;
+    document.getElementById('rh-sub-count').textContent = REPORTS.length + ' reports';
+    document.getElementById('report-count-badge').textContent = REPORTS.length + ' reports loaded';
+
+    renderList();
+    checkDeepLink();
+
+  } catch (err) {
+    container.innerHTML = `
+      <div class="error-state">
+        <div class="error-icon">⚠</div>
+        <div class="error-title">Could not load reports</div>
+        <div class="error-copy">Make sure <strong>reports.json</strong> is in the same folder as this file.</div>
+        <div class="error-code">${err.message}</div>
+        <div style="margin-top:14px;font-size:12px;color:var(--t3);font-family:var(--mono)">
+          If running locally, use a local server:<br>
+          npx serve . &nbsp;or&nbsp; python -m http.server
+        </div>
+      </div>
+    `;
+    document.getElementById('sb-report-count').textContent = '!';
+    document.getElementById('rh-sub-count').textContent = 'Error loading';
+    console.error('Failed to load reports.json:', err);
+  }
+}
+
+// ── RENDER LIST ──
+function renderList() {
+  const container = document.getElementById('reports-list-container');
+  container.innerHTML = `<div class="reports-list">${
+    REPORTS.map(r => `
+      <div class="report-row" data-id="${r.id}">
+        <div class="rr-icon">${r.icon || '📄'}</div>
+        <div class="rr-meta">
+          <div class="rr-title">${r.title}</div>
+          <div class="rr-cat">${r.category}</div>
+          <div class="rr-scores">
+            <span class="rr-score ${scoreClass(r.scores?.market)}">Market ${r.scores?.market ?? '–'}</span>
+            <span class="rr-score ${scoreClass(r.scores?.revenue)}">Revenue ${r.scores?.revenue ?? '–'}</span>
+            <span class="rr-score ${scoreClass(r.scores?.difficulty)}">Difficulty ${r.scores?.difficulty ?? '–'}</span>
+            <span class="rr-score">TAM ${r.scores?.tam ?? '–'}</span>
+            <span class="rr-score">CAGR ${r.scores?.cagr ?? '–'}</span>
+          </div>
+        </div>
+        <span class="rr-badge ${badgeClass(r.badge)}">${r.badgeLabel || r.badge}</span>
+        <span class="rr-arrow">→</span>
+      </div>
+    `).join('')
+  }</div>`;
+
+  container.querySelectorAll('.report-row[data-id]').forEach(row => {
+    row.addEventListener('click', () => openReport(row.dataset.id));
+  });
+}
+
+// ── HELPERS ──
+function scoreClass(v) {
+  if (!v && v !== 0) return '';
+  if (v >= 70) return 'sc-hi';
+  if (v >= 50) return 'sc-md';
+  return 'sc-lo';
+}
+function badgeClass(b) {
+  return { hot:'badge-hot', new:'badge-new', emerging:'badge-emerging', pro:'badge-pro' }[b] || 'badge-new';
+}
+function riskClass(l) {
+  if (!l) return '';
+  const lo = l.toLowerCase();
+  if (lo.startsWith('high')) return 'risk-high';
+  if (lo.startsWith('medium') || lo.startsWith('med')) return 'risk-mid';
+  return 'risk-low';
+}
+
+// ── FILTERS ──
+document.querySelectorAll('.fchip').forEach(chip => {
+  chip.addEventListener('click', function() {
+    document.querySelectorAll('.fchip').forEach(c => c.classList.remove('on'));
+    this.classList.add('on');
+    const f = this.dataset.filter;
+    document.querySelectorAll('.report-row[data-id]').forEach(row => {
+      const r = REPORTS.find(x => x.id === row.dataset.id);
+      const show = f === 'all' || (r?.filters || []).includes(f);
+      row.style.display = show ? 'flex' : 'none';
+    });
+  });
+});
+
+// ── SIDEBAR NAV ──
+function setPanel(panelId) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + panelId)?.classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.toggle('active', i.dataset.panel === panelId));
+  if (panelId === 'saved') renderSaved();
+}
+document.querySelectorAll('.sb-item[data-panel]').forEach(item => {
+  item.addEventListener('click', () => setPanel(item.dataset.panel));
+});
+
+// ── OPEN REPORT ──
+function openReport(id) {
+  const r = REPORTS.find(x => x.id === id);
+  if (!r) return;
+  currentReport = r;
+
+  document.getElementById('reports-list-view').style.display = 'none';
+  const viewer = document.getElementById('report-viewer');
+  viewer.classList.add('active');
+
+  document.getElementById('rv-date').textContent = r.date || '';
+  document.getElementById('rv-report-num').textContent = r.reportNum || '';
+
+  const isSaved = savedIdeas.includes(r.title);
+
+  document.getElementById('rv-body').innerHTML = `
+    <div class="rv-hero">
+      <div class="rv-eyebrow">
+        <span class="rv-cat">${r.category}</span>
+        <span class="rr-badge ${badgeClass(r.badge)}">${r.badgeLabel || r.badge}</span>
+      </div>
+      <div class="rv-title">${r.icon || ''} ${r.title}</div>
+      <div class="rv-tagline">${r.tagline}</div>
+      <div class="rv-scores-row">
+        <div class="rv-chip"><span class="rl">Market</span><span class="rv ${scoreClass(r.scores?.market)}">${r.scores?.market ?? '–'}/100</span></div>
+        <div class="rv-chip"><span class="rl">Revenue</span><span class="rv ${scoreClass(r.scores?.revenue)}">${r.scores?.revenue ?? '–'}/100</span></div>
+        <div class="rv-chip"><span class="rl">Difficulty</span><span class="rv ${scoreClass(r.scores?.difficulty)}">${r.scores?.difficulty ?? '–'}/100</span></div>
+        <div class="rv-chip"><span class="rl">TAM</span><span class="rv">${r.scores?.tam ?? '–'}</span></div>
+        <div class="rv-chip"><span class="rl">CAGR</span><span class="rv ${scoreClass(r.scores?.cagr)}">${r.scores?.cagr ?? '–'}</span></div>
+        <div class="rv-chip"><span class="rl">MVP</span><span class="rv">${r.scores?.mvp ?? '–'}</span></div>
+      </div>
+    </div>
+
+    <div class="rv-grid">
+      <div class="rv-col">
+        <div class="rv-col-title">Why now</div>
+        <div class="rv-col-body">${r.whyNow}</div>
+      </div>
+      <div class="rv-col">
+        <div class="rv-col-title">Proof signals</div>
+        <div class="sig-row">${(r.signals || []).map(s => `
+          <div class="sig-item"><div class="sig-dot"></div><div class="sig-txt">${s.text}</div></div>
+        `).join('')}</div>
+      </div>
+      <div class="rv-col">
+        <div class="rv-col-title">30-day execution plan</div>
+        <div class="exec-steps">${(r.execPlan || []).map(e => `
+          <div class="estep"><div class="estep-n">${e.n}</div><div class="estep-t">${e.t}</div></div>
+        `).join('')}</div>
+      </div>
+    </div>
+
+    <div class="rv-divider"></div>
+
+    <div class="rv-section">
+      <div class="rv-section-title">Market Sizing</div>
+      <div class="tam-grid">
+        <div class="tam-card"><div class="tam-label">TAM · Total Addressable</div><div class="tam-value">${r.tam?.total ?? '–'}</div><div class="tam-note">Global market</div></div>
+        <div class="tam-card"><div class="tam-label">SAM · Serviceable</div><div class="tam-value">${r.tam?.sam ?? '–'}</div><div class="tam-note">Reachable segment</div></div>
+        <div class="tam-card"><div class="tam-label">SOM · Obtainable</div><div class="tam-value">${r.tam?.som ?? '–'}</div><div class="tam-note">Year 3 target</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--t3);font-family:var(--mono);line-height:1.6">${r.tamNotes || ''}</div>
+    </div>
+
+    <div class="rv-divider"></div>
+
+    <div class="rv-section">
+      <div class="rv-section-title">Competitor Landscape</div>
+      <table class="rv-table">
+        <thead><tr><th>Competitor</th><th>Pricing</th><th>Gap / Weakness</th><th>Threat</th></tr></thead>
+        <tbody>${(r.competitors || []).map(c => `
+          <tr>
+            <td><strong>${c.name}</strong></td>
+            <td>${c.pricing}</td>
+            <td>${c.gap}</td>
+            <td class="${riskClass(c.threat)}">${c.threat}</td>
+          </tr>
+        `).join('')}</tbody>
+      </table>
+    </div>
+
+    <div class="rv-divider"></div>
+
+    <div class="rv-section">
+      <div class="rv-section-title">Revenue Model</div>
+      ${(r.revenueModel || []).map(m => `
+        <div class="model-row-item">
+          <span class="model-tier">${m.tier}</span>
+          <span class="model-price">${m.price}</span>
+          <span class="model-target">${m.target}</span>
+          <span class="model-rev">${m.rev}</span>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="rv-divider"></div>
+
+    <div class="rv-section">
+      <div class="rv-section-title">Risk Matrix</div>
+      <table class="rv-table">
+        <thead><tr><th>Risk</th><th>Likelihood</th><th>Mitigation</th></tr></thead>
+        <tbody>${(r.risks || []).map(risk => `
+          <tr>
+            <td><strong>${risk.risk}</strong></td>
+            <td class="${riskClass(risk.likelihood)}">${risk.likelihood}</td>
+            <td>${risk.mitigation}</td>
+          </tr>
+        `).join('')}</tbody>
+      </table>
+    </div>
+
+    <div class="rv-divider"></div>
+
+    <div class="rv-section">
+      <div class="rv-section-title">Founder Fit Assessment</div>
+      <div style="font-size:14px;color:var(--t2);line-height:1.75;background:var(--s1);border:1px solid var(--b1);border-radius:var(--r-lg);padding:16px 18px">${r.founderFit}</div>
+    </div>
+
+    <div style="height:20px"></div>
+  `;
+
+  document.getElementById('rv-footer').innerHTML = `
+    <div class="rv-timing"><div class="rv-timing-dot"></div>${r.mvpTimeline}</div>
+    <div class="rv-mrr">✦ ${r.mrrProjection}</div>
+    <div class="rv-actions">
+      <button class="btn-outline-sm" id="rv-save-btn">${isSaved ? 'Saved ✓' : 'Save idea'}</button>
+      <button class="btn-gold-ol" onclick="window.location.href='index.html#pricing'">Upgrade for deeper intel →</button>
+    </div>
+  `;
+
+  document.getElementById('rv-save-btn')?.addEventListener('click', function() {
+    const current = JSON.parse(localStorage.getItem('nichelab_saved_ideas') || '[]');
+    if (!current.includes(r.title)) {
+      current.push(r.title);
+      localStorage.setItem('nichelab_saved_ideas', JSON.stringify(current));
+      savedIdeas = current;
+      this.textContent = 'Saved ✓';
+      updateSavedCount();
+      showToast('Idea saved.');
+    } else {
+      showToast('Already saved.');
+    }
+  });
+
+  document.getElementById('rv-body').scrollTop = 0;
+}
+
+// ── BACK ──
+document.getElementById('rv-back')?.addEventListener('click', () => {
+  document.getElementById('report-viewer').classList.remove('active');
+  const lv = document.getElementById('reports-list-view');
+  lv.style.display = 'flex';
+  lv.style.flexDirection = 'column';
+  lv.style.flex = '1';
+  currentReport = null;
+});
+
+// ── SIGNALS ──
+function renderSignals() {
+  document.getElementById('signals-grid').innerHTML = SIGNALS_DATA.map(s => `
+    <div class="signal-card">
+      <div class="signal-card-title">${s.title}</div>
+      <div class="signal-card-src">${s.src}</div>
+      <div class="signal-chart">${s.bars.map((h, i) => `
+        <div class="bar ${i >= s.bars.length - 3 ? 'active' : ''}" style="height:${h * 4.5}px"></div>
+      `).join('')}</div>
+      <div class="signal-pct" style="color:${s.color}">${s.pct}</div>
+      <div class="signal-label">Growth signal</div>
+    </div>
+  `).join('');
+}
+
+// ── SAVED ──
+function updateSavedCount() {
+  savedIdeas = JSON.parse(localStorage.getItem('nichelab_saved_ideas') || '[]');
+  document.getElementById('saved-count').textContent = savedIdeas.length;
+  document.getElementById('saved-header-count').textContent = savedIdeas.length + ' saved';
+}
+
+function renderSaved() {
+  updateSavedCount();
+  const content = document.getElementById('saved-content');
+  if (!savedIdeas.length) {
+    content.innerHTML = `
+      <div class="saved-empty">
+        <div class="saved-empty-icon">🔖</div>
+        <div class="saved-empty-text">No saved ideas yet.</div>
+      </div>
+    `;
+    return;
+  }
+  content.innerHTML = `<div class="saved-grid">${savedIdeas.map(title => {
+    const r = REPORTS.find(x => x.title === title);
+    return r ? `
+      <div class="saved-card" data-id="${r.id}">
+        <div class="saved-card-title">${r.icon || ''} ${r.title}</div>
+        <div class="saved-card-cat">${r.category}</div>
+        <div class="saved-card-footer">
+          <span class="rr-badge ${badgeClass(r.badge)}">${r.badgeLabel}</span>
+          <button class="saved-remove" data-title="${r.title}">Remove</button>
+        </div>
+      </div>
+    ` : `
+      <div class="saved-card">
+        <div class="saved-card-title">${title}</div>
+        <div class="saved-card-cat">Previously saved</div>
+        <div class="saved-card-footer">
+          <button class="saved-remove" data-title="${title}">Remove</button>
+        </div>
+      </div>
+    `;
+  }).join('')}</div>`;
+
+  content.querySelectorAll('.saved-card[data-id]').forEach(card => {
+    card.addEventListener('click', e => {
+      if (e.target.classList.contains('saved-remove')) return;
+      setPanel('reports');
+      openReport(card.dataset.id);
+    });
+  });
+
+  content.querySelectorAll('.saved-remove').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      savedIdeas = savedIdeas.filter(t => t !== btn.dataset.title);
+      localStorage.setItem('nichelab_saved_ideas', JSON.stringify(savedIdeas));
+      updateSavedCount();
+      renderSaved();
+      showToast('Removed from saved.');
+    });
+  });
+}
+
+// ── DEEP LINK from index.html ──
+function checkDeepLink() {
+  const focus = localStorage.getItem('nichelab_dashboard_focus');
+  const selectedTitle = localStorage.getItem('nichelab_selected_report_title');
+  localStorage.removeItem('nichelab_dashboard_focus');
+  localStorage.removeItem('nichelab_selected_report_title');
+
+  if (focus === 'reports') {
+    setPanel('reports');
+    if (selectedTitle && REPORTS.length) {
+      const r = REPORTS.find(x => x.title === selectedTitle);
+      if (r) setTimeout(() => openReport(r.id), 80);
+    }
+  }
+}
+
+// ── INIT ──
+renderSignals();
+updateSavedCount();
+loadReports();
+</script>
+</body>
+</html>
