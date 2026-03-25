@@ -1,15 +1,5 @@
 {
-  "generated_at": "2026-03-24T19:17:50.741765Z",
-  "featured_report": {
-    "category": "AI Automation",
-    "title": "AI Output Validation for B2B AI Product Teams",
-    "slug": "ai-output-validation-for-b2b-ai-product-teams",
-    "subtitle": "A focused control layer for B2B SaaS teams shipping AI features that reduces the operational risk of ai output validation.",
-    "report_path": "generated-reports/reports/ai-output-validation-for-b2b-ai-product-teams.html",
-    "overall_confidence": 88,
-    "recommendation": "build",
-    "generated_at": "2026-03-24T19:17:49.797795Z"
-  },
+  "generated_at": "2026-03-25T12:00:00Z",
   "total_reports": 5,
   "categories": [
     "AI Automation",
@@ -17,5 +7,13 @@
     "Micro-SaaS",
     "Local Business",
     "B2B Services"
-  ]
+  ],
+  "featured_report": {
+    "title": "Webhook Reliability Platform for Indie Developers",
+    "subtitle": "A focused workflow product for indie SaaS teams built to reduce manual coordination.",
+    "category": "Micro-SaaS",
+    "overall_confidence": 86,
+    "recommendation": "build",
+    "report_path": "generated-reports/reports/webhook-reliability-platform-for-indie-developers.html"
+  }
 }
