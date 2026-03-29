@@ -1,3 +1,4 @@
+<style> section { padding: 80px 0; page-break-after: always; } table { width: 100%; table-layout: fixed; } </style>
 # NicheLab
 
 Market intelligence platform for independent builders.
