@@ -340,7 +340,7 @@ function genAnalystCode(){
 function initSupabase(url, key){
   try{
     const {createClient} = supabase;
-    state.sbClient = createClient(url, key);
+    state.sbClient = createClient(url, key, { auth: { storage: window.localStorage, persistSession: true, autoRefreshToken: true } });
     document.getElementById('sb-dot').className = 'status-dot ok';
     document.getElementById('sb-label').textContent = 'Supabase connected';
     log('Supabase client initialized','success');
