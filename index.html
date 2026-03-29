@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NicheLab — Premium Niche Intelligence & Market Strategy</title>
+  <meta name="description" content="NicheLab delivers institutional-grade niche market intelligence. Trusted by founders, operators, and investment professionals." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;0,600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+:root{
+  --bg:#FAFAF7;--bg-warm:#F5F4EE;--bg-card:#FFFFFF;
+  --gold:#B8860B;--gold-mid:#D4A017;--gold-bright:#F5C518;
+  --gold-tint:rgba(184,134,11,.07);--gold-border:rgba(184,134,11,.22);--gold-glow:rgba(212,160,23,.18);
+  --ink:#141410;--ink-2:#2E2E26;--ink-muted:#6A6A58;--ink-faint:#A8A898;
+  --border:rgba(20,20,16,.10);--border-md:rgba(20,20,16,.16);
+  --shadow-sm:0 1px 4px rgba(20,20,16,.07);--shadow-md:0 4px 20px rgba(20,20,16,.09);--shadow-lg:0 16px 48px rgba(20,20,16,.11);
+  --fd:'Playfair Display',Georgia,serif;--fb:'Instrument Sans',system-ui,sans-serif;--fm:'DM Mono',monospace;
+  --r:6px;--rmd:10px;--rlg:16px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--fb);font-size:16px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+input,select,textarea{font-family:inherit}
+
+/* texture */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.026'/%3E%3C/svg%3E");pointer-events:none;z-index:8000}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:66px;padding:0 56px;display:flex;align-items:center;justify-content:space-between;background:rgba(250,250,247,.93);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border-bottom:1px solid var(--border);transition:box-shadow .3s,border-color .3s}
+.nav.scrolled{box-shadow:0 2px 24px rgba(20,20,16,.06);border-bottom-color:var(--border-md)}
+.nav-logo{display:flex;align-items:center;gap:11px;cursor:pointer;user-select:none;flex-shrink:0}
+.nav-seal{width:36px;height:36px;background:var(--ink);border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nav-seal svg{width:20px;height:20px}
+.nav-brand{font-family:var(--fd);font-size:20px;font-weight:500;color:var(--ink);letter-spacing:.2px}
+.nav-links{display:flex;align-items:center;gap:2px}
+.nl{padding:7px 16px;font-size:14px;font-weight:400;color:var(--ink-muted);border-radius:var(--r);transition:all .18s;cursor:pointer;white-space:nowrap;background:none;border:none;font-family:var(--fb)}
+.nl:hover{color:var(--ink);background:var(--gold-tint)}
+.nl.on{color:var(--gold);font-weight:500}
+.nav-right{display:flex;align-items:center;gap:14px}
+.btn-console{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;background:var(--ink);color:#fff;border-radius:var(--r);font-size:13px;font-weight:500;letter-spacing:.3px;transition:all .2s;cursor:pointer;white-space:nowrap;border:none;font-family:var(--fb)}
+.btn-console:hover{background:var(--ink-2);box-shadow:var(--shadow-md);transform:translateY(-1px)}
+.cdot{width:6px;height:6px;background:var(--gold-bright);border-radius:50%;animation:pulsedot 2s infinite;flex-shrink:0}
+@keyframes pulsedot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:6px;border:none;background:none}
+.hamburger span{display:block;width:22px;height:2px;background:var(--ink-muted);border-radius:2px;transition:all .28s}
+.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mob-menu{position:fixed;top:66px;left:0;right:0;z-index:990;background:rgba(250,250,247,.98);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:12px 24px 24px;display:none;flex-direction:column;gap:2px;box-shadow:var(--shadow-lg)}
+.mob-menu.open{display:flex}
+.mob-menu .nl{font-size:16px;padding:13px 16px}
+.mob-div{height:1px;background:var(--border);margin:10px 0}
+
+/* PAGES */
+.page{display:none;padding-top:66px;min-height:100vh;position:relative;z-index:1}
+.page.on{display:block;animation:pin .3s ease both}
+@keyframes pin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* LAYOUT */
+.wrap{max-width:1200px;margin:0 auto;padding:0 56px}
+.sp{padding:100px 0}
+.hr{border:none;height:1px;background:var(--border)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--fm);font-size:10.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+.eyebrow-ln{width:28px;height:1px;background:var(--gold-mid)}
+.headline{font-family:var(--fd);font-size:clamp(40px,5.5vw,68px);font-weight:400;line-height:1.06;letter-spacing:-1.5px;color:var(--ink)}
+.headline em{font-style:italic;color:var(--gold)}
+.sub{font-size:17px;color:var(--ink-muted);line-height:1.80;font-weight:300}
+
+/* BUTTONS */
+.btn-gold{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;background:var(--gold);color:#fff;border-radius:var(--r);font-size:15px;font-weight:500;border:none;cursor:pointer;font-family:var(--fb);transition:all .22s}
+.btn-gold:hover{background:var(--gold-mid);transform:translateY(-2px);box-shadow:0 8px 28px var(--gold-glow)}
+.btn-ol{display:inline-flex;align-items:center;gap:8px;padding:13px 30px;background:transparent;color:var(--ink);border-radius:var(--r);font-size:15px;font-weight:400;border:1px solid var(--border-md);cursor:pointer;font-family:var(--fb);transition:all .2s}
+.btn-ol:hover{border-color:var(--gold-border);background:var(--gold-tint);color:var(--gold)}
+
+/* HERO */
+.hero{padding:100px 56px 90px;max-width:1200px;margin:0 auto;position:relative}
+.hrule{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 0%,var(--border-md) 20%,var(--border-md) 80%,transparent 100%)}
+.hrule-t{top:0}.hrule-b{bottom:0}
+.hero-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:10px;padding:5px 14px 5px 6px;background:var(--bg-card);border:1px solid var(--gold-border);border-radius:100px;font-size:12px;color:var(--ink-muted);margin-bottom:30px;animation:fup .4s ease both}
+.badge-pill{background:var(--gold);color:#fff;font-family:var(--fm);font-size:9px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:100px}
+.hero h1{font-family:var(--fd);font-size:clamp(48px,5.5vw,72px);font-weight:400;line-height:1.04;letter-spacing:-2px;color:var(--ink);margin-bottom:28px;animation:fup .4s .07s ease both}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-desc{font-size:17px;color:var(--ink-muted);line-height:1.80;font-weight:300;max-width:440px;margin-bottom:40px;animation:fup .4s .14s ease both}
+.hero-act{display:flex;gap:12px;flex-wrap:wrap;animation:fup .4s .21s ease both}
+@keyframes fup{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+/* Hero card */
+.hcard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rlg);box-shadow:var(--shadow-lg);overflow:hidden;animation:fup .5s .25s ease both}
+.hc-head{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.hc-lbl{font-family:var(--fm);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px}
+.hc-title{font-family:var(--fd);font-size:15px;font-weight:500;line-height:1.3;color:var(--ink)}
+.hc-status{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;background:#F0FAF4;border:1px solid rgba(34,197,94,.25);border-radius:100px;font-size:11px;color:#15803d;white-space:nowrap}
+.sdot{width:5px;height:5px;background:#22c55e;border-radius:50%}
+.hc-rows{padding:16px 24px;display:flex;flex-direction:column}
+.hc-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)}
+.hc-row:last-child{border-bottom:none}
+.hrow-l{display:flex;align-items:center;gap:10px}
+.hrow-n{font-family:var(--fm);font-size:9.5px;color:var(--gold);letter-spacing:.5px;min-width:20px}
+.hrow-t{font-size:13px;color:var(--ink-muted)}
+.hbar-w{width:80px;height:3px;background:#F0EFE8;border-radius:2px;overflow:hidden}
+.hbar{height:100%;background:var(--gold-mid);border-radius:2px}
+.hc-foot{padding:14px 24px;background:var(--bg-warm);border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.hf-lbl{font-family:var(--fm);font-size:10px;color:var(--ink-faint);letter-spacing:.5px}
+.hf-val{font-family:var(--fm);font-size:11px;color:var(--gold);letter-spacing:.5px}
+
+/* AUTH STRIP */
+.auth-strip{background:var(--ink);padding:22px 56px}
+.auth-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.auth-lbl{font-family:var(--fm);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);white-space:nowrap}
+.auth-items{display:flex;align-items:center;gap:32px;flex-wrap:wrap}
+.auth-item{font-family:var(--fd);font-size:15px;font-weight:400;font-style:italic;color:rgba(255,255,255,.55);white-space:nowrap}
+.auth-sep{color:var(--gold);opacity:.4}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.stat{padding:44px 40px;border-right:1px solid var(--border)}
+.stat:last-child{border-right:none}
+.stat-n{font-family:var(--fd);font-size:52px;font-weight:400;line-height:1;letter-spacing:-2px;color:var(--ink);margin-bottom:8px}
+.stat-n .g{color:var(--gold)}
+.stat-d{font-size:13px;color:var(--ink-muted);line-height:1.5;font-weight:300}
+
+/* SERVICES */
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--rlg);overflow:hidden;margin-top:60px}
+.svc-card{background:var(--bg-card);padding:40px 36px;transition:background .22s;position:relative}
+.svc-card:hover{background:var(--bg-warm)}
+.svc-num{font-family:var(--fm);font-size:10px;letter-spacing:2px;color:var(--gold);margin-bottom:18px}
+.svc-ico{width:48px;height:48px;background:var(--gold-tint);border:1px solid var(--gold-border);border-radius:var(--rmd);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:22px}
+.svc-t{font-family:var(--fd);font-size:20px;font-weight:500;line-height:1.2;margin-bottom:12px;color:var(--ink)}
+.svc-d{font-size:14px;color:var(--ink-muted);line-height:1.75;font-weight:300}
+.svc-tag{display:inline-block;margin-top:20px;padding:3px 11px;background:var(--bg-warm);border:1px solid var(--border);border-radius:100px;font-family:var(--fm);font-size:9.5px;letter-spacing:.5px;color:var(--ink-faint)}
+
+/* REPORT MANIFEST */
+.rm{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rlg);box-shadow:var(--shadow-md);overflow:hidden;margin-top:60px}
+.rm-head{padding:22px 32px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;background:var(--bg-warm)}
+.rm-ht{font-family:var(--fd);font-size:16px;font-weight:500}
+.rm-hm{font-family:var(--fm);font-size:10px;color:var(--ink-faint);text-align:right;line-height:1.75}
+.rm-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border)}
+.rm-cell{background:var(--bg-card);padding:18px 18px 16px;cursor:default;transition:background .2s}
+.rm-cell:hover{background:var(--bg-warm)}
+.rm-cell.act{background:var(--gold-tint);border-left:2px solid var(--gold)}
+.rm-cell.act .rm-nm{color:var(--gold)}
+.rm-s{font-family:var(--fm);font-size:9px;color:var(--gold);letter-spacing:1px;margin-bottom:6px;opacity:.7}
+.rm-nm{font-size:12px;color:var(--ink-muted);line-height:1.4}
+
+/* PRICING */
+.btoggle{display:inline-flex;align-items:center;gap:14px;background:var(--bg-card);border:1px solid var(--border);border-radius:100px;padding:5px 5px 5px 18px;margin-bottom:52px}
+.bt-lbl{font-size:14px;color:var(--ink-muted);cursor:pointer;transition:color .2s;user-select:none}
+.bt-lbl.on{color:var(--ink);font-weight:500}
+.bt-track{width:44px;height:24px;background:var(--border-md);border-radius:100px;position:relative;cursor:pointer;transition:background .25s;flex-shrink:0}
+.bt-track.yr{background:var(--gold)}
+.bt-thumb{position:absolute;top:3px;left:3px;width:18px;height:18px;background:#fff;border-radius:50%;transition:transform .25s cubic-bezier(.34,1.56,.64,1);box-shadow:0 1px 4px rgba(0,0,0,.15)}
+.bt-track.yr .bt-thumb{transform:translateX(20px)}
+.bt-save{background:var(--gold);color:#fff;font-family:var(--fm);font-size:9px;font-weight:500;letter-spacing:1px;text-transform:uppercase;padding:5px 12px;border-radius:100px;white-space:nowrap}
+
+.pc-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:820px}
+.pc{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rlg);padding:44px;position:relative;transition:border-color .25s,box-shadow .25s,transform .25s}
+.pc:hover{border-color:var(--gold-border);box-shadow:var(--shadow-lg);transform:translateY(-4px)}
+.pc.feat{border-color:var(--gold-border);background:#FFFEF8}
+.pc.feat::before{content:'MOST SELECTED';position:absolute;top:-1px;right:28px;background:var(--gold);color:#fff;font-family:var(--fm);font-size:9px;font-weight:500;letter-spacing:1.5px;padding:5px 12px;border-radius:0 0 var(--r) var(--r)}
+.pc-tier{font-family:var(--fm);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:18px}
+.pc-price{font-family:var(--fd);font-size:64px;font-weight:400;line-height:1;letter-spacing:-2.5px;color:var(--ink);margin-bottom:4px;transition:all .25s}
+.pc-price sup{font-size:26px;vertical-align:top;margin-top:14px;display:inline-block;letter-spacing:0;font-weight:500}
+.pc-cycle{font-size:13px;color:var(--ink-faint);margin-bottom:28px;min-height:20px}
+.pc-feats{list-style:none;margin-bottom:34px;display:flex;flex-direction:column;gap:10px}
+.pc-feats li{display:flex;align-items:flex-start;gap:11px;font-size:14px;color:var(--ink-muted);line-height:1.5}
+.pc-feats li::before{content:'';width:16px;height:16px;border-radius:50%;background:var(--gold-tint);border:1px solid var(--gold-border);flex-shrink:0;margin-top:1px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 8l3 3 6-6' stroke='%23B8860B' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");background-size:14px;background-position:center;background-repeat:no-repeat}
+.pc-feats li.dim{color:var(--ink-faint)}
+.pc-feats li.dim::before{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5 8h6' stroke='%23A8A898' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");border-color:var(--border);background-color:transparent}
+.btn-pg{width:100%;padding:14px;border:1px solid var(--border-md);background:transparent;color:var(--ink);border-radius:var(--r);font-size:15px;font-weight:500;cursor:pointer;font-family:var(--fb);transition:all .2s;text-align:center;display:block;text-decoration:none}
+.btn-pg:hover{border-color:var(--gold-border);background:var(--gold-tint);color:var(--gold)}
+.btn-pg-gold{width:100%;padding:14px;background:var(--gold);color:#fff;border:none;border-radius:var(--r);font-size:15px;font-weight:500;cursor:pointer;font-family:var(--fb);transition:all .22s;text-align:center;display:block;text-decoration:none}
+.btn-pg-gold:hover{background:var(--gold-mid);box-shadow:0 6px 24px var(--gold-glow)}
+
+/* CTA */
+.cta-band{background:var(--ink);padding:100px 56px;text-align:center;position:relative;overflow:hidden}
+.cta-band::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:600px;height:300px;background:radial-gradient(ellipse,rgba(184,134,11,.15) 0%,transparent 70%);pointer-events:none}
+.cta-band h2{font-family:var(--fd);font-size:clamp(38px,5vw,62px);font-weight:400;letter-spacing:-2px;line-height:1.06;color:#fff;margin-bottom:20px}
+.cta-band h2 em{font-style:italic;color:var(--gold-bright)}
+.cta-band p{font-size:17px;color:rgba(255,255,255,.55);font-weight:300;max-width:440px;margin:0 auto 44px}
+
+/* LEGAL */
+.legal-wrap{max-width:820px;margin:0 auto;padding:60px 56px}
+.ltab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:52px}
+.ltab{padding:12px 28px;font-size:15px;color:var(--ink-muted);cursor:pointer;border:none;background:none;font-family:var(--fb);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
+.ltab:hover{color:var(--ink)}
+.ltab.on{color:var(--gold);border-bottom-color:var(--gold);font-weight:500}
+.lpanel{display:none}
+.lpanel.on{display:block}
+.lpanel h1{font-family:var(--fd);font-size:46px;font-weight:400;letter-spacing:-1.5px;margin-bottom:6px;line-height:1.05}
+.legal-dt{font-family:var(--fm);font-size:10.5px;letter-spacing:1px;color:var(--ink-faint);margin-bottom:48px}
+.lpanel h2{font-family:var(--fd);font-size:21px;font-weight:500;margin:44px 0 14px;color:var(--ink)}
+.lpanel p{font-size:15px;color:var(--ink-muted);line-height:1.88;margin-bottom:14px;font-weight:300}
+.lpanel ul{list-style:none;margin-bottom:14px}
+.lpanel ul li{padding:10px 0 10px 22px;position:relative;font-size:15px;color:var(--ink-muted);line-height:1.65;border-bottom:1px solid var(--border);font-weight:300}
+.lpanel ul li:last-child{border-bottom:none}
+.lpanel ul li::before{content:'–';position:absolute;left:0;color:var(--gold)}
+.lpanel strong{color:var(--ink);font-weight:500}
+.lnk{color:var(--gold);cursor:pointer}
+.lnk:hover{text-decoration:underline}
+
+/* CONTACT */
+.ct-layout{display:grid;grid-template-columns:5fr 7fr;gap:80px;align-items:start}
+.ct-layout h1{font-family:var(--fd);font-size:clamp(38px,4.5vw,52px);font-weight:400;line-height:1.07;letter-spacing:-1.5px;margin-bottom:20px}
+.ct-layout h1 em{font-style:italic;color:var(--gold)}
+.ct-intro{font-size:15px;color:var(--ink-muted);line-height:1.80;font-weight:300;margin-bottom:44px}
+.ct-item{display:flex;align-items:flex-start;gap:16px;padding:18px 0;border-top:1px solid var(--border)}
+.ct-item:last-child{border-bottom:1px solid var(--border)}
+.ct-ico{width:38px;height:38px;background:var(--gold-tint);border:1px solid var(--gold-border);border-radius:var(--rmd);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;margin-top:1px}
+.ct-lbl{font-family:var(--fm);font-size:9.5px;letter-spacing:1.8px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:4px}
+.ct-val{font-size:14px;color:var(--ink-muted)}
+.fcard{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--rlg);box-shadow:var(--shadow-md);padding:48px}
+.f-title{font-family:var(--fd);font-size:24px;font-weight:500;margin-bottom:34px;color:var(--ink)}
+.f-row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fg{margin-bottom:18px}
+.flbl{display:block;font-family:var(--fm);font-size:9.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px}
+.fctl{width:100%;padding:12px 16px;background:var(--bg);border:1px solid var(--border-md);border-radius:var(--r);color:var(--ink);font-size:14px;font-family:var(--fb);transition:all .2s;outline:none;-webkit-appearance:none;appearance:none}
+.fctl:focus{border-color:var(--gold);background:#FFFEF8;box-shadow:0 0 0 3px var(--gold-tint)}
+.fctl::placeholder{color:var(--ink-faint)}
+textarea.fctl{resize:vertical;min-height:130px;line-height:1.6}
+select.fctl option{background:#fff}
+.btn-send{width:100%;padding:14px;background:var(--ink);color:#fff;border:none;border-radius:var(--r);font-size:15px;font-weight:500;cursor:pointer;font-family:var(--fb);transition:all .22s;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-send:hover:not(:disabled){background:var(--ink-2);box-shadow:var(--shadow-md)}
+.btn-send:disabled{opacity:.55;cursor:not-allowed}
+.ffb{display:none;margin-top:14px;padding:12px 16px;border-radius:var(--r);font-size:14px}
+.ffb.ok{display:block;background:#f0faf4;border:1px solid rgba(34,197,94,.25);color:#15803d}
+.ffb.err{display:block;background:#fff5f5;border:1px solid rgba(239,68,68,.25);color:#b91c1c}
+
+/* FOOTER */
+footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px 56px 40px}
+.ft-grid{max-width:1200px;margin:0 auto}
+.ft-top{display:grid;grid-template-columns:2.4fr 1fr 1fr 1fr;gap:40px;padding-bottom:48px;border-bottom:1px solid var(--border)}
+.ft-brand-p{font-size:14px;color:var(--ink-muted);line-height:1.75;margin-top:16px;font-weight:300;max-width:280px}
+.fc-head{font-family:var(--fm);font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--ink-faint);margin-bottom:18px}
+.fc-links{display:flex;flex-direction:column;gap:10px}
+.flink{font-size:14px;color:var(--ink-muted);cursor:pointer;transition:color .18s;display:inline-block;border:none;background:none;font-family:var(--fb);padding:0;text-align:left}
+.flink:hover{color:var(--gold)}
+.ft-bot{padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.ft-copy{font-family:var(--fm);font-size:10.5px;color:var(--ink-faint);letter-spacing:.3px}
+.ft-ll{display:flex;gap:20px}
+.ft-ll button{font-size:13px;color:var(--ink-faint);cursor:pointer;background:none;border:none;font-family:var(--fb);transition:color .18s}
+.ft-ll button:hover{color:var(--gold)}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;z-index:9999;padding:13px 22px;background:var(--bg-card);border:1px solid var(--border-md);border-radius:var(--rmd);font-size:14px;color:var(--ink);display:flex;align-items:center;gap:10px;transform:translateY(80px);opacity:0;transition:all .3s cubic-bezier(.34,1.56,.64,1);pointer-events:none;box-shadow:var(--shadow-lg)}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok{border-left:3px solid #22c55e}
+.toast.err{border-left:3px solid #ef4444}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.rv.in{opacity:1;transform:translateY(0)}
+.rv-d1{transition-delay:.1s}.rv-d2{transition-delay:.2s}.rv-d3{transition-delay:.3s}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  .nav,.auth-strip,.cta-band,footer{padding-left:32px;padding-right:32px}
+  .hero,.wrap{padding-left:32px;padding-right:32px}
+  .legal-wrap{padding-left:32px;padding-right:32px}
+  .hero-inner{gap:48px}
+  .svc-grid{grid-template-columns:repeat(2,1fr)}
+  .ft-top{grid-template-columns:1fr 1fr 1fr}
+  .ft-brand{grid-column:1/-1}
+  .ft-brand-p{max-width:100%}
+}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero{padding:60px 24px 60px}
+  .wrap{padding:0 24px}
+  .hero-inner{grid-template-columns:1fr}
+  .hcard{display:none}
+  .stats{grid-template-columns:1fr 1fr}
+  .stat:nth-child(2){border-right:none}
+  .stat:nth-child(3){border-right:1px solid var(--border)}
+  .svc-grid{grid-template-columns:1fr}
+  .rm-grid{grid-template-columns:repeat(3,1fr)}
+  .pc-grid{grid-template-columns:1fr;max-width:440px}
+  .ct-layout{grid-template-columns:1fr;gap:48px}
+  .f-row2{grid-template-columns:1fr}
+  .sp{padding:72px 0}
+  .auth-items{gap:20px}
+  .cta-band{padding:72px 24px}
+  footer{padding:48px 24px 32px}
+  .legal-wrap{padding:44px 24px}
+}
+@media(max-width:480px){
+  .stats{grid-template-columns:1fr}
+  .stat{border-right:none!important}
+  .ft-top{grid-template-columns:1fr}
+  .hero-act{flex-direction:column;align-items:flex-start}
+  .btoggle{flex-wrap:wrap;gap:10px}
+}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <div class="nav-logo" onclick="go('home')">
+    <div class="nav-seal">
+      <svg viewBox="0 0 20 20" fill="none"><path d="M4 16V4l12 12V4" stroke="#B8860B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <span class="nav-brand">NicheLab</span>
+  </div>
+
+  <div class="nav-links">
+    <button class="nl" data-pg="home"      onclick="go('home')">Home</button>
+    <button class="nl" data-pg="services"  onclick="go('home','services')">Services</button>
+    <button class="nl" data-pg="pricing"   onclick="go('home','pricing')">Pricing</button>
+    <button class="nl" data-pg="contact"   onclick="go('contact')">Contact</button>
+    <button class="nl" data-pg="legal"     onclick="go('legal')">Legal</button>
+  </div>
+
+  <div class="nav-right">
+    <a href="index.html" class="btn-console"><div class="cdot"></div>Admin Console</a>
+    <button class="hamburger" id="ham" onclick="toggleMob()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <button class="nl" onclick="go('home');closeMob()">Home</button>
+  <button class="nl" onclick="go('home','services');closeMob()">Services</button>
+  <button class="nl" onclick="go('home','pricing');closeMob()">Pricing</button>
+  <button class="nl" onclick="go('contact');closeMob()">Contact</button>
+  <button class="nl" onclick="go('legal');closeMob()">Legal</button>
+  <div class="mob-div"></div>
+  <a href="index.html" class="btn-console" style="align-self:flex-start"><div class="cdot"></div>Admin Console</a>
+</div>
+
+
+<!-- PAGE: HOME -->
+<div class="page on" id="page-home">
+
+  <div style="background:var(--bg)">
+    <div class="hero">
+      <div class="hrule hrule-t"></div>
+      <div class="hero-inner">
+        <div>
+          <div class="hero-badge"><span class="badge-pill">Est. 2024</span>Premium Market Strategy Firm</div>
+          <h1>Intelligence that<br><em>moves markets.</em></h1>
+          <p class="hero-desc">NicheLab is a premier niche intelligence and market strategy firm delivering institutional-grade research to founders, operators, and investment professionals.</p>
+          <div class="hero-act">
+            <button class="btn-gold" onclick="go('home','pricing')">View Membership Plans →</button>
+            <button class="btn-ol" onclick="go('contact')">Request a Briefing</button>
+          </div>
+        </div>
+        <div class="hcard">
+          <div class="hc-head">
+            <div><div class="hc-lbl">Research Briefing</div><div class="hc-title">Niche Market Intelligence Report<br>— Executive Edition</div></div>
+            <div class="hc-status"><div class="sdot"></div>Active</div>
+          </div>
+          <div class="hc-rows">
+            <div class="hc-row"><div class="hrow-l"><span class="hrow-n">§01</span><span class="hrow-t">Executive Summary</span></div><div class="hbar-w"><div class="hbar" style="width:100%"></div></div></div>
+            <div class="hc-row"><div class="hrow-l"><span class="hrow-n">§02</span><span class="hrow-t">Market Sizing &amp; TAM</span></div><div class="hbar-w"><div class="hbar" style="width:92%"></div></div></div>
+            <div class="hc-row"><div class="hrow-l"><span class="hrow-n">§03</span><span class="hrow-t">Competitor Landscape</span></div><div class="hbar-w"><div class="hbar" style="width:87%"></div></div></div>
+            <div class="hc-row"><div class="hrow-l"><span class="hrow-n">§04</span><span class="hrow-t">Revenue Model Analysis</span></div><div class="hbar-w"><div class="hbar" style="width:95%"></div></div></div>
+            <div class="hc-row"><div class="hrow-l"><span class="hrow-n">§05</span><span class="hrow-t">Financial Projections</span></div><div class="hbar-w"><div class="hbar" style="width:78%"></div></div></div>
+            <div class="hc-row"><div class="hrow-l"><span class="hrow-n">+10</span><span class="hrow-t">Additional sections…</span></div><div class="hbar-w"><div class="hbar" style="width:100%"></div></div></div>
+          </div>
+          <div class="hc-foot">
+            <div><div class="hf-lbl">Classification</div><div class="hf-val">CONFIDENTIAL · PROPRIETARY</div></div>
+            <div style="text-align:right"><div class="hf-lbl">Coverage</div><div class="hf-val">15 Sections · 17 Pages</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="hrule hrule-b"></div>
+    </div>
+  </div>
+
+  <div class="auth-strip rv">
+    <div class="auth-in">
+      <div class="auth-lbl">Trusted by professionals in</div>
+      <div class="auth-items">
+        <span class="auth-item">Private Equity</span><span class="auth-sep">·</span>
+        <span class="auth-item">Venture Capital</span><span class="auth-sep">·</span>
+        <span class="auth-item">Boutique M&amp;A</span><span class="auth-sep">·</span>
+        <span class="auth-item">Independent Operators</span><span class="auth-sep">·</span>
+        <span class="auth-item">Early-Stage Founders</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="stats rv">
+    <div class="stat"><div class="stat-n">15<span class="g">+</span></div><div class="stat-d">Structured sections per<br>intelligence brief</div></div>
+    <div class="stat"><div class="stat-n">10<span class="g">+</span></div><div class="stat-d">Vertical market<br>categories covered</div></div>
+    <div class="stat"><div class="stat-n">17<span class="g">pg</span></div><div class="stat-d">Average depth per<br>research deliverable</div></div>
+    <div class="stat"><div class="stat-n">APA<span class="g" style="font-size:32px;letter-spacing:-1px">7</span></div><div class="stat-d">Citation standard on all<br>references and sources</div></div>
+  </div>
+
+  <section id="services">
+    <div class="wrap sp">
+      <div class="rv">
+        <div class="eyebrow"><div class="eyebrow-ln"></div>Our Intelligence Services</div>
+        <h2 class="headline">Research of the<br>kind that <em>wins deals.</em></h2>
+        <p class="sub" style="margin-top:18px;max-width:520px">Our methodology draws from institutional research frameworks — structured, sourced, and strategically actionable from cover to conclusion.</p>
+      </div>
+      <div class="svc-grid rv rv-d1">
+        <div class="svc-card"><div class="svc-num">01 ——</div><div class="svc-ico">📊</div><div class="svc-t">Niche Market Briefs</div><p class="svc-d">15-section intelligence briefs covering executive summaries, market sizing, competitor landscapes, financial projections, and exit strategies — structured like a McKinsey engagement.</p><span class="svc-tag">15+ pages guaranteed</span></div>
+        <div class="svc-card"><div class="svc-num">02 ——</div><div class="svc-ico">🎯</div><div class="svc-t">Opportunity Discovery</div><p class="svc-d">Identify 10 defensible sub-niche opportunities within any of our 10 primary verticals. From Micro-SaaS to Web3, B2B Services to Creator Economy — we surface what others miss.</p><span class="svc-tag">10 verticals · unlimited depth</span></div>
+        <div class="svc-card"><div class="svc-num">03 ——</div><div class="svc-ico">💼</div><div class="svc-t">Competitive Intelligence</div><p class="svc-d">Institutional-grade competitor profiling: positioning maps, revenue model analysis, distribution channels, and strategic vulnerabilities. The intelligence layer before every major move.</p><span class="svc-tag">Analyst-grade sourcing</span></div>
+        <div class="svc-card"><div class="svc-num">04 ——</div><div class="svc-ico">📈</div><div class="svc-t">Financial Modelling</div><p class="svc-d">Non-rounded financial figures, realistic growth curves, and ROI projections supported by market data. Every model reflects sector-specific assumptions, not generic templates.</p><span class="svc-tag">Non-rounded projections</span></div>
+        <div class="svc-card"><div class="svc-num">05 ——</div><div class="svc-ico">📄</div><div class="svc-t">Client-Ready PDF Reports</div><p class="svc-d">Every brief exports as a professionally styled A4 PDF with CSS-counted page numbers, branded headers, and APA-7 citations. Suitable for board decks and investor materials.</p><span class="svc-tag">A4 · APA-7 · Print-ready</span></div>
+        <div class="svc-card"><div class="svc-num">06 ——</div><div class="svc-ico">🔐</div><div class="svc-t">Secure Research Vault</div><p class="svc-d">Your research library is secured with enterprise-grade authentication, encrypted at rest and in transit. Tier-based access ensures each member sees only what their engagement level grants.</p><span class="svc-tag">Encrypted · Tier-gated</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="hr" />
+
+  <section id="methodology">
+    <div class="wrap sp">
+      <div class="rv">
+        <div class="eyebrow"><div class="eyebrow-ln"></div>Research Methodology</div>
+        <h2 class="headline">Fifteen sections.<br><em>No exceptions.</em></h2>
+        <p class="sub" style="margin-top:18px;max-width:540px">Every NicheLab intelligence brief follows an identical, uncompromising structure. Consistent depth. Consistent standards. Consistent authority.</p>
+      </div>
+      <div class="rm rv rv-d1">
+        <div class="rm-head">
+          <div class="rm-ht">Intelligence Brief — Standard Architecture</div>
+          <div class="rm-hm">Classification: PROPRIETARY &nbsp;·&nbsp; 15 Sections &nbsp;·&nbsp; APA-7 Sources &nbsp;·&nbsp; 17 pages avg.</div>
+        </div>
+        <div class="rm-grid" id="rmGrid">
+          <div class="rm-cell"><div class="rm-s">§ 01</div><div class="rm-nm">Executive Summary</div></div>
+          <div class="rm-cell"><div class="rm-s">§ 02</div><div class="rm-nm">Market Sizing &amp; TAM</div></div>
+          <div class="rm-cell"><div class="rm-s">§ 03</div><div class="rm-nm">Competitor Landscape</div></div>
+          <div class="rm-cell"><div class="rm-s">§ 04</div><div class="rm-nm">Customer Segmentation</div></div>
+          <div class="rm-cell"><div class="rm-s">§ 05</div><div class="rm-nm">Revenue Model Analysis</div></div>
+          <div class="rm-cell"><div class="rm-s">§ 06</div><div class="rm-nm">Go-to-Market Strategy</div></div>
+          <div class="rm-cell"><div class="rm-s">§ 07</div><div class="rm-nm">Technology &amp; Stack</div></div>
+          <div class="rm-cell"><div class="rm-s">§ 08</div><div class="rm-nm">Risk Assessment</div></div>
+          <div class="rm-cell"><div class="rm-s">§ 09</div><div class="rm-nm">Regulatory Landscape</div></div>
+          <div class="rm-cell"><div class="rm-s">§ 10</div><div class="rm-nm">Investment Requirements</div></div>
+          <div class="rm-cell"><div class="rm-s">§ 11</div><div class="rm-nm">Operational Roadmap</div></div>
+          <div class="rm-cell"><div class="rm-s">§ 12</div><div class="rm-nm">Financial Projections</div></div>
+          <div class="rm-cell"><div class="rm-s">§ 13</div><div class="rm-nm">Exit Strategy</div></div>
+          <div class="rm-cell"><div class="rm-s">§ 14</div><div class="rm-nm">Case Studies</div></div>
+          <div class="rm-cell"><div class="rm-s">§ 15</div><div class="rm-nm">References &amp; Sources</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="hr" />
+
+  <section id="pricing">
+    <div class="wrap sp">
+      <div class="rv">
+        <div class="eyebrow"><div class="eyebrow-ln"></div>Membership Tiers</div>
+        <h2 class="headline">Transparent pricing.<br><em>Uncompromising</em> access.</h2>
+        <p class="sub" style="margin-top:18px;max-width:500px">Choose the engagement level that matches your research cadence. All tiers include the full 15-section methodology.</p>
+      </div>
+
+      <div style="margin-top:44px" class="rv rv-d1">
+        <div class="btoggle">
+          <span class="bt-lbl on" id="lbl-m" onclick="setBill('monthly')">Monthly</span>
+          <div class="bt-track" id="bt-trk" onclick="flipBill()"><div class="bt-thumb"></div></div>
+          <span class="bt-lbl" id="lbl-y" onclick="setBill('yearly')">Annual</span>
+          <div class="bt-save">Save 30%</div>
+        </div>
+      </div>
+
+      <div class="pc-grid rv rv-d2">
+        <div class="pc">
+          <div class="pc-tier">Starter</div>
+          <div class="pc-price">$<span id="v-s">36</span></div>
+          <div class="pc-cycle" id="c-s">per month</div>
+          <ul class="pc-feats">
+            <li>10 research briefs per week</li>
+            <li>All 15 methodology sections</li>
+            <li>PDF export on every report</li>
+            <li>Secure research dashboard</li>
+            <li>APA-7 citations included</li>
+            <li class="dim">Unlimited briefs</li>
+            <li class="dim">Priority processing queue</li>
+            <li class="dim">Direct analyst support</li>
+          </ul>
+          <a id="lnk-s" href="https://buy.stripe.com/9B63cw0A72uufWf5ywebu00" target="_blank" rel="noopener" class="btn-pg">Begin Starter Membership</a>
+        </div>
+        <div class="pc feat">
+          <div class="pc-tier">Pro</div>
+          <div class="pc-price">$<span id="v-p">84</span></div>
+          <div class="pc-cycle" id="c-p">per month</div>
+          <ul class="pc-feats">
+            <li>Unlimited research briefs</li>
+            <li>All 15 methodology sections</li>
+            <li>PDF export on every report</li>
+            <li>Secure research dashboard</li>
+            <li>APA-7 citations included</li>
+            <li>Priority processing queue</li>
+            <li>Early access to new verticals</li>
+            <li>Direct analyst support</li>
+          </ul>
+          <a id="lnk-p" href="https://buy.stripe.com/bJe00kbeLc547pJgdaebu02" target="_blank" rel="noopener" class="btn-pg-gold">Begin Pro Membership →</a>
+        </div>
+      </div>
+
+      <p style="margin-top:20px;font-size:13px;color:var(--ink-faint);font-family:var(--fm);letter-spacing:.3px" class="rv rv-d3">
+        Secure payment via Stripe &nbsp;·&nbsp; Cancel anytime &nbsp;·&nbsp; All prices in USD
+      </p>
+    </div>
+  </section>
+
+  <div class="cta-band">
+    <div class="rv">
+      <div class="eyebrow" style="color:var(--gold-bright);justify-content:center;margin-bottom:20px">
+        <div class="eyebrow-ln" style="background:var(--gold-bright)"></div>Start Your Research<div class="eyebrow-ln" style="background:var(--gold-bright)"></div>
+      </div>
+      <h2>Ready to surface your<br><em>next opportunity?</em></h2>
+      <p>Select a membership tier and begin researching today. No contracts, no hidden terms.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+        <button class="btn-gold" onclick="go('home','pricing')">View Membership Plans →</button>
+        <button class="btn-ol" onclick="go('contact')" style="color:#fff;border-color:rgba(255,255,255,.2)">Request a Briefing</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /home -->
+
+
+<!-- PAGE: LEGAL -->
+<div class="page" id="page-legal">
+  <div class="legal-wrap">
+    <div class="ltab-bar">
+      <button class="ltab on" id="lt-terms"   onclick="showLegal('terms',this)">Terms of Service</button>
+      <button class="ltab"    id="lt-privacy" onclick="showLegal('privacy',this)">Privacy Policy</button>
+    </div>
+
+    <div class="lpanel on" id="lp-terms">
+      <h1>Terms of Service</h1>
+      <p class="legal-dt">Last updated: January 1, 2025 &nbsp;·&nbsp; NicheLab Research Ltd.</p>
+      <p>Welcome to NicheLab. By accessing or using our platform and intelligence services, you agree to be bound by these Terms of Service in their entirety. Please read them carefully.</p>
+      <h2>1. Acceptance of Terms</h2>
+      <p>By creating an account or engaging with NicheLab's research platform, you confirm that you are at least 18 years of age, have read and understood these terms, and agree to be legally bound by them. If you do not agree with any provision, you must not use the service.</p>
+      <h2>2. Nature of Service</h2>
+      <p>NicheLab is a premium niche intelligence and market strategy firm. Our platform delivers structured market research briefs, competitive analyses, and strategic intelligence across ten vertical categories. All deliverables are produced through NicheLab's proprietary research infrastructure and methodology.</p>
+      <h2>3. User Accounts &amp; Responsibilities</h2>
+      <p>Access to NicheLab requires a registered account. You are solely responsible for:</p>
+      <ul>
+        <li>Maintaining the confidentiality of your access credentials and session tokens</li>
+        <li>All activities conducted under your account, regardless of authorisation</li>
+        <li>Promptly notifying NicheLab of any suspected unauthorised access</li>
+        <li>Providing accurate, complete, and current registration information at all times</li>
+        <li>Keeping your contact email accessible for service communications</li>
+      </ul>
+      <h2>4. Membership &amp; Billing</h2>
+      <p>NicheLab offers two membership tiers:</p>
+      <ul>
+        <li><strong>Starter:</strong> $36/month or $299/year — 10 research briefs per week, full 15-section methodology, PDF export</li>
+        <li><strong>Pro:</strong> $84/month or $699/year — Unlimited research briefs, priority queue, direct analyst support, early feature access</li>
+      </ul>
+      <p>All memberships are billed through Stripe and renew automatically on the billing cycle you select. Cancellations take effect at the close of the current billing period. NicheLab does not offer pro-rated refunds unless required by applicable consumer protection law.</p>
+      <h2>5. Acceptable Use Policy</h2>
+      <p>You agree not to use NicheLab for or in connection with:</p>
+      <ul>
+        <li>Fraudulent investment schemes, market manipulation, or securities fraud of any kind</li>
+        <li>Reverse-engineering, scraping, or replicating NicheLab's research methodology or infrastructure</li>
+        <li>Commercial redistribution or white-labelling of reports without a separate licensing agreement</li>
+        <li>Circumventing usage limits through multiple accounts, bots, or automated access</li>
+        <li>Any activity that violates applicable law in your jurisdiction or that of Portugal</li>
+        <li>Transmitting malicious code or interfering with the integrity of platform operations</li>
+      </ul>
+      <h2>6. Intellectual Property</h2>
+      <p>Research briefs generated through NicheLab are licensed to you for personal and internal business use, including client-facing deliverables with attribution. NicheLab's brand, methodology, platform architecture, and underlying systems remain the exclusive intellectual property of NicheLab Research Ltd. No ownership rights in the platform or its technology are transferred by this licence.</p>
+      <h2>7. Disclaimer of Warranties</h2>
+      <p>NicheLab research deliverables are strategic intelligence tools provided for informational purposes. They do not constitute financial advice, investment recommendations, legal guidance, or professional consulting services. NicheLab makes no warranty regarding the accuracy, completeness, or commercial viability of any deliverable. All research is used at the sole discretion and risk of the subscriber.</p>
+      <h2>8. Limitation of Liability</h2>
+      <p>To the maximum extent permitted by Portuguese and EU law, NicheLab and its affiliates shall not be liable for any indirect, incidental, consequential, or punitive damages, including loss of profits or business opportunities, arising from your use of or inability to access the service.</p>
+      <h2>9. Amendments</h2>
+      <p>NicheLab reserves the right to amend these terms at any time. Material changes will be communicated via email to registered subscribers. Continued use of the service constitutes acceptance of the revised terms.</p>
+      <h2>10. Governing Law &amp; Jurisdiction</h2>
+      <p>These terms are governed by the laws of Portugal. All disputes shall be subject to the exclusive jurisdiction of the competent courts of Lisbon, Portugal.</p>
+      <h2>11. Contact</h2>
+      <p>For legal queries, use our <span class="lnk" onclick="go('contact')">contact form</span> or write to legal@nichelab.io.</p>
+    </div>
+
+    <div class="lpanel" id="lp-privacy">
+      <h1>Privacy Policy</h1>
+      <p class="legal-dt">Last updated: January 1, 2025 &nbsp;·&nbsp; NicheLab Research Ltd.</p>
+      <p>NicheLab is committed to handling your personal data with care and discretion. This policy describes what data we collect, how it is used, and the rights available to you under applicable law, including the GDPR.</p>
+      <h2>1. Data We Collect</h2>
+      <ul>
+        <li><strong>Account data:</strong> full name, email address, hashed password, account creation timestamp, tier status</li>
+        <li><strong>Research activity:</strong> brief titles, categories selected, publication timestamps, usage within plan limits</li>
+        <li><strong>Contact submissions:</strong> name, email, subject classification, and message content submitted via our contact form</li>
+        <li><strong>Technical data:</strong> IP address, browser agent, operating system, session identifiers</li>
+        <li><strong>Payment data:</strong> billing processed exclusively by Stripe; NicheLab retains only transaction metadata</li>
+      </ul>
+      <h2>2. Purpose of Processing</h2>
+      <ul>
+        <li>To authenticate accounts and enforce tier-based research access controls</li>
+        <li>To deliver, maintain, and improve NicheLab's research platform and methodology</li>
+        <li>To communicate service updates, billing changes, and new research capabilities</li>
+        <li>To respond to contact form submissions and support enquiries</li>
+        <li>To detect abuse, enforce our acceptable use policy, and ensure platform integrity</li>
+        <li>To comply with applicable legal obligations and regulatory requirements</li>
+      </ul>
+      <h2>3. Data Infrastructure &amp; Security</h2>
+      <p>All user data is stored on Supabase, a PostgreSQL-backed cloud infrastructure hosted within the European Union. Data is encrypted at rest using AES-256 and in transit via TLS 1.3. Row Level Security policies are enforced at the database layer to prevent cross-account data access.</p>
+      <h2>4. Third-Party Data Sharing</h2>
+      <ul>
+        <li><strong>Stripe:</strong> receives billing and payment data to process subscriptions</li>
+        <li><strong>Research infrastructure providers:</strong> receive only research query content, never personally identifiable information</li>
+        <li><strong>Legal authorities:</strong> data may be disclosed when required by Portuguese law, EU regulation, or a binding court order</li>
+      </ul>
+      <p>NicheLab does not sell, rent, or trade your personal data under any circumstances.</p>
+      <h2>5. Your Data Rights (GDPR)</h2>
+      <ul>
+        <li><strong>Access:</strong> obtain a copy of all personal data we hold about you</li>
+        <li><strong>Rectification:</strong> correct inaccurate or incomplete personal data</li>
+        <li><strong>Erasure:</strong> request deletion of your account and all associated personal data</li>
+        <li><strong>Restriction:</strong> limit certain categories of data processing</li>
+        <li><strong>Portability:</strong> receive your data in a structured, machine-readable format</li>
+        <li><strong>Objection:</strong> opt out of direct marketing at any time</li>
+        <li><strong>Supervisory complaint:</strong> lodge a complaint with the CNPD (Portugal's data protection authority)</li>
+      </ul>
+      <h2>6. Cookie Policy</h2>
+      <p>NicheLab uses only technically essential cookies for authentication session management. We do not use advertising cookies, cross-site tracking technologies, or third-party analytics.</p>
+      <h2>7. Retention Periods</h2>
+      <ul>
+        <li>Account data: retained for the duration of the active subscription; deleted within 30 days of an erasure request</li>
+        <li>Research briefs: retained for 12 months from generation; export recommended prior to expiry</li>
+        <li>Contact form submissions: retained for 24 months</li>
+        <li>Payment and billing records: retained for 7 years per EU financial record-keeping obligations</li>
+      </ul>
+      <h2>8. Minors</h2>
+      <p>NicheLab does not knowingly collect data from or provide services to individuals under the age of 18.</p>
+      <h2>9. Policy Updates</h2>
+      <p>This policy may be updated to reflect changes in our practices or applicable law. Substantive changes will be communicated to registered subscribers by email.</p>
+      <h2>10. Data Controller &amp; Contact</h2>
+      <p>NicheLab Research Ltd. is the data controller for all personal data processed through this platform. For privacy requests, use our <span class="lnk" onclick="go('contact')">contact form</span> or write to privacy@nichelab.io.</p>
+    </div>
+  </div>
+</div><!-- /legal -->
+
+
+<!-- PAGE: CONTACT -->
+<div class="page" id="page-contact">
+  <div class="wrap" style="padding-top:64px;padding-bottom:100px">
+    <div class="ct-layout">
+      <div>
+        <div class="eyebrow" style="margin-bottom:24px"><div class="eyebrow-ln"></div>Get in Touch</div>
+        <h1>Let's discuss your<br><em>research agenda.</em></h1>
+        <p class="ct-intro">Whether you're exploring membership, requesting a custom briefing, or have a question about our methodology — our team responds within one business day.</p>
+        <div class="ct-item"><div class="ct-ico">📧</div><div><div class="ct-lbl">General Enquiries</div><div class="ct-val">hello@nichelab.io</div></div></div>
+        <div class="ct-item"><div class="ct-ico">⚖️</div><div><div class="ct-lbl">Legal &amp; Compliance</div><div class="ct-val">legal@nichelab.io</div></div></div>
+        <div class="ct-item"><div class="ct-ico">📍</div><div><div class="ct-lbl">Headquarters</div><div class="ct-val">Lisbon, Portugal · Remote-first operations</div></div></div>
+        <div class="ct-item"><div class="ct-ico">🕐</div><div><div class="ct-lbl">Response Window</div><div class="ct-val">Within 24 hours · Monday – Friday</div></div></div>
+      </div>
+      <div class="fcard">
+        <div class="f-title">Send an Enquiry</div>
+        <div class="f-row2">
+          <div class="fg"><label class="flbl" for="fc-n">Full Name *</label><input class="fctl" type="text" id="fc-n" placeholder="Jane Smith" autocomplete="name" /></div>
+          <div class="fg"><label class="flbl" for="fc-e">Email Address *</label><input class="fctl" type="email" id="fc-e" placeholder="jane@firm.com" autocomplete="email" /></div>
+        </div>
+        <div class="fg"><label class="flbl" for="fc-o">Organisation</label><input class="fctl" type="text" id="fc-o" placeholder="Firm or company name (optional)" autocomplete="organization" /></div>
+        <div class="fg">
+          <label class="flbl" for="fc-s">Enquiry Type *</label>
+          <select class="fctl" id="fc-s">
+            <option value="">Select a category…</option>
+            <option value="membership">Membership Enquiry</option>
+            <option value="briefing">Request Custom Briefing</option>
+            <option value="methodology">Methodology Question</option>
+            <option value="billing">Billing or Account</option>
+            <option value="partnership">Partnership Proposal</option>
+            <option value="legal">Legal or Compliance</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="fg"><label class="flbl" for="fc-m">Message *</label><textarea class="fctl" id="fc-m" placeholder="Please describe your enquiry in detail…"></textarea></div>
+        <button class="btn-send" id="sendBtn" onclick="submitContact()">
+          <span id="sendLbl">Send Enquiry</span><span id="sendArr">→</span>
+        </button>
+        <div class="ffb" id="ffb"></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /contact -->
+
+
+<!-- FOOTER -->
+<footer>
+  <div class="ft-grid">
+    <div class="ft-top">
+      <div class="ft-brand">
+        <div class="nav-logo" onclick="go('home')" style="cursor:pointer">
+          <div class="nav-seal"><svg viewBox="0 0 20 20" fill="none"><path d="M4 16V4l12 12V4" stroke="#B8860B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="nav-brand">NicheLab</span>
+        </div>
+        <p class="ft-brand-p">A premium niche intelligence and market strategy firm. Delivering institutional-grade research briefs to founders, operators, and investment professionals since 2024.</p>
+      </div>
+      <div>
+        <div class="fc-head">Platform</div>
+        <div class="fc-links">
+          <button class="flink" onclick="go('home')">Home</button>
+          <button class="flink" onclick="go('home','services')">Services</button>
+          <button class="flink" onclick="go('home','pricing')">Pricing</button>
+          <button class="flink" onclick="go('home','methodology')">Methodology</button>
+        </div>
+      </div>
+      <div>
+        <div class="fc-head">Company</div>
+        <div class="fc-links">
+          <button class="flink" onclick="go('contact')">Contact</button>
+          <button class="flink" onclick="go('legal');showLegal('terms')">Terms of Service</button>
+          <button class="flink" onclick="go('legal');showLegal('privacy')">Privacy Policy</button>
+        </div>
+      </div>
+      <div>
+        <div class="fc-head">Access</div>
+        <div class="fc-links">
+          <a class="flink" href="index.html">Admin Console</a>
+          <button class="flink" onclick="go('home','pricing')">Membership Plans</button>
+          <button class="flink" onclick="go('contact')">Request Briefing</button>
+        </div>
+      </div>
+    </div>
+    <div class="ft-bot">
+      <div class="ft-copy">© 2025 NicheLab Research Ltd. · Lisbon, Portugal · All rights reserved</div>
+      <div class="ft-ll">
+        <button onclick="go('legal');showLegal('terms')">Terms</button>
+        <button onclick="go('legal');showLegal('privacy')">Privacy</button>
+        <button onclick="go('contact')">Contact</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toastEl"><span id="toastIco"></span><span id="toastMsg"></span></div>
+
+<script>
+const SB_URL = 'https://ctezbazpnqylufhrmcwn.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
+let db = null;
+try { if (SB_KEY !== 'YOUR_SUPABASE_ANON_KEY') db = window.supabase.createClient(SB_URL, SB_KEY); } catch(e){}
+
+/* ── ROUTER ── */
+const PAGES = ['home','legal','contact'];
+function go(pg, anch) {
+  if (!PAGES.includes(pg)) pg = 'home';
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('on'));
+  document.getElementById('page-' + pg).classList.add('on');
+  document.querySelectorAll('.nl').forEach(l => l.classList.remove('on'));
+  const m = document.querySelector('.nl[data-pg="' + pg + '"]');
+  if (m) m.classList.add('on');
+  window.scrollTo({top:0,behavior:'instant'});
+  if (anch) setTimeout(() => { const el = document.getElementById(anch); if(el) el.scrollIntoView({behavior:'smooth',block:'start'}); }, 80);
+  history.pushState(null,'','#' + (anch ? pg+'/'+anch : pg));
+  setTimeout(initRv, 40);
+}
+function resolveHash() {
+  const raw = location.hash.replace('#','').trim();
+  if (!raw) { go('home'); return; }
+  const [p,a] = raw.split('/');
+  go(PAGES.includes(p) ? p : 'home', a||null);
+}
+window.addEventListener('popstate', resolveHash);
+
+/* ── LEGAL ── */
+function showLegal(tab, btn) {
+  document.querySelectorAll('.lpanel').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.ltab').forEach(t => t.classList.remove('on'));
+  document.getElementById('lp-' + tab).classList.add('on');
+  if (btn) btn.classList.add('on');
+  else { const el = document.getElementById('lt-' + tab); if(el) el.classList.add('on'); }
+}
+
+/* ── PRICING ── */
+const PRICES = {
+  monthly: {
+    s: {v:'36', c:'per month',                   href:'https://buy.stripe.com/9B63cw0A72uufWf5ywebu00'},
+    p: {v:'84', c:'per month',                   href:'https://buy.stripe.com/bJe00kbeLc547pJgdaebu02'}
+  },
+  yearly: {
+    s: {v:'299', c:'per year  (billed annually)', href:'https://buy.stripe.com/aFa4gAdmT8SS5hB1igebu01'},
+    p: {v:'699', c:'per year  (billed annually)', href:'https://buy.stripe.com/aFa6oI0A7glk6lFf96ebu03'}
+  }
+};
+let billing = 'monthly';
+function setBill(mode) { if (billing===mode) return; billing=mode; applyPrices(); }
+function flipBill() { billing = billing==='monthly'?'yearly':'monthly'; applyPrices(); }
+function applyPrices() {
+  const d = PRICES[billing];
+  document.getElementById('bt-trk').classList.toggle('yr', billing==='yearly');
+  document.getElementById('lbl-m').classList.toggle('on', billing==='monthly');
+  document.getElementById('lbl-y').classList.toggle('on', billing==='yearly');
+  document.getElementById('v-s').textContent = d.s.v;
+  document.getElementById('c-s').textContent = d.s.c;
+  document.getElementById('lnk-s').href      = d.s.href;
+  document.getElementById('v-p').textContent = d.p.v;
+  document.getElementById('c-p').textContent = d.p.c;
+  document.getElementById('lnk-p').href      = d.p.href;
+}
+
+/* ── CONTACT ── */
+async function submitContact() {
+  const name = document.getElementById('fc-n').value.trim();
+  const email = document.getElementById('fc-e').value.trim();
+  const org  = document.getElementById('fc-o').value.trim();
+  const subj = document.getElementById('fc-s').value;
+  const msg  = document.getElementById('fc-m').value.trim();
+  const btn  = document.getElementById('sendBtn');
+  const lbl  = document.getElementById('sendLbl');
+  const arr  = document.getElementById('sendArr');
+  const fb   = document.getElementById('ffb');
+  if (!name)  { setFb('err','Please provide your name.'); return; }
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setFb('err','Please provide a valid email address.'); return; }
+  if (!subj)  { setFb('err','Please select an enquiry type.'); return; }
+  if (!msg)   { setFb('err','Please write your message before sending.'); return; }
+  btn.disabled=true; lbl.textContent='Sending\u2026'; arr.textContent='\u23F3'; fb.className='ffb';
+  try {
+    if (db) {
+      const {error} = await db.from('contact_messages').insert([{name,email,organisation:org||null,subject:subj,message:msg,created_at:new Date().toISOString()}]);
+      if (error) throw error;
+    } else { await new Promise(r=>setTimeout(r,1200)); }
+    setFb('ok','\u2713 Enquiry received. We will respond within one business day.');
+    toast('ok','\u2713','Enquiry sent successfully');
+    ['fc-n','fc-e','fc-o','fc-m'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('fc-s').value='';
+  } catch(err) {
+    setFb('err','An error occurred. Please email us directly at hello@nichelab.io');
+    toast('err','\u2715','Failed to send');
+  } finally { btn.disabled=false; lbl.textContent='Send Enquiry'; arr.textContent='\u2192'; }
+}
+function setFb(t,x){const el=document.getElementById('ffb');el.textContent=x;el.className='ffb '+t;}
+
+/* ── TOAST ── */
+let toastT=null;
+function toast(t,ico,msg){
+  document.getElementById('toastIco').textContent=ico;
+  document.getElementById('toastMsg').textContent=msg;
+  const el=document.getElementById('toastEl');
+  el.className='toast '+t+' show';
+  clearTimeout(toastT);toastT=setTimeout(()=>el.classList.remove('show'),3800);
+}
+
+/* ── MOBILE ── */
+function toggleMob(){const o=document.getElementById('mobMenu').classList.toggle('open');document.getElementById('ham').classList.toggle('open',o);}
+function closeMob(){document.getElementById('mobMenu').classList.remove('open');document.getElementById('ham').classList.remove('open');}
+document.addEventListener('click',e=>{
+  const m=document.getElementById('mobMenu'),h=document.getElementById('ham');
+  if(m.classList.contains('open')&&!m.contains(e.target)&&!h.contains(e.target))closeMob();
+});
+
+/* ── SCROLL ── */
+window.addEventListener('scroll',()=>document.getElementById('mainNav').classList.toggle('scrolled',scrollY>12),{passive:true});
+
+/* ── REVEAL ── */
+function initRv(){
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.07,rootMargin:'0px 0px -36px 0px'});
+  document.querySelectorAll('.rv:not(.in)').forEach(el=>io.observe(el));
+}
+
+/* ── REPORT MANIFEST CYCLE ── */
+let rmI=0;
+function cycleRM(){
+  const cs=document.querySelectorAll('#rmGrid .rm-cell');if(!cs.length)return;
+  cs.forEach(c=>c.classList.remove('act'));cs[rmI%cs.length].classList.add('act');rmI++;
+  setTimeout(cycleRM,950);
+}
+
+/* ── INIT ── */
+window.addEventListener('load',()=>{resolveHash();initRv();setTimeout(cycleRM,2400);});
+</script>
+
+</body>
+</html>
