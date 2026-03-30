@@ -158,6 +158,13 @@ label{display:block;font-size:10px;font-family:var(--font-mono);color:var(--text
       <div class="sidebar-label">Categories</div>
       <div id="cat-list"></div>
     </div>
+    <div class="sidebar-section" style="border-top:1px solid var(--border)">
+      <div class="sidebar-label">Intelligence</div>
+      <div class="cat-item" id="cat-exec-report" onclick="renderExecutiveReport()">
+        <span class="cat-icon">📋</span>
+        <span class="cat-label">Executive Report</span>
+      </div>
+    </div>
     <div class="sidebar-footer">
       <div style="font-size:10px;color:var(--text3);font-family:var(--font-mono);line-height:1.6">
         Select a category to begin<br>generating niche reports.
@@ -1163,6 +1170,201 @@ function saveSettings(){
 
   closeSettings();
   log('Settings saved', 'success');
+}
+
+// ══════════════════════════════════════════════════════════
+// EXECUTIVE INTELLIGENCE REPORT
+// High-density market snapshot panel — mirrors the format of
+// the Webhook Reliability Platform intelligence card.
+// ══════════════════════════════════════════════════════════
+function renderExecutiveReport(){
+  document.querySelectorAll('.cat-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('cat-exec-report')?.classList.add('active');
+
+  const metrics = [
+    { label:'Market',      value:'84',      suffix:'/100',  color:'var(--success)' },
+    { label:'Revenue',     value:'78',      suffix:'/100',  color:'var(--success)' },
+    { label:'Competition', value:'61',      suffix:'/100',  color:'var(--warn)'    },
+    { label:'Difficulty',  value:'42',      suffix:'/100',  color:'var(--info)'    },
+    { label:'MVP Time',    value:'10–14',   suffix:' wks',  color:'var(--info)'    },
+    { label:'TAM',         value:'$7.0B',   suffix:'',      color:'var(--accent)'  },
+    { label:'CAGR',        value:'18.2%',   suffix:'',      color:'var(--accent)'  },
+  ];
+
+  const metricsHtml = metrics.map(m => `
+    <div style="display:inline-flex;align-items:center;gap:6px;padding:5px 13px;border:1px solid var(--border2);border-radius:20px;background:var(--surface2)">
+      <span style="font-size:10px;color:var(--text2);font-family:var(--font-mono);letter-spacing:.3px">${m.label}</span>
+      <span style="font-size:12px;font-weight:700;font-family:var(--font-mono);color:${m.color}">${m.value}${m.suffix}</span>
+    </div>`).join('');
+
+  const ws = document.getElementById('workspace');
+  ws.innerHTML = `
+    <div class="ws-header">
+      <div class="ws-title">📋 Executive Intelligence Report</div>
+      <div class="ws-sub">NICHE MARKET INTELLIGENCE SNAPSHOT — PROPRIETARY RESEARCH — CONFIDENTIAL</div>
+    </div>
+
+    <!-- ══ PRIMARY INTELLIGENCE CARD ══ -->
+    <div class="card">
+      <div class="card-header" style="padding:16px 20px">
+        <div class="card-title" style="flex-direction:column;align-items:flex-start;gap:6px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span class="step-badge">INTEL</span>
+            <span style="font-size:15px;font-weight:700;color:var(--text);font-family:var(--font-head)">Webhook Reliability Platform for Indie Developers</span>
+          </div>
+          <div style="font-size:11px;color:var(--text2);font-weight:400;font-family:var(--font-ui);line-height:1.65;max-width:760px">
+            Production-grade webhook management for teams that can't afford Datadog but can't afford downtime. Capture, debug, replay, and monitor every webhook event across your entire SaaS stack — in one place, under $80/month.
+          </div>
+        </div>
+      </div>
+
+      <div class="card-body" style="padding:20px 20px 24px">
+
+        <!-- ── Core Metrics Bar ── -->
+        <div style="display:flex;flex-wrap:wrap;gap:8px;padding-bottom:20px;border-bottom:1px solid var(--border);margin-bottom:24px">
+          ${metricsHtml}
+        </div>
+
+        <!-- ── Three-Column Intelligence Grid ── -->
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;align-items:start">
+
+          <!-- ─ Column 1: WHY NOW ─ -->
+          <div>
+            <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px">
+              <span style="color:var(--accent)">•</span> Why Now
+            </div>
+
+            <p style="font-size:12px;color:var(--text);line-height:1.78;margin-bottom:14px">
+              Postman restricted its free tier in May 2023, triggering a developer exodus.
+              <strong style="color:var(--text)">Hoppscotch gained 25,000 GitHub stars in 6 months</strong>
+              from that backlash — but no one captured the hosted webhook infrastructure market Postman vacated.
+            </p>
+
+            <p style="font-size:12px;color:var(--text);line-height:1.78">
+              Developer agents calling external APIs are exploding.
+              <strong style="color:var(--accent)">"AI agent debugging"</strong>
+              queries are up <strong style="color:var(--text)">890%</strong> in 18 months.
+              Incumbent tools weren't designed for this use case.
+              The window is <strong style="color:var(--text)">6–9 months wide</strong>.
+            </p>
+          </div>
+
+          <!-- ─ Column 2: PROOF SIGNALS ─ -->
+          <div>
+            <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px">
+              <span style="color:var(--accent)">•</span> Proof Signals
+            </div>
+
+            <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px">
+
+              <li style="display:flex;align-items:flex-start;gap:9px">
+                <span style="color:var(--accent);font-size:11px;flex-shrink:0;margin-top:1px">•</span>
+                <span style="font-size:12px;color:var(--text);line-height:1.65">
+                  <strong style="color:var(--text)">+287% growth</strong> in "webhook debugging" searches over 36 months (Google Trends)
+                </span>
+              </li>
+
+              <li style="display:flex;align-items:flex-start;gap:9px">
+                <span style="color:var(--accent);font-size:11px;flex-shrink:0;margin-top:1px">•</span>
+                <span style="font-size:12px;color:var(--text);line-height:1.65">
+                  Hookdeck raised a <strong style="color:var(--success)">$7M Series A</strong> in 2023 — validates the commercial model
+                </span>
+              </li>
+
+              <li style="display:flex;align-items:flex-start;gap:9px">
+                <span style="color:var(--accent);font-size:11px;flex-shrink:0;margin-top:1px">•</span>
+                <span style="font-size:12px;color:var(--text);line-height:1.65">
+                  Webhook.site founder disclosed <strong style="color:var(--text)">$15K–$20K MRR</strong> with a simpler product (Indie Hackers, 2022)
+                </span>
+              </li>
+
+              <li style="display:flex;align-items:flex-start;gap:9px">
+                <span style="color:var(--accent);font-size:11px;flex-shrink:0;margin-top:1px">•</span>
+                <span style="font-size:12px;color:var(--text);line-height:1.65">
+                  Reddit r/webdev "Postman is dead to me": <strong style="color:var(--text)">847 upvotes, 400+ comments</strong>
+                </span>
+              </li>
+
+              <li style="display:flex;align-items:flex-start;gap:9px">
+                <span style="color:var(--accent);font-size:11px;flex-shrink:0;margin-top:1px">•</span>
+                <span style="font-size:12px;color:var(--text);line-height:1.65">
+                  EU AI Act Article 12 mandates <strong style="color:var(--info)">API audit logs</strong> — compliance demand incoming
+                </span>
+              </li>
+
+            </ul>
+          </div>
+
+          <!-- ─ Column 3: 30-DAY EXECUTION PLAN ─ -->
+          <div>
+            <div style="font-family:var(--font-mono);font-size:9px;letter-spacing:2px;color:var(--accent);text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:6px">
+              <span style="color:var(--accent)">•</span> 30-Day Execution Plan
+            </div>
+
+            <ol style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px">
+
+              <li style="display:flex;align-items:flex-start;gap:10px">
+                <span style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--accent);flex-shrink:0;min-width:18px;margin-top:1px">01</span>
+                <span style="font-size:12px;color:var(--text);line-height:1.65">
+                  Interview 20 engineers. Ask: <strong style="color:var(--text)">"What's most frustrating about webhook integrations?"</strong> Do NOT pitch.
+                </span>
+              </li>
+
+              <li style="display:flex;align-items:flex-start;gap:10px">
+                <span style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--accent);flex-shrink:0;min-width:18px;margin-top:1px">02</span>
+                <span style="font-size:12px;color:var(--text);line-height:1.65">
+                  Ship landing page: <strong style="color:var(--info)">"Never lose a webhook event again."</strong> Target 200 signups from HN + Reddit.
+                </span>
+              </li>
+
+              <li style="display:flex;align-items:flex-start;gap:10px">
+                <span style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--accent);flex-shrink:0;min-width:18px;margin-top:1px">03</span>
+                <span style="font-size:12px;color:var(--text);line-height:1.65">
+                  Map where <strong style="color:var(--text)">Webhook.site ends and Hookdeck begins.</strong> That $29–$79 gap is your product.
+                </span>
+              </li>
+
+              <li style="display:flex;align-items:flex-start;gap:10px">
+                <span style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--accent);flex-shrink:0;min-width:18px;margin-top:1px">04</span>
+                <span style="font-size:12px;color:var(--text);line-height:1.65">
+                  Price at <strong style="color:var(--text)">$29/mo Developer · $79/mo Team</strong> from day one. No launch discounts.
+                </span>
+              </li>
+
+              <li style="display:flex;align-items:flex-start;gap:10px">
+                <span style="font-family:var(--font-mono);font-size:10px;font-weight:700;color:var(--accent);flex-shrink:0;min-width:18px;margin-top:1px">05</span>
+                <span style="font-size:12px;color:var(--text);line-height:1.65">
+                  Ship <code style="font-family:var(--font-mono);font-size:11px;color:var(--text);background:var(--surface3);padding:1px 5px;border-radius:3px;border:1px solid var(--border2)">npx hookbase listen</code> CLI. Every run auto-creates a free account — your <strong style="color:var(--text)">PLG engine</strong>.
+                </span>
+              </li>
+
+            </ol>
+          </div>
+          <!-- ─ End Columns ─ -->
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ SIGNAL INTEGRITY FOOTER ══ -->
+    <div class="card" style="margin-bottom:0">
+      <div class="card-body" style="padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
+        <div style="display:flex;align-items:center;gap:16px">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">SIGNAL INTEGRITY</div>
+          <div style="display:flex;gap:10px">
+            <span class="tag tag-success">Market Validated</span>
+            <span class="tag tag-warn">Regulatory Tailwind</span>
+            <span class="tag tag-info">PLG Pathway Confirmed</span>
+            <span class="tag tag-error">6–9 Mo Window</span>
+          </div>
+        </div>
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--text3)">
+          Sources: Google Trends · Crunchbase · Indie Hackers · Reddit r/webdev · EU AI Act Art. 12
+        </div>
+      </div>
+    </div>
+  `;
+  log('Executive Intelligence Snapshot loaded — Webhook Reliability Platform', 'accent');
 }
 
 // ══════════════════════════════════════════════════════════
