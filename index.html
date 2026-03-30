@@ -451,6 +451,155 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   height:480px;
   margin-top:60px;
 }
+/* ── INFRASTRUCTURE SECTION ── */
+.infra{background:#fff;position:relative;z-index:2}
+.infra-hero{max-width:1200px;margin:0 auto;padding:80px 56px 60px;text-align:center}
+.infra-hero h2{font-family:var(--fd);font-size:clamp(38px,5vw,62px);font-weight:400;line-height:1.06;letter-spacing:-1.5px;color:#0F1117;margin-bottom:18px}
+.infra-hero h2 em{font-style:italic;color:var(--gold)}
+.infra-hero p{font-size:16px;color:#4B5563;line-height:1.80;font-weight:300;max-width:680px;margin:0 auto}
+.infra-price-band{background:#0F1117;padding:52px 56px}
+.infra-price-in{max-width:1200px;margin:0 auto}
+.infra-price-head{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:32px}
+.infra-price-total{font-family:var(--fm);font-size:clamp(36px,5vw,56px);font-weight:400;color:#fff;letter-spacing:-1px;line-height:1}
+.infra-price-sub{font-family:var(--fm);font-size:11px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:6px}
+.infra-price-note{font-size:12px;color:rgba(255,255,255,.3);font-style:italic;align-self:flex-end}
+.infra-price-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.06)}
+.ipc{background:#0F1117;padding:20px 22px;transition:background .2s}
+.ipc:hover{background:#1a1d2a}
+.ipc-name{font-size:13px;color:rgba(255,255,255,.55);margin-bottom:6px}
+.ipc-val{font-family:var(--fm);font-size:18px;color:var(--gold-bright);letter-spacing:-.5px}
+.ipc-note{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.25);letter-spacing:.5px;margin-top:4px}
+.infra-price-foot{margin-top:16px;font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.25);letter-spacing:.5px;font-style:italic}
+.infra-sources{background:#F9FAFB;padding:52px 56px}
+.infra-sources-in{max-width:1200px;margin:0 auto}
+.src-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:36px}
+.src-col{background:#fff;border:1px solid #E5E7EB;border-radius:12px;padding:24px 28px}
+.src-col-head{font-family:var(--fm);font-size:9.5px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.src-col-head::before{content:'';width:20px;height:1px;background:var(--gold-mid)}
+.src-item{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid #F3F4F6;font-size:13px;color:#374151}
+.src-item:last-child{border-bottom:none}
+.src-badge{font-family:var(--fm);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:2px 7px;border-radius:100px}
+.src-badge.inst{background:rgba(184,134,11,.1);color:var(--gold);border:1px solid var(--gold-border)}
+.src-badge.pub{background:#F0FDF4;color:#15803d;border:1px solid rgba(34,197,94,.2)}
+.infra-why{background:#fff;padding:52px 56px}
+.infra-why-in{max-width:1200px;margin:0 auto}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:36px}
+.why-col{border-radius:14px;padding:32px}
+.why-col.bad{background:#FEF2F2;border:1px solid #FECACA}
+.why-col.good{background:#F0FDF4;border:1px solid #BBF7D0}
+.why-col-head{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.why-mark{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.why-mark.x{background:#FEE2E2;color:#DC2626}
+.why-mark.ok{background:#DCFCE7;color:#16A34A}
+.why-col-title{font-family:var(--fd);font-size:18px;font-weight:500;color:#111827}
+.why-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid rgba(0,0,0,.06);font-size:14px;color:#374151;line-height:1.55}
+.why-item:last-child{border-bottom:none}
+.why-item-ico{font-size:13px;flex-shrink:0;margin-top:1px}
+.infra-disclaimer{background:#F9FAFB;border-top:1px solid #E5E7EB;padding:20px 56px;text-align:center;font-size:11.5px;color:#9CA3AF;font-style:italic;max-width:100%}
+.infra-disclaimer-in{max-width:900px;margin:0 auto}
+
+/* ── TESTIMONIALS ── */
+.testi{background:#fff;padding:90px 0}
+.testi-in{max-width:1200px;margin:0 auto;padding:0 56px}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px}
+.tc-card{background:#fff;border:1px solid #E5E7EB;border-radius:14px;padding:28px;transition:box-shadow .25s,border-color .25s;display:flex;flex-direction:column;gap:14px}
+.tc-card:hover{box-shadow:0 8px 32px rgba(20,20,16,.08);border-color:var(--gold-border)}
+.tc-stars{color:#F5C518;font-size:14px;letter-spacing:1px}
+.tc-quote{font-size:14px;color:#374151;line-height:1.70;font-weight:300;flex:1}
+.tc-author{display:flex;align-items:center;gap:12px;padding-top:12px;border-top:1px solid #F3F4F6;margin-top:auto}
+.tc-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:12px;font-weight:500;color:#fff;flex-shrink:0;letter-spacing:.5px}
+.tc-name{font-size:13px;font-weight:500;color:#111827}
+.tc-role{font-size:11.5px;color:#6B7280;font-family:var(--fm);letter-spacing:.3px}
+.testi-cta{text-align:center;margin-top:44px}
+.btn-ghost-ink{display:inline-flex;align-items:center;gap:8px;padding:12px 30px;border:1.5px solid #D1D5DB;background:transparent;color:#374151;border-radius:var(--r);font-size:14px;font-weight:500;cursor:pointer;font-family:var(--fb);transition:all .2s}
+.btn-ghost-ink:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-tint)}
+.testi-member-count{margin-top:14px;font-size:12.5px;color:#9CA3AF;font-family:var(--fm);letter-spacing:.3px}
+
+/* ── REPORT ANATOMY ── */
+.report-anat{background:#F9FAFB;padding:90px 0}
+.report-anat-in{max-width:1200px;margin:0 auto;padding:0 56px}
+.ra-layout{display:grid;grid-template-columns:1fr 1fr;gap:72px;align-items:center;margin-top:52px}
+.ra-features{display:flex;flex-direction:column;gap:0}
+.ra-item{display:flex;gap:18px;padding:22px 0;border-bottom:1px solid #E5E7EB}
+.ra-item:first-child{padding-top:0}
+.ra-item:last-child{border-bottom:none}
+.ra-icon{width:44px;height:44px;background:#fff;border:1px solid #E5E7EB;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.ra-text-head{font-size:15px;font-weight:600;color:#111827;margin-bottom:5px}
+.ra-text-sub{font-size:13px;color:#6B7280;line-height:1.65;font-weight:300}
+.ra-preview{background:#fff;border:1px solid #E5E7EB;border-radius:16px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,.10)}
+.ra-preview-bar{background:#1E293B;padding:12px 18px;display:flex;align-items:center;gap:7px}
+.ra-preview-dot{width:10px;height:10px;border-radius:50%}
+.ra-preview-body{padding:24px;background:#fff;filter:blur(0)}
+.ra-doc-header{background:linear-gradient(135deg,#1E293B 0%,#334155 100%);padding:20px 24px;border-radius:8px;margin-bottom:16px}
+.ra-doc-title{font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.5);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.ra-doc-name{font-family:var(--fd);font-size:17px;color:#fff;font-weight:400;line-height:1.2}
+.ra-doc-meta{font-family:var(--fm);font-size:9px;color:rgba(255,255,255,.35);margin-top:8px;letter-spacing:.5px}
+.ra-doc-secs{display:flex;flex-direction:column;gap:0}
+.ra-doc-sec{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #F1F5F9}
+.ra-doc-sec:last-child{border-bottom:none}
+.ra-doc-sec-l{display:flex;align-items:center;gap:10px}
+.ra-doc-sec-n{font-family:var(--fm);font-size:9px;color:var(--gold);letter-spacing:.5px;min-width:28px}
+.ra-doc-sec-t{font-size:12px;color:#374151}
+.ra-doc-sec-bar{height:4px;background:#F1F5F9;border-radius:2px;overflow:hidden;width:52px}
+.ra-doc-sec-fill{height:100%;background:var(--gold-mid);border-radius:2px}
+.ra-doc-footer{background:#F8FAFC;border-top:1px solid #E5E7EB;padding:12px 16px;display:flex;justify-content:space-between;margin:16px -24px -24px;align-items:center}
+.ra-doc-ft-l{font-family:var(--fm);font-size:9px;color:#94A3B8;letter-spacing:.5px}
+.ra-doc-ft-r{font-family:var(--fm);font-size:9px;color:var(--gold);letter-spacing:.5px}
+
+/* ── LIGHT IOTD OVERRIDE ── */
+.iotd-light{background:#F9FAFB !important;border:1px solid #E5E7EB !important;box-shadow:0 4px 20px rgba(0,0,0,.06) !important}
+.iotd-light .iotd-header{background:#F1F5F9 !important;border-bottom:1px solid #E5E7EB !important}
+.iotd-light .iotd-label{color:#64748B !important}
+.iotd-light .iotd-cat{color:#475569 !important;border-color:#CBD5E1 !important}
+.iotd-light .iotd-new{background:#16a34a !important;color:#fff !important}
+.iotd-light .iotd-title{color:#0F172A !important}
+.iotd-light .iotd-desc{color:#475569 !important}
+.iotd-light .iotd-metric{border-color:#E2E8F0 !important;color:#374151 !important}
+.iotd-light .iotd-metric span[style]{color:rgba(0,0,0,.3) !important}
+.iotd-light .iotd-cols{border-top:1px solid #E5E7EB !important;background:#fff}
+.iotd-light .iotd-col{border-right:1px solid #E5E7EB !important}
+.iotd-light .iotd-col-head{opacity:1}
+.iotd-light .col-why .iotd-col-head{color:#B45309}
+.iotd-light .col-proof .iotd-col-head{color:#15803d}
+.iotd-light .col-plan .iotd-col-head{color:#1D4ED8}
+.iotd-light .iotd-col p{color:#374151 !important}
+.iotd-light .iotd-col p strong{color:#111827 !important}
+.iotd-light .iotd-col p em{color:#B45309 !important;font-style:normal}
+.iotd-light .iotd-signals li{color:#4B5563 !important}
+.iotd-light .iotd-signals li::before{color:#15803d !important}
+.iotd-light .iotd-signals li strong{color:#111827 !important}
+.iotd-light .iotd-signals li em{color:#15803d !important}
+.iotd-light .iotd-steps li{color:#4B5563 !important}
+.iotd-light .iotd-steps li::before{color:#1D4ED8 !important}
+.iotd-light .iotd-steps li strong{color:#111827 !important}
+.iotd-light .iotd-steps li em{color:#1D4ED8 !important}
+.iotd-light .iotd-footer{background:#F1F5F9 !important;border-top:1px solid #E5E7EB !important}
+.iotd-light .iotd-ft-left{color:#475569 !important}
+.iotd-light .iotd-ft-left span{color:#B45309 !important}
+.iotd-light .iotd-ft-left span[style*="16c784"]{color:#15803d !important}
+.iotd-light .btn-iotd-save{background:#fff !important;border:1px solid #D1D5DB !important;color:#374151 !important}
+.iotd-light .btn-iotd-save:hover{background:#F9FAFB !important;color:#111827 !important}
+.iotd-light .iotd-skeleton{background:linear-gradient(90deg,#F0F2F5 25%,#E8EBF0 50%,#F0F2F5 75%)}
+
+/* ── RESPONSIVE additions ── */
+@media(max-width:1024px){
+  .infra-price-band,.infra-sources,.infra-why,.infra-disclaimer,.infra-hero{padding-left:32px;padding-right:32px}
+  .testi-in,.report-anat-in{padding-left:32px;padding-right:32px}
+  .infra-price-grid{grid-template-columns:repeat(2,1fr)}
+  .src-grid{grid-template-columns:repeat(2,1fr)}
+  .ra-layout{grid-template-columns:1fr;gap:44px}
+}
+@media(max-width:768px){
+  .infra-price-band,.infra-sources,.infra-why,.infra-disclaimer,.infra-hero{padding-left:24px;padding-right:24px}
+  .testi-in,.report-anat-in{padding-left:24px;padding-right:24px}
+  .testi-grid{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr}
+  .src-grid{grid-template-columns:1fr}
+  .infra-price-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){
+  .infra-price-grid{grid-template-columns:1fr}
+}
   </style>
 </head>
 <body>
@@ -556,6 +705,142 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
     <div class="stat"><div class="stat-n">APA<span class="g" style="font-size:32px;letter-spacing:-1px">7</span></div><div class="stat-d">Citation standard on all<br>references and sources</div></div>
   </div>
 
+  <section id="infrastructure" class="infra">
+
+    <div class="infra-hero rv">
+      <div class="eyebrow" style="justify-content:center"><div class="eyebrow-ln"></div>Intelligence Infrastructure<div class="eyebrow-ln"></div></div>
+      <h2>Where the <em>signal comes from.</em></h2>
+      <p>Reddit sentiment, search velocity, funding signals, and competitor gaps do not emerge from guesswork. Every NicheLab analysis is built on the same intelligence infrastructure that informs decisions at the world's largest hedge funds, strategy consultancies, and sovereign wealth offices. The data layer doesn't change. Only who gets to act on it does.</p>
+    </div>
+
+    <div class="infra-price-band">
+      <div class="infra-price-in">
+        <div class="infra-price-head">
+          <div>
+            <div class="infra-price-total">$147,400<span style="font-size:clamp(16px,2vw,24px);opacity:.5">/yr</span></div>
+            <div class="infra-price-sub">Combined Institutional List Price — the intelligence categories we monitor</div>
+          </div>
+          <div class="infra-price-note">Figures reflect publicly available institutional pricing. For reference only.</div>
+        </div>
+        <div class="infra-price-grid">
+          <div class="ipc"><div class="ipc-name">Bloomberg Terminal</div><div class="ipc-val">$27,000</div><div class="ipc-note">$27K/yr</div></div>
+          <div class="ipc"><div class="ipc-name">CB Insights Enterprise</div><div class="ipc-val">$15,000</div><div class="ipc-note">$15K/yr</div></div>
+          <div class="ipc"><div class="ipc-name">Gartner Research Access</div><div class="ipc-val">$30,000</div><div class="ipc-note">$30K/yr</div></div>
+          <div class="ipc"><div class="ipc-name">PitchBook Platform</div><div class="ipc-val">$24,000</div><div class="ipc-note">$24K/yr</div></div>
+          <div class="ipc"><div class="ipc-name">McKinsey Reports (avg.)</div><div class="ipc-val">$22,000</div><div class="ipc-note">$22K/yr</div></div>
+          <div class="ipc"><div class="ipc-name">Euromonitor Passport</div><div class="ipc-val">$18,400</div><div class="ipc-note">$18.4K/yr</div></div>
+          <div class="ipc"><div class="ipc-name">IBISWorld Industry Suite</div><div class="ipc-val">$11,000</div><div class="ipc-note">$11K/yr</div></div>
+          <div class="ipc" style="background:rgba(184,134,11,.10);border-left:2px solid var(--gold-bright)"><div class="ipc-name" style="color:var(--gold-bright)">NicheLab Membership</div><div class="ipc-val" style="color:var(--gold-bright)">From $36</div><div class="ipc-note" style="color:rgba(245,197,24,.5)">$36/mo · Same data layer</div></div>
+        </div>
+        <div class="infra-price-foot">Figures reflect publicly available institutional pricing. For reference only. NicheLab is an independent platform and is not affiliated with any referenced service.</div>
+      </div>
+    </div>
+
+    <div class="infra-sources">
+      <div class="infra-sources-in">
+        <div class="rv" style="text-align:center">
+          <div class="eyebrow" style="justify-content:center"><div class="eyebrow-ln"></div>47 Monitored Sources<div class="eyebrow-ln"></div></div>
+          <h3 style="font-family:var(--fd);font-size:clamp(28px,3.5vw,42px);font-weight:400;letter-spacing:-1px;color:#0F172A;margin-bottom:12px">The intelligence categories <em style="color:var(--gold);font-style:italic">we monitor.</em></h3>
+          <p style="font-size:15px;color:#6B7280;max-width:520px;margin:0 auto;font-weight:300;line-height:1.75">Every report synthesises signals from institutional and public sources, categorised, cited, and cross-validated before a single word reaches your dashboard.</p>
+        </div>
+        <div class="src-grid rv rv-d1">
+          <div class="src-col">
+            <div class="src-col-head">Strategy &amp; Advisory</div>
+            <div class="src-item">McKinsey Global Institute<span class="src-badge inst">Institutional</span></div>
+            <div class="src-item">BCG Henderson Institute<span class="src-badge inst">Institutional</span></div>
+            <div class="src-item">Bain &amp; Company Research<span class="src-badge inst">Institutional</span></div>
+            <div class="src-item">Deloitte Insights<span class="src-badge pub">Public</span></div>
+            <div class="src-item">PwC Global Reports<span class="src-badge pub">Public</span></div>
+          </div>
+          <div class="src-col">
+            <div class="src-col-head">Financial &amp; Market</div>
+            <div class="src-item">Bloomberg Terminal<span class="src-badge inst">Institutional</span></div>
+            <div class="src-item">Gartner Research Access<span class="src-badge inst">Institutional</span></div>
+            <div class="src-item">Crunchbase Research<span class="src-badge pub">Public</span></div>
+            <div class="src-item">The Economist<span class="src-badge pub">Public</span></div>
+            <div class="src-item">Wall Street Journal<span class="src-badge pub">Public</span></div>
+          </div>
+          <div class="src-col">
+            <div class="src-col-head">Technology &amp; Venture</div>
+            <div class="src-item">CB Insights Enterprise<span class="src-badge inst">Institutional</span></div>
+            <div class="src-item">PitchBook Platform<span class="src-badge inst">Institutional</span></div>
+            <div class="src-item">Product Hunt<span class="src-badge pub">Public</span></div>
+            <div class="src-item">Sequoia/a16z Memos<span class="src-badge pub">Public</span></div>
+            <div class="src-item">Y Combinator Data<span class="src-badge pub">Public</span></div>
+          </div>
+          <div class="src-col">
+            <div class="src-col-head">Academic &amp; Think Tank</div>
+            <div class="src-item">Harvard Business Review<span class="src-badge pub">Public</span></div>
+            <div class="src-item">MIT Sloan Management<span class="src-badge pub">Public</span></div>
+            <div class="src-item">Stanford GSB Research<span class="src-badge pub">Public</span></div>
+            <div class="src-item">Wharton School Studies<span class="src-badge pub">Public</span></div>
+            <div class="src-item">Oxford Saïd Research<span class="src-badge pub">Public</span></div>
+          </div>
+          <div class="src-col">
+            <div class="src-col-head">Industry &amp; Sector</div>
+            <div class="src-item">Euromonitor Passport<span class="src-badge inst">Institutional</span></div>
+            <div class="src-item">IBISWorld Suite<span class="src-badge inst">Institutional</span></div>
+            <div class="src-item">Statista<span class="src-badge pub">Public</span></div>
+            <div class="src-item">SEC EDGAR Filings<span class="src-badge pub">Public</span></div>
+            <div class="src-item">Public Filings<span class="src-badge pub">Public</span></div>
+          </div>
+          <div class="src-col">
+            <div class="src-col-head">Behavioural &amp; Signal</div>
+            <div class="src-item">Google Trends &amp; Search<span class="src-badge pub">Public</span></div>
+            <div class="src-item">Google Consumer Data<span class="src-badge pub">Public</span></div>
+            <div class="src-item">Indie Hackers Revenue<span class="src-badge pub">Public</span></div>
+            <div class="src-item">Dollar Hacker Revenue<span class="src-badge pub">Public</span></div>
+            <div class="src-item">Subreddit Signals<span class="src-badge pub">Public</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="infra-why">
+      <div class="infra-why-in">
+        <div class="rv" style="text-align:center;margin-bottom:36px">
+          <div class="eyebrow" style="justify-content:center"><div class="eyebrow-ln"></div>Why NicheLab<div class="eyebrow-ln"></div></div>
+          <h3 style="font-family:var(--fd);font-size:clamp(28px,3.5vw,42px);font-weight:400;letter-spacing:-1px;color:#0F172A">The conventional approach<br>vs. <em style="color:var(--gold);font-style:italic">the NicheLab standard.</em></h3>
+        </div>
+        <div class="why-grid rv rv-d1">
+          <div class="why-col bad">
+            <div class="why-col-head">
+              <div class="why-mark x">✕</div>
+              <div class="why-col-title">The Conventional Approach</div>
+            </div>
+            <div class="why-item"><span class="why-item-ico">💬</span>Twitter / X hot takes and social sentiment noise</div>
+            <div class="why-item"><span class="why-item-ico">🤖</span>LLM brainstorming with no real-world citation layer</div>
+            <div class="why-item"><span class="why-item-ico">📅</span>3–6 months of manual research per market thesis</div>
+            <div class="why-item"><span class="why-item-ico">🤔</span>Gut feelings and founder echo chambers</div>
+            <div class="why-item"><span class="why-item-ico">📊</span>Rounded, estimated market figures with no sourcing</div>
+            <div class="why-item"><span class="why-item-ico">💸</span>$27,000+/yr for a single terminal subscription</div>
+          </div>
+          <div class="why-col good">
+            <div class="why-col-head">
+              <div class="why-mark ok">✓</div>
+              <div class="why-col-title">The NicheLab Standard</div>
+            </div>
+            <div class="why-item"><span class="why-item-ico">📡</span>47 monitored real-world sources — every claim cited</div>
+            <div class="why-item"><span class="why-item-ico">⏱</span>200+ hours of research condensed into a 15-minute read</div>
+            <div class="why-item"><span class="why-item-ico">💹</span>Investment-grade TAM/SAM/SOM with non-rounded figures</div>
+            <div class="why-item"><span class="why-item-ico">📋</span>30-day execution plan with milestone-mapped actions</div>
+            <div class="why-item"><span class="why-item-ico">📎</span>APA-7 sourcing standard on every report, every time</div>
+            <div class="why-item"><span class="why-item-ico">💎</span>Pro membership from $84/month — no terminal contract</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="infra-disclaimer">
+      <div class="infra-disclaimer-in">
+        All analytical outputs are produced through proprietary synthesis methodologies drawing from publicly available and licensed data sources. Institutional designations serve as reference points to contextualise the scale of market intelligence infrastructure NicheLab synthesises from. NicheLab is an independent research platform and is not affiliated with, endorsed by, or acting as a reseller of any referenced institutional service. Pricing figures are approximate and sourced from publicly available market information as of 2024–2025.
+      </div>
+    </div>
+
+  </section>
+
+  <hr class="hr" />
+
   <section id="services">
     <div class="wrap sp">
       <div class="rv">
@@ -570,6 +855,299 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
         <div class="svc-card"><div class="svc-num">04 ——</div><div class="svc-ico">📈</div><div class="svc-t">Financial Modelling</div><p class="svc-d">Non-rounded financial figures, realistic growth curves, and ROI projections supported by market data. Every model reflects sector-specific assumptions, not generic templates.</p><span class="svc-tag">Non-rounded projections</span></div>
         <div class="svc-card"><div class="svc-num">05 ——</div><div class="svc-ico">📄</div><div class="svc-t">Client-Ready PDF Reports</div><p class="svc-d">Every brief exports as a professionally styled A4 PDF with CSS-counted page numbers, branded headers, and APA-7 citations. Suitable for board decks and investor materials.</p><span class="svc-tag">A4 · APA-7 · Print-ready</span></div>
         <div class="svc-card"><div class="svc-num">06 ——</div><div class="svc-ico">🔐</div><div class="svc-t">Secure Research Vault</div><p class="svc-d">Your research library is secured with enterprise-grade authentication, encrypted at rest and in transit. Tier-based access ensures each member sees only what their engagement level grants.</p><span class="svc-tag">Encrypted · Tier-gated</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="hr" />
+
+  <!-- ── TESTIMONIALS ── -->
+  <section id="testimonials">
+    <div class="testi">
+      <div class="testi-in">
+        <div class="rv" style="text-align:center">
+          <div class="eyebrow" style="justify-content:center"><div class="eyebrow-ln"></div>What Our Members Say<div class="eyebrow-ln"></div></div>
+          <h2 class="headline" style="font-size:clamp(34px,4vw,54px);margin-bottom:14px">Trusted by analysts<br>and investors <em>worldwide.</em></h2>
+          <p class="sub" style="max-width:500px;margin:0 auto">From venture partners in London to quantitative analysts in Seoul — professionals across 20 markets rely on NicheLab daily.</p>
+        </div>
+
+        <div class="testi-grid">
+          <!-- Row 1 -->
+          <div class="tc-card rv">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"The level of detail in these niche reports is something I haven't found elsewhere. It cut my research time by 70% while improving my decision-making."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#2563EB">MT</div>
+              <div><div class="tc-name">Marcus T.</div><div class="tc-role">Venture Partner · London</div></div>
+            </div>
+          </div>
+          <div class="tc-card rv rv-d1">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"NicheLab identifies trends months before they hit the mainstream media. It is now an essential part of my daily investment workflow."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#0D9488">ER</div>
+              <div><div class="tc-name">Elena R.</div><div class="tc-role">Growth Strategist · Madrid</div></div>
+            </div>
+          </div>
+          <div class="tc-card rv rv-d2">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"The professional Word and PDF exports are perfectly formatted for executive presentations. I no longer waste hours on manual data cleanup."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#4F46E5">JW</div>
+              <div><div class="tc-name">James W.</div><div class="tc-role">Portfolio Manager · Singapore</div></div>
+            </div>
+          </div>
+          <!-- Row 2 -->
+          <div class="tc-card rv">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"This is the most accurate market forecasting tool I've used in the last three years. The intelligence engine captures nuances that others simply miss."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#475569">SL</div>
+              <div><div class="tc-name">Sarah L.</div><div class="tc-role">Independent Researcher · New York</div></div>
+            </div>
+          </div>
+          <div class="tc-card rv rv-d1">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"NicheLab's data visualization makes complex, high-barrier markets easy to digest at a glance. It helped me secure my last two seed-round investments."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#B8860B">AK</div>
+              <div><div class="tc-name">Ahmed K.</div><div class="tc-role">Angel Investor · Dubai</div></div>
+            </div>
+          </div>
+          <div class="tc-card rv rv-d2">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"The reports are precise, data-driven, and highly actionable for deep-tech sectors. It's a must-have toolkit for any serious market analyst."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#0D9488">YS</div>
+              <div><div class="tc-name">Yuki S.</div><div class="tc-role">Tech Analyst · Tokyo</div></div>
+            </div>
+          </div>
+          <!-- Row 3 -->
+          <div class="tc-card rv">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"I found my next profitable investment niche within 48 hours of joining the platform. The ROI on a single report has already paid for my annual membership."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#2563EB">DM</div>
+              <div><div class="tc-name">David M.</div><div class="tc-role">Solo Entrepreneur · Berlin</div></div>
+            </div>
+          </div>
+          <div class="tc-card rv rv-d1">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"The professional structure of these reports is truly top-tier and saves me immense effort. I can finally focus on strategy instead of raw data gathering."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#7C3AED">CB</div>
+              <div><div class="tc-name">Chloe B.</div><div class="tc-role">Market Strategist · Paris</div></div>
+            </div>
+          </div>
+          <div class="tc-card rv rv-d2">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"Finally, an intelligence engine that focuses on high-potential 'niche' markets instead of the obvious ones. The depth of analysis is truly impressive."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#0D9488">AP</div>
+              <div><div class="tc-name">Arjun P.</div><div class="tc-role">FinTech Consultant · Mumbai</div></div>
+            </div>
+          </div>
+          <!-- Row 4 -->
+          <div class="tc-card rv">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"High-signal, low-noise reporting is exactly what a busy professional like me needs daily. The executive summaries provide instant clarity on complex market shifts."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#475569">IH</div>
+              <div><div class="tc-name">Ingrid H.</div><div class="tc-role">Asset Manager · Stockholm</div></div>
+            </div>
+          </div>
+          <div class="tc-card rv rv-d1">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"The depth of the Live Intelligence preview was what initially sold me on the service. Since then, the consistent quality of the full reports has exceeded my expectations."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#4F46E5">LF</div>
+              <div><div class="tc-name">Luca F.</div><div class="tc-role">Private Equity Associate · Milan</div></div>
+            </div>
+          </div>
+          <div class="tc-card rv rv-d2">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"Global insights with a local touch make this a unique resource for international expansion. I'm very impressed with the variety of niche sectors covered."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#2563EB">MG</div>
+              <div><div class="tc-name">Maria G.</div><div class="tc-role">Business Development · São Paulo</div></div>
+            </div>
+          </div>
+          <!-- Row 5 -->
+          <div class="tc-card rv">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"This is the perfect tool for staying ahead of market shifts while managing a global portfolio on the move. The cloud-based report access is seamless and fast."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#B8860B">TH</div>
+              <div><div class="tc-name">Tom H.</div><div class="tc-role">Digital Nomad / Investor · Bali</div></div>
+            </div>
+          </div>
+          <div class="tc-card rv rv-d1">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"The automated reporting engine delivers consistent, high-quality data every single time. It has become my primary source for emerging market trends."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#0D9488">SV</div>
+              <div><div class="tc-name">Sofi V.</div><div class="tc-role">Economic Consultant · Amsterdam</div></div>
+            </div>
+          </div>
+          <div class="tc-card rv rv-d2">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"These reports provide reliable data points that I can actually use in high-stakes board presentations. The level of quantitative analysis is outstanding."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#7C3AED">RC</div>
+              <div><div class="tc-name">Ryan C.</div><div class="tc-role">Hedge Fund Analyst · Hong Kong</div></div>
+            </div>
+          </div>
+          <!-- Row 6 -->
+          <div class="tc-card rv">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"I now recommend NicheLab to all my clients who are looking for new market entry points. It provides the competitive edge needed in today's crowded landscape."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#475569">NE</div>
+              <div><div class="tc-name">Nadia E.</div><div class="tc-role">Startup Advisor · Cairo</div></div>
+            </div>
+          </div>
+          <div class="tc-card rv rv-d1">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"The breakdown of emerging tech sectors and micro-trends is exceptionally detailed. It's rare to find such high-quality intelligence at this price point."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#4F46E5">LJ</div>
+              <div><div class="tc-name">Leo J.</div><div class="tc-role">Quantitative Analyst · Seoul</div></div>
+            </div>
+          </div>
+          <div class="tc-card rv rv-d2">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"The professional Word export is a total lifesaver for my weekly client meetings. It allows me to present complex market data in a clear, digestible format."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#0D9488">OS</div>
+              <div><div class="tc-name">Olivia S.</div><div class="tc-role">Financial Planner · Toronto</div></div>
+            </div>
+          </div>
+          <!-- Row 7 -->
+          <div class="tc-card rv">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"The ROI I've seen from just a few NicheLab reports has been absolutely astronomical. It's an indispensable asset for identifying early-stage opportunities."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#2563EB">HM</div>
+              <div><div class="tc-name">Hans M.</div><div class="tc-role">Venture Scout · Zurich</div></div>
+            </div>
+          </div>
+          <div class="tc-card rv rv-d1">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote">"Fast, reliable, and incredibly deep market intel that keeps me ahead of the curve. This has quickly become my daily go-to platform for all research."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#B8860B">ID</div>
+              <div><div class="tc-name">Isabella D.</div><div class="tc-role">Trend Forecaster · Sydney</div></div>
+            </div>
+          </div>
+          <div class="tc-card rv rv-d2" style="background:linear-gradient(135deg,#FFFEF8 0%,#FFF9E6 100%);border-color:var(--gold-border)">
+            <div class="tc-stars">★★★★★</div>
+            <p class="tc-quote" style="font-style:italic;color:#374151">"I invested in NicheLab on a Friday. By Monday, I had identified two high-signal niches and drafted investor memos for both. The speed of insight is unmatched."</p>
+            <div class="tc-author">
+              <div class="tc-avatar" style="background:#B8860B">+</div>
+              <div><div class="tc-name" style="color:var(--gold)">Join 1,200+ Members</div><div class="tc-role">Global Investors &amp; Analysts</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testi-cta rv">
+          <button class="btn-ghost-ink" onclick="go('contact')">Explore Success Stories</button>
+          <div class="testi-member-count">✅ Join 1,200+ Global Investors &amp; Analysts</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="hr" />
+
+  <!-- ── REPORT ANATOMY ── -->
+  <section id="inside-the-report">
+    <div class="report-anat">
+      <div class="report-anat-in">
+        <div class="rv" style="text-align:center">
+          <div class="eyebrow" style="justify-content:center"><div class="eyebrow-ln"></div>Inside the Report<div class="eyebrow-ln"></div></div>
+          <h2 class="headline" style="font-size:clamp(34px,4vw,54px);margin-bottom:14px">The anatomy of a<br><em>NicheLab intelligence brief.</em></h2>
+          <p class="sub" style="max-width:520px;margin:0 auto">Every deliverable follows the same uncompromising architecture. This is what institutional intelligence looks like — and what you receive with every brief.</p>
+        </div>
+        <div class="ra-layout">
+          <div class="ra-features">
+            <div class="ra-item rv">
+              <div class="ra-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B8860B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+              </div>
+              <div>
+                <div class="ra-text-head">Executive Summary — The Pro Edge</div>
+                <div class="ra-text-sub">A high-impact, one-page summary for decision-makers. No fluff, just actionable insights and the single most important conclusion a busy executive needs to know immediately.</div>
+              </div>
+            </div>
+            <div class="ra-item rv rv-d1">
+              <div class="ra-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B8860B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div>
+                <div class="ra-text-head">Market Sentiment Score</div>
+                <div class="ra-text-sub">A proprietary 1–100 score analyzing current market heat and future growth potential. Synthesised from funding velocity, search momentum, and competitive density signals.</div>
+              </div>
+            </div>
+            <div class="ra-item rv rv-d1">
+              <div class="ra-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B8860B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+              </div>
+              <div>
+                <div class="ra-text-head">Niche Forecasting Graphs</div>
+                <div class="ra-text-sub">Visual trend lines showing where the market is moving in the next 12–24 months. Grounded in historical data, macro signals, and cross-referenced sector momentum.</div>
+              </div>
+            </div>
+            <div class="ra-item rv rv-d1">
+              <div class="ra-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B8860B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              </div>
+              <div>
+                <div class="ra-text-head">Competitor &amp; Barrier Analysis</div>
+                <div class="ra-text-sub">Detailed breakdown of the competitive moat and entry barriers for solo investors and small teams. Maps who controls distribution, pricing power, and defensible advantages.</div>
+              </div>
+            </div>
+            <div class="ra-item rv rv-d1">
+              <div class="ra-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B8860B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              </div>
+              <div>
+                <div class="ra-text-head">Multi-Format Export</div>
+                <div class="ra-text-sub">One-click download as Professional Word (.docx) or Premium PDF. No database rows, no formatting cleanup — client-ready output the moment generation completes.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Document Preview -->
+          <div class="ra-preview rv rv-d2">
+            <div class="ra-preview-bar">
+              <div class="ra-preview-dot" style="background:#FF5F57"></div>
+              <div class="ra-preview-dot" style="background:#FEBC2E"></div>
+              <div class="ra-preview-dot" style="background:#28C840"></div>
+              <span style="font-family:var(--fm);font-size:10px;color:rgba(255,255,255,.35);margin-left:10px;letter-spacing:.5px">NicheLab Intelligence Brief.docx</span>
+            </div>
+            <div class="ra-preview-body">
+              <div class="ra-doc-header">
+                <div class="ra-doc-title">INTELLIGENCE BRIEF · PROPRIETARY</div>
+                <div class="ra-doc-name">Webhook Reliability Platform<br>for Indie Developers</div>
+                <div class="ra-doc-meta">Analyst: GB-47291-2025 · NicheLab Pro · 17 pages · APA-7</div>
+              </div>
+              <div class="ra-doc-secs">
+                <div class="ra-doc-sec"><div class="ra-doc-sec-l"><span class="ra-doc-sec-n">§ 01</span><span class="ra-doc-sec-t">Executive Summary</span></div><div class="ra-doc-sec-bar"><div class="ra-doc-sec-fill" style="width:100%"></div></div></div>
+                <div class="ra-doc-sec"><div class="ra-doc-sec-l"><span class="ra-doc-sec-n">§ 02</span><span class="ra-doc-sec-t">Market Sizing &amp; TAM/SAM/SOM</span></div><div class="ra-doc-sec-bar"><div class="ra-doc-sec-fill" style="width:92%"></div></div></div>
+                <div class="ra-doc-sec"><div class="ra-doc-sec-l"><span class="ra-doc-sec-n">§ 03</span><span class="ra-doc-sec-t">Market Sentiment Score</span></div><div class="ra-doc-sec-bar"><div class="ra-doc-sec-fill" style="width:88%"></div></div></div>
+                <div class="ra-doc-sec"><div class="ra-doc-sec-l"><span class="ra-doc-sec-n">§ 04</span><span class="ra-doc-sec-t">Competitor Landscape</span></div><div class="ra-doc-sec-bar"><div class="ra-doc-sec-fill" style="width:85%"></div></div></div>
+                <div class="ra-doc-sec"><div class="ra-doc-sec-l"><span class="ra-doc-sec-n">§ 05</span><span class="ra-doc-sec-t">Niche Forecasting Graphs</span></div><div class="ra-doc-sec-bar"><div class="ra-doc-sec-fill" style="width:95%"></div></div></div>
+                <div class="ra-doc-sec"><div class="ra-doc-sec-l"><span class="ra-doc-sec-n">§ 06</span><span class="ra-doc-sec-t">Revenue Model Analysis</span></div><div class="ra-doc-sec-bar"><div class="ra-doc-sec-fill" style="width:78%"></div></div></div>
+                <div class="ra-doc-sec"><div class="ra-doc-sec-l"><span class="ra-doc-sec-n">§ 07</span><span class="ra-doc-sec-t">Go-to-Market Strategy</span></div><div class="ra-doc-sec-bar"><div class="ra-doc-sec-fill" style="width:90%"></div></div></div>
+                <div class="ra-doc-sec" style="opacity:.45"><div class="ra-doc-sec-l"><span class="ra-doc-sec-n">+8</span><span class="ra-doc-sec-t" style="color:#9CA3AF;font-size:11px">Additional sections…</span></div><div class="ra-doc-sec-bar"><div class="ra-doc-sec-fill" style="width:100%;opacity:.3"></div></div></div>
+              </div>
+              <div class="ra-doc-footer">
+                <div class="ra-doc-ft-l">Market · 84/100 &nbsp;·&nbsp; CAGR · 18.2%</div>
+                <div class="ra-doc-ft-r">TAM · $7.0B &nbsp;·&nbsp; PDF + Word ↓</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -624,7 +1202,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
         <!-- Skeleton shown while auth resolves -->
         <div class="iotd-skeleton" id="iotdSkeleton" style="display:none"></div>
 
-        <div class="iotd rv rv-d1" id="iotdBlock">
+        <div class="iotd rv rv-d1 iotd-light" id="iotdBlock">
         <!-- Header bar -->
         <div class="iotd-header">
           <div style="display:flex;align-items:center;gap:12px">
@@ -1042,11 +1620,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
       <div>
         <div class="eyebrow" style="margin-bottom:24px"><div class="eyebrow-ln"></div>Get in Touch</div>
         <h1>Let's discuss your<br><em>research agenda.</em></h1>
-        <p class="ct-intro">Whether you're exploring membership, requesting a custom briefing, or have a question about our methodology — our team responds within one business day.</p>
-        <div class="ct-item"><div class="ct-ico">📧</div><div><div class="ct-lbl">General Enquiries</div><div class="ct-val">hello@nichelab.io</div></div></div>
-        <div class="ct-item"><div class="ct-ico">⚖️</div><div><div class="ct-lbl">Legal &amp; Compliance</div><div class="ct-val">legal@nichelab.io</div></div></div>
-        <div class="ct-item"><div class="ct-ico">📍</div><div><div class="ct-lbl">Headquarters</div><div class="ct-val">Lisbon, Portugal · Remote-first operations</div></div></div>
-        <div class="ct-item"><div class="ct-ico">🕐</div><div><div class="ct-lbl">Response Window</div><div class="ct-val">Within 24 hours · Monday – Friday</div></div></div>
+        <p class="ct-intro">Whether you're exploring membership, requesting a custom briefing, or have a question about our methodology — use the form to connect with our research team.</p>
       </div>
       <div class="fcard">
         <div class="f-title">Send an Enquiry</div>
