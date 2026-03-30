@@ -2246,20 +2246,13 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 
   <h2>12. Policy Updates</h2>
   <p>NicheLab may update this Privacy Policy from time to time to reflect changes in law, infrastructure, data practices, or operational requirements. Updated versions may be published on the Platform and, where appropriate, communicated by email or account notice.</p>
-
   <p>Continued use of the Platform after the effective date of an updated Privacy Policy constitutes acknowledgment of the revised policy to the extent permitted by law.</p>
 
   <hr>
 
   <h2>13. Contact</h2>
   <p>Privacy-related requests, legal notices, and data protection inquiries may be directed to the official contact channels identified on the Platform.</p>
-</div>
-```
-
-
-
-<!-- PAGE: CONTACT -->
-<div class="page" id="page-contact">
+</div> <div class="page" id="page-contact">
   <div class="wrap" style="padding-top:64px;padding-bottom:100px">
     <div class="ct-layout">
       <div>
@@ -2267,13 +2260,26 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
         <h1>Let's discuss your<br><em>research agenda.</em></h1>
         <p class="ct-intro">Whether you're exploring membership, requesting a custom briefing, or have a question about our methodology — use the form to connect with our research team.</p>
       </div>
+      
       <div class="fcard">
         <div class="f-title">Send an Enquiry</div>
+        
         <div class="f-row2">
-          <div class="fg"><label class="flbl" for="fc-n">Full Name *</label><input class="fctl" type="text" id="fc-n" placeholder="Jane Smith" autocomplete="name" /></div>
-          <div class="fg"><label class="flbl" for="fc-e">Email Address *</label><input class="fctl" type="email" id="fc-e" placeholder="jane@firm.com" autocomplete="email" /></div>
+          <div class="fg">
+            <label class="flbl" for="fc-n">Full Name *</label>
+            <input class="fctl" type="text" id="fc-n" placeholder="Jane Smith" autocomplete="name" />
+          </div>
+          <div class="fg">
+            <label class="flbl" for="fc-e">Email Address *</label>
+            <input class="fctl" type="email" id="fc-e" placeholder="jane@firm.com" autocomplete="email" />
+          </div>
         </div>
-        <div class="fg"><label class="flbl" for="fc-o">Organisation</label><input class="fctl" type="text" id="fc-o" placeholder="Firm or company name (optional)" autocomplete="organization" /></div>
+
+        <div class="fg">
+          <label class="flbl" for="fc-o">Organisation</label>
+          <input class="fctl" type="text" id="fc-o" placeholder="Firm or company name (optional)" autocomplete="organization" />
+        </div>
+
         <div class="fg">
           <label class="flbl" for="fc-s">Enquiry Type *</label>
           <select class="fctl" id="fc-s">
@@ -2287,19 +2293,21 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
             <option value="other">Other</option>
           </select>
         </div>
-        <div class="fg"><label class="flbl" for="fc-m">Message *</label><textarea class="fctl" id="fc-m" placeholder="Please describe your enquiry in detail…"></textarea></div>
+
+        <div class="fg">
+          <label class="flbl" for="fc-m">Message *</label>
+          <textarea class="fctl" id="fc-m" placeholder="Please describe your enquiry in detail…"></textarea>
+        </div>
+
         <button class="btn-send" id="sendBtn" onclick="submitContact()">
           <span id="sendLbl">Send Enquiry</span><span id="sendArr">→</span>
         </button>
+        
         <div class="ffb" id="ffb"></div>
       </div>
     </div>
   </div>
-</div><!-- /contact -->
-
-
-<!-- FOOTER -->
-<footer>
+</div><footer>
   <div class="ft-grid">
     <div class="ft-top">
       <div class="ft-brand">
