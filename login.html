@@ -221,6 +221,7 @@
     }
     .alert-error  { background: #FEF2F2; border: 1px solid #FECACA; color: #DC2626; }
     .alert-success{ background: #F0FDF4; border: 1px solid #BBF7D0; color: #16A34A; }
+    .alert-warn   { background: #FFFBEB; border: 1px solid #FDE68A; color: #92400E; }
 
     .auth-footer {
       text-align: center; margin-top: 30px;
@@ -292,8 +293,9 @@
       <div class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Create Account</div>
     </div>
 
-    <div class="alert alert-error"  id="msg-error"></div>
+    <div class="alert alert-error"   id="msg-error"></div>
     <div class="alert alert-success" id="msg-success"></div>
+    <div class="alert alert-warn"    id="msg-warn"></div>
 
     <div class="form-group" id="group-name" style="display:none">
       <label class="form-label">Full Name</label>
@@ -336,55 +338,128 @@
 
 <script>
 // ══════════════════════════════════════════════════════════════
-//  NicheLab — login.html  |  Auth Script
+//  NicheLab — login.html  |  Auth Script  (Fixed v2)
 //  ─────────────────────────────────────────────────────────────
-//  STEP 1: Replace the anon key below with your real key from:
-//          Supabase Dashboard → Project Settings → API
-//          Copy the value under "anon / public"
+//  FIX APPLIED:
+//    • Corrected SUPABASE_URL project ID: ctezbazpnqylufhrmcwn
+//    • Added config validation guard before createClient
+//    • ERR_NAME_NOT_RESOLVED / Failed to fetch → clear user message
+//    • Distinguishes: Config Error vs Network Error vs Auth Error
 // ══════════════════════════════════════════════════════════════
-const SUPABASE_URL      = 'https://btiwdulcqtvkdupsotnx.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA'; // ← REPLACE THIS
 
-// ─── Init ──────────────────────────────────────────────────────
-const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-  auth: {
-    storage: window.localStorage,
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true,   // Required for Google OAuth callback
+// ─── 1. CONFIG ─────────────────────────────────────────────────
+//  ✅ CORRECT project ID: ctezbazpnqylufhrmcwn
+//  ❌ OLD (wrong) project ID was: btiwdulcqtvkdupsotnx  ← caused ERR_NAME_NOT_RESOLVED
+const SUPABASE_URL      = 'https://ctezbazpnqylufhrmcwn.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZXpiYXpwbnF5bHVmaHJtY3duIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MjA1NTc2MDAwMH0.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
+// ↑ Replace the value above with your real anon key from:
+//   Supabase Dashboard → Project Settings → API → "anon / public"
+
+// ─── 2. CONFIG VALIDATION ──────────────────────────────────────
+//  Runs before createClient — catches missing/placeholder values early
+//  so the user sees "Configuration Error" instead of "Failed to fetch"
+const CONFIG_ERRORS = [];
+
+if (!SUPABASE_URL || !SUPABASE_URL.startsWith('https://') || SUPABASE_URL.includes('undefined')) {
+  CONFIG_ERRORS.push('SUPABASE_URL is missing or malformed.');
+}
+if (!SUPABASE_ANON_KEY || SUPABASE_ANON_KEY.length < 100 || SUPABASE_ANON_KEY.includes('REPLACE_WITH')) {
+  CONFIG_ERRORS.push('SUPABASE_ANON_KEY is missing or is still a placeholder.');
+}
+
+const CONFIG_OK = CONFIG_ERRORS.length === 0;
+
+if (!CONFIG_OK) {
+  // Log detail to console for the developer
+  console.error('[NicheLab] ⚠️ Configuration Error — Supabase client will NOT be initialised.');
+  CONFIG_ERRORS.forEach(e => console.error('  →', e));
+}
+
+// ─── 3. SUPABASE CLIENT INIT ───────────────────────────────────
+//  Only initialised when config is valid; avoids cascading fetch errors
+let _sb = null;
+
+if (CONFIG_OK) {
+  try {
+    _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: {
+        storage: window.localStorage,        // Bypass Web Locks race condition
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true,            // Required for Google OAuth callback
+      }
+    });
+    console.info('[NicheLab] Supabase client initialised →', SUPABASE_URL);
+  } catch (initErr) {
+    console.error('[NicheLab] createClient() threw:', initErr);
+    _sb = null;
   }
-});
+}
 
-// ─── Compute redirect base for GitHub Pages ────────────────────
+// ─── 4. ERROR CLASSIFIER ───────────────────────────────────────
+//  Maps raw JS/Supabase errors to human-readable messages.
+//  Three categories: Config | Network | Auth
+function classifyError(err) {
+  const msg = (err.message || '').toLowerCase();
+
+  // Config problems (wrong URL, bad key)
+  if (
+    msg.includes('failed to fetch') ||
+    msg.includes('networkerror') ||
+    msg.includes('err_name_not_resolved') ||
+    msg.includes('err_connection_refused') ||
+    msg.includes('load failed')
+  ) {
+    console.error('[NicheLab] Network/DNS failure:', err);
+    return 'Bağlantı Hatası: Supabase projesine ulaşılamıyor. Proje URL\'si veya Anon Key yanlış olabilir. Konsolu kontrol edin.';
+  }
+
+  if (msg.includes('invalid api key') || msg.includes('jwt')) {
+    console.error('[NicheLab] API Key/JWT failure:', err);
+    return 'Konfigürasyon Hatası: API anahtarı geçersiz veya süresi dolmuş. Supabase Dashboard\'dan anon key\'i kontrol edin.';
+  }
+
+  // Auth errors — surface Supabase message directly (already user-friendly)
+  console.warn('[NicheLab] Auth error:', err);
+  return err.message || 'Giriş başarısız. Lütfen tekrar deneyin.';
+}
+
+// ─── 5. REDIRECT HELPER ────────────────────────────────────────
 function getPageUrl(filename) {
   const parts = window.location.pathname.split('/');
   parts[parts.length - 1] = filename;
   return window.location.origin + parts.join('/');
 }
 
-// ─── If already logged in, skip login and go straight to vault ─
+// ─── 6. SESSION CHECK ON LOAD ──────────────────────────────────
+//  If already signed in → skip login, go straight to vault.
 (async () => {
+  if (!_sb) {
+    // Config broken — show warning immediately, don't attempt network call
+    showWarn('Konfigürasyon Hatası: Supabase bağlantısı kurulamadı. Geliştirici konsolunu inceleyin.');
+    return;
+  }
   try {
     const { data: { session } } = await _sb.auth.getSession();
     if (session) {
       window.location.replace(getPageUrl('vault.html'));
     }
   } catch (err) {
-    // Supabase unreachable or key invalid — stay on login page
+    // Supabase unreachable or key invalid — stay on login page, don't crash
     console.warn('[NicheLab] Could not check session:', err.message);
   }
 })();
 
-// ─── Listen for OAuth callback (Google sign-in redirect) ───────
-// When Google redirects back to login.html with tokens in the URL,
-// Supabase fires SIGNED_IN — we immediately forward to vault.html
-_sb.auth.onAuthStateChange((event, session) => {
-  if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session) {
-    window.location.replace(getPageUrl('vault.html'));
-  }
-});
+// ─── 7. AUTH STATE CHANGE (Google OAuth callback) ─────────────
+if (_sb) {
+  _sb.auth.onAuthStateChange((event, session) => {
+    if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session) {
+      window.location.replace(getPageUrl('vault.html'));
+    }
+  });
+}
 
-// ─── Tab switcher ──────────────────────────────────────────────
+// ─── 8. TAB SWITCHER ───────────────────────────────────────────
 let currentTab = 'signin';
 
 function switchTab(tab) {
@@ -396,21 +471,31 @@ function switchTab(tab) {
   clearAlerts();
 }
 
-// ─── Alert helpers ─────────────────────────────────────────────
+// ─── 9. ALERT HELPERS ──────────────────────────────────────────
 function showError(msg)   { _setAlert('error',   msg); }
 function showSuccess(msg) { _setAlert('success',  msg); }
-function clearAlerts()    { _setAlert('error', ''); _setAlert('success', ''); }
+function showWarn(msg)    { _setAlert('warn',     msg); }
+function clearAlerts()    {
+  _setAlert('error', '');
+  _setAlert('success', '');
+  _setAlert('warn', '');
+}
 
 function _setAlert(type, msg) {
   const el = document.getElementById('msg-' + type);
   if (!el) return;
   el.textContent = msg;
   el.style.display = msg ? 'block' : 'none';
-  if (type === 'error'   && msg) { const s = document.getElementById('msg-success'); if(s) s.style.display = 'none'; }
-  if (type === 'success' && msg) { const e = document.getElementById('msg-error');   if(e) e.style.display = 'none'; }
+  if (msg) {
+    // Hide the other two when this one appears
+    ['error', 'success', 'warn'].filter(t => t !== type).forEach(t => {
+      const other = document.getElementById('msg-' + t);
+      if (other) other.style.display = 'none';
+    });
+  }
 }
 
-// ─── Loading state ─────────────────────────────────────────────
+// ─── 10. LOADING STATE ─────────────────────────────────────────
 function setLoading(on) {
   const btn     = document.getElementById('auth-btn');
   const label   = document.getElementById('btn-label');
@@ -420,64 +505,74 @@ function setLoading(on) {
   if (spinner) spinner.style.display = on ? 'block' : 'none';
 }
 
-// ─── Email / Password login & signup ───────────────────────────
+// ─── 11. EMAIL / PASSWORD AUTH ─────────────────────────────────
 async function handleAuth() {
-  const email    = document.getElementById('field-email').value.trim();
-  const password = document.getElementById('field-password').value;
   clearAlerts();
 
-  if (!email)    { showError('Please enter your email address.'); return; }
-  if (!password) { showError('Please enter your password.');      return; }
+  // Guard: abort immediately if Supabase client failed to init
+  if (!_sb) {
+    showError('Konfigürasyon Hatası: Supabase bağlantısı kurulamadı. Geliştirici konsolunu inceleyin.');
+    return;
+  }
+
+  const email    = document.getElementById('field-email').value.trim();
+  const password = document.getElementById('field-password').value;
+
+  if (!email)    { showError('Lütfen e-posta adresinizi girin.'); return; }
+  if (!password) { showError('Lütfen şifrenizi girin.');          return; }
 
   setLoading(true);
   try {
     if (currentTab === 'signin') {
+      // ── Sign In ────────────────────────────────────────────────
       const { data, error } = await _sb.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      // Redirect handled by onAuthStateChange above — but add explicit fallback:
+      // onAuthStateChange handles redirect; this is an explicit fallback
       window.location.replace(getPageUrl('vault.html'));
 
     } else {
-      const fullName = document.getElementById('field-name').value.trim();
+      // ── Sign Up ────────────────────────────────────────────────
+      const fullName = document.getElementById('field-name')?.value.trim() || '';
       const { error } = await _sb.auth.signUp({
-        email, password,
+        email,
+        password,
         options: { data: { full_name: fullName } }
       });
       if (error) throw error;
-      showSuccess('Account created! Check your email to confirm your address, then sign in.');
+      showSuccess('Hesap oluşturuldu! E-postanızı doğruladıktan sonra giriş yapabilirsiniz.');
       switchTab('signin');
     }
+
   } catch (err) {
-    // Surface Supabase error messages clearly
-    const msg = err.message || 'Authentication failed. Please try again.';
-    showError(msg);
-    // Extra hint for the most common misconfiguration
-    if (msg.includes('Invalid API key') || msg.includes('JWT')) {
-      showError(msg + ' — Check that your Supabase anon key matches your project URL.');
-    }
+    showError(classifyError(err));
   } finally {
     setLoading(false);
   }
 }
 
-// ─── Google OAuth ──────────────────────────────────────────────
+// ─── 12. GOOGLE OAUTH ──────────────────────────────────────────
 async function handleGoogle() {
   clearAlerts();
+
+  if (!_sb) {
+    showError('Konfigürasyon Hatası: Supabase bağlantısı kurulamadı.');
+    return;
+  }
+
   try {
     const { error } = await _sb.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        // After Google redirects back, land on vault.html directly
         redirectTo: getPageUrl('vault.html'),
       }
     });
     if (error) throw error;
   } catch (err) {
-    showError(err.message || 'Google sign-in failed. Please try again.');
+    showError(classifyError(err));
   }
 }
 
-// ─── Keyboard shortcut ─────────────────────────────────────────
+// ─── 13. KEYBOARD SHORTCUT ─────────────────────────────────────
 document.addEventListener('keydown', e => { if (e.key === 'Enter') handleAuth(); });
 </script>
 </body>
