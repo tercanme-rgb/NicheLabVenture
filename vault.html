@@ -793,7 +793,7 @@ const STATUS_META = {
 };
 
 // ─── SUPABASE INIT ─────────────────────────────────────────────
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     storage: window.localStorage,
     autoRefreshToken: true,
@@ -805,29 +805,74 @@ const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
 // ─── STATE ─────────────────────────────────────────────────────
 let userProfile    = null;
 let allReports     = [];
-let reportsMap     = {};   // id → report object
+let reportsMap     = {};
 let activeCategory = 'all';
 let _appInit       = false;
 
-// ─── AUTH GUARD ────────────────────────────────────────────────
-supabase.auth.onAuthStateChange(async (event, session) => {
-  if (event === 'SIGNED_OUT') { redirect('login.html'); return; }
-  if (_appInit) return;
-  _appInit = true;
-
-  if (!session) { redirect('login.html'); return; }
-  await initApp(session.user);
-});
-
+// ─── REDIRECT HELPER ───────────────────────────────────────────
+// Works correctly whether the site is at the root or in a subdirectory (GitHub Pages)
 function redirect(page) {
-  window.location.href = './' + page;
+  const parts = window.location.pathname.split('/');
+  parts[parts.length - 1] = page;
+  window.location.replace(parts.join('/'));
 }
+
+// ─── SAFETY TIMEOUT ────────────────────────────────────────────
+// If the loading screen is still visible after 7 seconds, something has
+// gone wrong (network error, bad key, etc.). Send the user back to login
+// rather than leaving them stuck on a blank screen.
+const _safetyTimer = setTimeout(() => {
+  const ls = document.getElementById('loading-screen');
+  if (ls && ls.style.display !== 'none') {
+    redirect('login.html');
+  }
+}, 7000);
+
+// ─── PRIMARY AUTH GATE: getSession() ───────────────────────────
+// This is the MAIN gatekeeper. It runs immediately and does not depend
+// on onAuthStateChange firing. This is the fix for the infinite loading bug.
+(async () => {
+  try {
+    const { data: { session }, error } = await _sb.auth.getSession();
+
+    if (error) throw error;
+
+    if (!session) {
+      // No active session — send to login immediately
+      redirect('login.html');
+      return;
+    }
+
+    // Session exists — boot the app
+    if (!_appInit) {
+      _appInit = true;
+      clearTimeout(_safetyTimer);
+      await initApp(session.user);
+    }
+
+  } catch (err) {
+    // Any Supabase error (bad key, network, etc.) — send to login
+    console.error('[NicheLab] Session check failed:', err);
+    redirect('login.html');
+  }
+})();
+
+// ─── SECONDARY: onAuthStateChange ──────────────────────────────
+// Only used AFTER initial load — detects if the user signs out in
+// another tab, or if the session expires during this session.
+_sb.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_OUT') {
+    redirect('login.html');
+  }
+  // TOKEN_REFRESHED and SIGNED_IN during an active session are ignored —
+  // _appInit guard prevents double-initialisation.
+});
 
 // ─── INIT ──────────────────────────────────────────────────────
 async function initApp(user) {
   try {
     // Fetch profile
-    const { data: profile } = await supabase
+    const { data: profile } = await _sb
       .from('profiles')
       .select('*')
       .eq('id', user.id)
@@ -866,7 +911,7 @@ async function initApp(user) {
 // ─── SIGNAL ────────────────────────────────────────────────────
 async function loadSignal() {
   try {
-    const { data } = await supabase
+    const { data } = await _sb
       .from('daily_signals')
       .select('signal_text')
       .eq('is_active', true)
@@ -886,7 +931,7 @@ async function loadSignal() {
 // ─── REPORTS ───────────────────────────────────────────────────
 async function loadReports() {
   try {
-    const { data, error } = await supabase
+    const { data, error } = await _sb
       .from('reports')
       .select([
         'id','title','summary','created_at',
@@ -995,7 +1040,7 @@ function filterCat(cat, el) {
 // ─── UPCOMING ─────────────────────────────────────────────────
 async function loadUpcoming() {
   try {
-    const { data } = await supabase
+    const { data } = await _sb
       .from('upcoming_reports')
       .select('*')
       .order('sort_order', { ascending: true })
@@ -1028,7 +1073,7 @@ async function loadUpcoming() {
 // ─── HEATMAP ──────────────────────────────────────────────────
 async function loadHeatmap() {
   try {
-    const { data } = await supabase
+    const { data } = await _sb
       .from('niche_trends')
       .select('niche_name, score, category')
       .order('score', { ascending: false })
@@ -1184,7 +1229,7 @@ function handleAnalystLine() {
 
 // ─── SIGN OUT ──────────────────────────────────────────────────
 async function signOut() {
-  await supabase.auth.signOut();
+  await _sb.auth.signOut();
   redirect('login.html');
 }
 

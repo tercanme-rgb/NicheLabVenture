@@ -642,7 +642,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
       <div class="nab-dot"></div>
       <span id="navAuthLabel">PRO</span>
     </div>
-    <a href="index.html" class="btn-console"><div class="cdot"></div>Members Access</a>
+    <a href="login.html" id="navMembersBtn" class="btn-console"><div class="cdot"></div>Members Access</a>
     <button class="hamburger" id="ham" onclick="toggleMob()" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
@@ -657,7 +657,7 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
   <button class="nl" onclick="go('contact');closeMob()">Contact</button>
   <button class="nl" onclick="go('legal');closeMob()">Legal</button>
   <div class="mob-div"></div>
-  <a href="index.html" class="btn-console" style="align-self:flex-start"><div class="cdot"></div>Members Access</a>
+  <a href="login.html" id="mobMembersBtn" class="btn-console" style="align-self:flex-start"><div class="cdot"></div>Members Access</a>
 </div>
 
 
@@ -2357,9 +2357,33 @@ footer{background:var(--bg-card);border-top:1px solid var(--border);padding:64px
 
 <script>
 const SB_URL = 'https://ctezbazpnqylufhrmcwn.supabase.co';
-const SB_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA'; // ← Same key as vault.html and login.html
 let db = null;
-try { if (SB_KEY !== 'YOUR_SUPABASE_ANON_KEY') db = window.supabase.createClient(SB_URL, SB_KEY); } catch(e){}
+try { if (SB_KEY && SB_KEY.length > 20) db = window.supabase.createClient(SB_URL, SB_KEY, { auth: { storage: window.localStorage, persistSession: true } }); } catch(e){}
+
+// ─── SMART NAV BUTTON ──────────────────────────────────────────
+// Checks if the user is already logged in.
+// If YES  → "Go to Vault" button that links to vault.html
+// If NO   → "Members Access" button that links to login.html
+(async () => {
+  const btn  = document.getElementById('navMembersBtn');
+  const mBtn = document.getElementById('mobMembersBtn');
+  if (!db || !btn) return;
+  try {
+    const { data: { session } } = await db.auth.getSession();
+    if (session) {
+      // User is logged in — offer direct Vault access
+      if (btn)  { btn.href  = 'vault.html'; btn.innerHTML  = '<div class="cdot"></div>Open Vault'; }
+      if (mBtn) { mBtn.href = 'vault.html'; mBtn.innerHTML = '<div class="cdot"></div>Open Vault'; }
+    } else {
+      // Not logged in — go to login page
+      if (btn)  { btn.href  = 'login.html'; }
+      if (mBtn) { mBtn.href = 'login.html'; }
+    }
+  } catch(e) {
+    // Supabase unavailable — default button still goes to login.html (set in HTML)
+  }
+})();
 
 /* ── ROUTER ── */
 const PAGES = ['home','legal','contact','about'];

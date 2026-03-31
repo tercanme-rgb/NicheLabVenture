@@ -335,26 +335,56 @@
 </div>
 
 <script>
-// ─── CONFIG ────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+//  NicheLab — login.html  |  Auth Script
+//  ─────────────────────────────────────────────────────────────
+//  STEP 1: Replace the anon key below with your real key from:
+//          Supabase Dashboard → Project Settings → API
+//          Copy the value under "anon / public"
+// ══════════════════════════════════════════════════════════════
 const SUPABASE_URL      = 'https://ctezbazpnqylufhrmcwn.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA'; // ← REPLACE THIS
 
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+// ─── Init ──────────────────────────────────────────────────────
+const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     storage: window.localStorage,
     autoRefreshToken: true,
     persistSession: true,
-    detectSessionInUrl: true
+    detectSessionInUrl: true,   // Required for Google OAuth callback
   }
 });
 
-// ─── REDIRECT IF ALREADY LOGGED IN ────────────────────────
+// ─── Compute redirect base for GitHub Pages ────────────────────
+function getPageUrl(filename) {
+  const parts = window.location.pathname.split('/');
+  parts[parts.length - 1] = filename;
+  return window.location.origin + parts.join('/');
+}
+
+// ─── If already logged in, skip login and go straight to vault ─
 (async () => {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session) window.location.href = './vault.html';
+  try {
+    const { data: { session } } = await _sb.auth.getSession();
+    if (session) {
+      window.location.replace(getPageUrl('vault.html'));
+    }
+  } catch (err) {
+    // Supabase unreachable or key invalid — stay on login page
+    console.warn('[NicheLab] Could not check session:', err.message);
+  }
 })();
 
-// ─── TAB SWITCHER ──────────────────────────────────────────
+// ─── Listen for OAuth callback (Google sign-in redirect) ───────
+// When Google redirects back to login.html with tokens in the URL,
+// Supabase fires SIGNED_IN — we immediately forward to vault.html
+_sb.auth.onAuthStateChange((event, session) => {
+  if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session) {
+    window.location.replace(getPageUrl('vault.html'));
+  }
+});
+
+// ─── Tab switcher ──────────────────────────────────────────────
 let currentTab = 'signin';
 
 function switchTab(tab) {
@@ -366,72 +396,88 @@ function switchTab(tab) {
   clearAlerts();
 }
 
-// ─── ALERT HELPERS ─────────────────────────────────────────
-function showError(msg)   { setAlert('error',   msg); }
-function showSuccess(msg) { setAlert('success',  msg); }
-function clearAlerts()    { setAlert('error', ''); setAlert('success', ''); }
+// ─── Alert helpers ─────────────────────────────────────────────
+function showError(msg)   { _setAlert('error',   msg); }
+function showSuccess(msg) { _setAlert('success',  msg); }
+function clearAlerts()    { _setAlert('error', ''); _setAlert('success', ''); }
 
-function setAlert(type, msg) {
-  const el = document.getElementById(`msg-${type}`);
+function _setAlert(type, msg) {
+  const el = document.getElementById('msg-' + type);
+  if (!el) return;
   el.textContent = msg;
   el.style.display = msg ? 'block' : 'none';
-  if (type === 'error' && msg) document.getElementById('msg-success').style.display = 'none';
-  if (type === 'success' && msg) document.getElementById('msg-error').style.display = 'none';
+  if (type === 'error'   && msg) { const s = document.getElementById('msg-success'); if(s) s.style.display = 'none'; }
+  if (type === 'success' && msg) { const e = document.getElementById('msg-error');   if(e) e.style.display = 'none'; }
 }
 
-// ─── LOADING STATE ─────────────────────────────────────────
+// ─── Loading state ─────────────────────────────────────────────
 function setLoading(on) {
-  document.getElementById('auth-btn').disabled = on;
-  document.getElementById('btn-label').style.display  = on ? 'none'  : 'inline';
-  document.getElementById('btn-spinner').style.display = on ? 'block' : 'none';
+  const btn     = document.getElementById('auth-btn');
+  const label   = document.getElementById('btn-label');
+  const spinner = document.getElementById('btn-spinner');
+  if (btn)     btn.disabled          = on;
+  if (label)   label.style.display   = on ? 'none'  : 'inline';
+  if (spinner) spinner.style.display = on ? 'block' : 'none';
 }
 
-// ─── EMAIL / PASSWORD AUTH ─────────────────────────────────
+// ─── Email / Password login & signup ───────────────────────────
 async function handleAuth() {
   const email    = document.getElementById('field-email').value.trim();
   const password = document.getElementById('field-password').value;
   clearAlerts();
 
-  if (!email || !password) { showError('Please enter your email and password.'); return; }
+  if (!email)    { showError('Please enter your email address.'); return; }
+  if (!password) { showError('Please enter your password.');      return; }
 
   setLoading(true);
   try {
     if (currentTab === 'signin') {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await _sb.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      window.location.href = './vault.html';
+      // Redirect handled by onAuthStateChange above — but add explicit fallback:
+      window.location.replace(getPageUrl('vault.html'));
+
     } else {
       const fullName = document.getElementById('field-name').value.trim();
-      const { error } = await supabase.auth.signUp({
+      const { error } = await _sb.auth.signUp({
         email, password,
         options: { data: { full_name: fullName } }
       });
       if (error) throw error;
-      showSuccess('Account created! Check your email to confirm, then sign in.');
+      showSuccess('Account created! Check your email to confirm your address, then sign in.');
       switchTab('signin');
     }
   } catch (err) {
-    showError(err.message || 'Authentication failed. Please try again.');
+    // Surface Supabase error messages clearly
+    const msg = err.message || 'Authentication failed. Please try again.';
+    showError(msg);
+    // Extra hint for the most common misconfiguration
+    if (msg.includes('Invalid API key') || msg.includes('JWT')) {
+      showError(msg + ' — Check that your Supabase anon key matches your project URL.');
+    }
   } finally {
     setLoading(false);
   }
 }
 
-// ─── GOOGLE OAUTH ──────────────────────────────────────────
+// ─── Google OAuth ──────────────────────────────────────────────
 async function handleGoogle() {
   clearAlerts();
-  // Detect base path for GitHub Pages
-  const origin = window.location.origin;
-  const base   = window.location.pathname.includes('/NicheLabVenture')
-    ? '/NicheLabVenture' : '';
-  const { error } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: { redirectTo: `${origin}${base}/vault.html` }
-  });
-  if (error) showError(error.message);
+  try {
+    const { error } = await _sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        // After Google redirects back, land on vault.html directly
+        redirectTo: getPageUrl('vault.html'),
+      }
+    });
+    if (error) throw error;
+  } catch (err) {
+    showError(err.message || 'Google sign-in failed. Please try again.');
+  }
 }
 
-// ─── KEYBOARD ──────────────────────────────────────────────
+// ─── Keyboard shortcut ─────────────────────────────────────────
 document.addEventListener('keydown', e => { if (e.key === 'Enter') handleAuth(); });
 </script>
 </body>
