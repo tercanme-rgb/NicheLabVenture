@@ -9,7 +9,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg-cream:   #F5F5F0;
       --bg-dark:    #1A1A1A;
@@ -19,270 +18,96 @@
       --text-dark:  #1A1A1A;
       --border:     #E2DDD0;
     }
-
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg-cream);
-      min-height: 100vh;
-      display: flex;
-    }
-
-    /* ── Brand Panel ─────────────────────────────── */
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg-cream); min-height: 100vh; display: flex; }
     .brand-panel {
-      width: 46%;
-      background: var(--bg-dark);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 80px 72px;
-      position: relative;
-      overflow: hidden;
+      width: 46%; background: var(--bg-dark); display: flex; flex-direction: column;
+      justify-content: center; align-items: flex-start; padding: 80px 72px;
+      position: relative; overflow: hidden;
     }
-
     .brand-panel::before {
-      content: '';
-      position: absolute;
-      top: -120px; right: -120px;
-      width: 480px; height: 480px;
-      background: radial-gradient(circle, rgba(201,168,76,0.14) 0%, transparent 65%);
-      pointer-events: none;
+      content: ''; position: absolute; top: -120px; right: -120px; width: 480px; height: 480px;
+      background: radial-gradient(circle, rgba(201,168,76,0.14) 0%, transparent 65%); pointer-events: none;
     }
     .brand-panel::after {
-      content: '';
-      position: absolute;
-      bottom: -60px; left: -60px;
-      width: 320px; height: 320px;
-      background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 65%);
-      pointer-events: none;
+      content: ''; position: absolute; bottom: -60px; left: -60px; width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 65%); pointer-events: none;
     }
-
-    .brand-logo {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      margin-bottom: 64px;
-    }
+    .brand-logo { display: flex; align-items: center; gap: 11px; margin-bottom: 64px; }
     .brand-logo-icon {
-      width: 34px; height: 34px;
-      background: var(--gold);
-      border-radius: 6px;
+      width: 34px; height: 34px; background: var(--gold); border-radius: 6px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 15px; font-weight: 700;
-      color: var(--bg-dark);
+      font-size: 15px; font-weight: 700; color: var(--bg-dark);
     }
-    .brand-logo-text {
-      font-size: 16px; font-weight: 600;
-      color: #FFFFFF; letter-spacing: 0.04em;
-    }
-
-    .brand-headline {
-      font-family: 'Playfair Display', serif;
-      font-size: 44px; font-weight: 600;
-      color: #FFFFFF; line-height: 1.18;
-      margin-bottom: 22px;
-    }
+    .brand-logo-text { font-size: 16px; font-weight: 600; color: #FFF; letter-spacing: 0.04em; }
+    .brand-headline { font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 600; color: #FFF; line-height: 1.18; margin-bottom: 22px; }
     .brand-headline span { color: var(--gold); }
-
-    .brand-sub {
-      font-size: 14px; font-weight: 300;
-      color: rgba(255,255,255,0.55);
-      line-height: 1.75; max-width: 360px;
-      margin-bottom: 60px;
-    }
-
+    .brand-sub { font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.55); line-height: 1.75; max-width: 360px; margin-bottom: 60px; }
     .brand-stats { display: flex; gap: 44px; }
-    .brand-stat-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 30px; font-weight: 700;
-      color: var(--gold);
-    }
-    .brand-stat-label {
-      font-size: 10px; font-weight: 400;
-      color: rgba(255,255,255,0.45);
-      letter-spacing: 0.1em; text-transform: uppercase;
-      margin-top: 3px;
-    }
-
-    .brand-divider {
-      width: 40px; height: 1px;
-      background: var(--gold);
-      margin: 52px 0 28px;
-      opacity: 0.4;
-    }
-
-    .brand-tagline {
-      font-size: 11px; letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
-    }
-
-    /* ── Auth Panel ──────────────────────────────── */
-    .auth-panel {
-      flex: 1;
-      display: flex; flex-direction: column;
-      justify-content: center; align-items: center;
-      padding: 60px 80px;
-    }
-
+    .brand-stat-num { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: var(--gold); }
+    .brand-stat-label { font-size: 10px; font-weight: 400; color: rgba(255,255,255,0.45); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 3px; }
+    .brand-divider { width: 40px; height: 1px; background: var(--gold); margin: 52px 0 28px; opacity: 0.4; }
+    .brand-tagline { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+    .auth-panel { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px 80px; }
     .auth-box { width: 100%; max-width: 400px; }
-
-    .auth-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 28px; font-weight: 600;
-      color: var(--text-dark);
-      margin-bottom: 6px;
-    }
-    .auth-subtitle {
-      font-size: 13px; color: #8A8A8A;
-      margin-bottom: 36px;
-    }
-
-    /* Tabs */
-    .auth-tabs {
-      display: flex;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 30px;
-    }
-    .auth-tab {
-      padding: 9px 0; margin-right: 24px;
-      font-size: 13px; font-weight: 500;
-      color: #9A9A9A; cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: all 0.18s;
-    }
+    .auth-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; }
+    .auth-subtitle { font-size: 13px; color: #8A8A8A; margin-bottom: 36px; }
+    .auth-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 30px; }
+    .auth-tab { padding: 9px 0; margin-right: 24px; font-size: 13px; font-weight: 500; color: #9A9A9A; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.18s; }
     .auth-tab.active { color: var(--text-dark); border-bottom-color: var(--gold); }
-
-    /* Form */
     .form-group { margin-bottom: 18px; }
-    .form-label {
-      display: block; font-size: 10px; font-weight: 600;
-      color: #6A6A6A; letter-spacing: 0.09em;
-      text-transform: uppercase; margin-bottom: 7px;
-    }
-    .form-input {
-      width: 100%; padding: 11px 15px;
-      border: 1px solid var(--border); border-radius: 6px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px; color: var(--text-dark);
-      background: #FFFFFF; outline: none;
-      transition: border-color 0.18s, box-shadow 0.18s;
-    }
-    .form-input:focus {
-      border-color: var(--gold);
-      box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
-    }
-
-    /* Buttons */
-    .btn-primary {
-      width: 100%; padding: 12px;
-      background: var(--text-dark);
-      color: #FFFFFF; border: none; border-radius: 6px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 14px; font-weight: 600;
-      cursor: pointer; margin-top: 6px;
-      transition: background 0.18s, transform 0.12s;
-      display: flex; align-items: center; justify-content: center;
-      min-height: 44px;
-    }
+    .form-label { display: block; font-size: 10px; font-weight: 600; color: #6A6A6A; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 7px; }
+    .form-input { width: 100%; padding: 11px 15px; border: 1px solid var(--border); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text-dark); background: #FFF; outline: none; transition: border-color 0.18s, box-shadow 0.18s; }
+    .form-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.12); }
+    .btn-primary { width: 100%; padding: 12px; background: var(--text-dark); color: #FFF; border: none; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 6px; transition: background 0.18s, transform 0.12s; display: flex; align-items: center; justify-content: center; min-height: 44px; }
     .btn-primary:hover { background: #2C2C2C; }
     .btn-primary:active { transform: scale(0.99); }
     .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
-
-    .auth-divider {
-      display: flex; align-items: center; gap: 14px;
-      margin: 22px 0;
-    }
-    .auth-divider::before, .auth-divider::after {
-      content: ''; flex: 1; height: 1px; background: var(--border);
-    }
+    .auth-divider { display: flex; align-items: center; gap: 14px; margin: 22px 0; }
+    .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
     .auth-divider span { font-size: 11px; color: #B0B0B0; }
+    .btn-google { width: 100%; padding: 11px; background: #FFF; border: 1px solid var(--border); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--text-dark); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: border-color 0.18s, box-shadow 0.18s; }
+    .btn-google:hover { border-color: #C0C0C0; box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
+    .alert { border-radius: 6px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; display: none; line-height: 1.5; }
+    .alert-error   { background: #FEF2F2; border: 1px solid #FECACA; color: #DC2626; }
+    .alert-success { background: #F0FDF4; border: 1px solid #BBF7D0; color: #16A34A; }
 
-    .btn-google {
-      width: 100%; padding: 11px;
-      background: #FFFFFF; border: 1px solid var(--border);
-      border-radius: 6px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px; font-weight: 500; color: var(--text-dark);
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      transition: border-color 0.18s, box-shadow 0.18s;
-    }
-    .btn-google:hover {
-      border-color: #C0C0C0;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.07);
-    }
-
-    /* Messages */
-    .alert {
-      border-radius: 6px; padding: 10px 14px;
-      font-size: 13px; margin-bottom: 16px;
+    /* ── Setup Banner ── shown when anon key is missing/wrong ── */
+    .setup-banner {
       display: none;
+      background: #FFFBEB; border: 1px solid #F59E0B;
+      border-radius: 8px; padding: 14px 16px; margin-bottom: 20px;
+      font-size: 12px; color: #78350F; line-height: 1.7;
     }
-    .alert-error  { background: #FEF2F2; border: 1px solid #FECACA; color: #DC2626; }
-    .alert-success{ background: #F0FDF4; border: 1px solid #BBF7D0; color: #16A34A; }
-    .alert-warn   { background: #FFFBEB; border: 1px solid #FDE68A; color: #92400E; }
+    .setup-banner strong { display: block; font-size: 13px; color: #92400E; margin-bottom: 6px; }
+    .setup-banner code { background: rgba(0,0,0,0.07); padding: 1px 5px; border-radius: 3px; font-family: monospace; font-size: 11px; word-break: break-all; }
+    .setup-banner ol { margin: 8px 0 0 16px; }
+    .setup-banner li { margin-bottom: 3px; }
 
-    .auth-footer {
-      text-align: center; margin-top: 30px;
-      font-size: 11px; color: #B0B0B0; line-height: 1.8;
-    }
+    .auth-footer { text-align: center; margin-top: 30px; font-size: 11px; color: #B0B0B0; line-height: 1.8; }
     .auth-footer a { color: var(--gold-dark); text-decoration: none; }
-
-    /* Spinner */
-    .spinner {
-      display: none; width: 17px; height: 17px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: #FFF;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-    }
+    .spinner { display: none; width: 17px; height: 17px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #FFF; border-radius: 50%; animation: spin 0.7s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
-    @media (max-width: 860px) {
-      .brand-panel { display: none; }
-      .auth-panel { padding: 40px 28px; }
-    }
+    @media (max-width: 860px) { .brand-panel { display: none; } .auth-panel { padding: 40px 28px; } }
   </style>
 </head>
 <body>
 
-<!-- ── Brand Panel ─────────────────────────────────────── -->
 <div class="brand-panel">
   <div class="brand-logo">
     <div class="brand-logo-icon">N</div>
     <div class="brand-logo-text">NicheLab</div>
   </div>
-
-  <div class="brand-headline">
-    Institutional<br>Intelligence.<br><span>Niche Precision.</span>
-  </div>
-
-  <div class="brand-sub">
-    Access proprietary market gap reports, live intelligence signals,
-    and analyst-grade niche research across 10 business verticals.
-  </div>
-
+  <div class="brand-headline">Institutional<br>Intelligence.<br><span>Niche Precision.</span></div>
+  <div class="brand-sub">Access proprietary market gap reports, live intelligence signals, and analyst-grade niche research across 10 business verticals.</div>
   <div class="brand-stats">
-    <div>
-      <div class="brand-stat-num">847+</div>
-      <div class="brand-stat-label">Markets Tracked</div>
-    </div>
-    <div>
-      <div class="brand-stat-num">15</div>
-      <div class="brand-stat-label">Report Sections</div>
-    </div>
-    <div>
-      <div class="brand-stat-num">97%</div>
-      <div class="brand-stat-label">Signal Accuracy</div>
-    </div>
+    <div><div class="brand-stat-num">847+</div><div class="brand-stat-label">Markets Tracked</div></div>
+    <div><div class="brand-stat-num">15</div><div class="brand-stat-label">Report Sections</div></div>
+    <div><div class="brand-stat-num">97%</div><div class="brand-stat-label">Signal Accuracy</div></div>
   </div>
-
   <div class="brand-divider"></div>
   <div class="brand-tagline">Premium Niche Intelligence &amp; Market Strategy</div>
 </div>
 
-<!-- ── Auth Panel ─────────────────────────────────────── -->
 <div class="auth-panel">
   <div class="auth-box">
     <div class="auth-title">Members Access</div>
@@ -293,20 +118,29 @@
       <div class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Create Account</div>
     </div>
 
+    <!-- Setup Banner: shown automatically when key is wrong/missing -->
+    <div class="setup-banner" id="setup-banner">
+      <strong>⚠️ Supabase Anon Key Gerekiyor</strong>
+      <span id="setup-detail"></span>
+      <ol>
+        <li>Supabase Dashboard'a giriş yap</li>
+        <li><strong>Project Settings → API</strong> sayfasına git</li>
+        <li><strong>Project API keys</strong> altındaki <strong>anon / public</strong> key'i kopyala</li>
+        <li><code>login.html</code> dosyasında <strong>SUPABASE_ANON_KEY</strong> satırını güncelle</li>
+      </ol>
+    </div>
+
     <div class="alert alert-error"   id="msg-error"></div>
     <div class="alert alert-success" id="msg-success"></div>
-    <div class="alert alert-warn"    id="msg-warn"></div>
 
     <div class="form-group" id="group-name" style="display:none">
       <label class="form-label">Full Name</label>
       <input type="text" id="field-name" class="form-input" placeholder="Your full name">
     </div>
-
     <div class="form-group">
       <label class="form-label">Email Address</label>
       <input type="email" id="field-email" class="form-input" placeholder="analyst@firm.com">
     </div>
-
     <div class="form-group">
       <label class="form-label">Password</label>
       <input type="password" id="field-password" class="form-input" placeholder="••••••••">
@@ -338,120 +172,117 @@
 
 <script>
 // ══════════════════════════════════════════════════════════════
-//  NicheLab — login.html  |  Auth Script  (Fixed v2)
+//  NicheLab — login.html  |  Auth Script  (Final — v3)
 //  ─────────────────────────────────────────────────────────────
-//  FIX APPLIED:
-//    • Corrected SUPABASE_URL project ID: ctezbazpnqylufhrmcwn
-//    • Added config validation guard before createClient
-//    • ERR_NAME_NOT_RESOLVED / Failed to fetch → clear user message
-//    • Distinguishes: Config Error vs Network Error vs Auth Error
+//  YAPMAN GEREKEN TEK ŞEY:
+//  Supabase Dashboard → Project Settings → API →
+//  "anon / public" key'i kopyalayıp aşağıya yapıştır.
 // ══════════════════════════════════════════════════════════════
 
-// ─── 1. CONFIG ─────────────────────────────────────────────────
-//  ✅ CORRECT project ID: ctezbazpnqylufhrmcwn
-//  ❌ OLD (wrong) project ID was: btiwdulcqtvkdupsotnx  ← caused ERR_NAME_NOT_RESOLVED
 const SUPABASE_URL      = 'https://ctezbazpnqylufhrmcwn.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN0ZXpiYXpwbnF5bHVmaHJtY3duIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MjA1NTc2MDAwMH0.eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
-// ↑ Replace the value above with your real anon key from:
-//   Supabase Dashboard → Project Settings → API → "anon / public"
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
+//                         ↑↑↑ Dashboard → Project Settings → API → anon/public
 
-// ─── 2. CONFIG VALIDATION ──────────────────────────────────────
-//  Runs before createClient — catches missing/placeholder values early
-//  so the user sees "Configuration Error" instead of "Failed to fetch"
-const CONFIG_ERRORS = [];
-
-if (!SUPABASE_URL || !SUPABASE_URL.startsWith('https://') || SUPABASE_URL.includes('undefined')) {
-  CONFIG_ERRORS.push('SUPABASE_URL is missing or malformed.');
+// ─── JWT Payload Decoder ───────────────────────────────────────
+// Hiçbir kütüphane gerektirmez; tarayıcı built-in atob() kullanır.
+function decodeJWT(token) {
+  try {
+    const payload = token.split('.')[1];
+    if (!payload) return null;
+    return JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
+  } catch (e) {
+    return null;
+  }
 }
-if (!SUPABASE_ANON_KEY || SUPABASE_ANON_KEY.length < 100 || SUPABASE_ANON_KEY.includes('REPLACE_WITH')) {
-  CONFIG_ERRORS.push('SUPABASE_ANON_KEY is missing or is still a placeholder.');
+
+// ─── Config Validation (JWT Payload Tabanlı) ───────────────────
+// "REPLACE_WITH" string aramak yerine gerçek JWT içeriğini okur.
+// Bu sayede yanlış proje key'i de yakalanır.
+function validateConfig() {
+  const urlMatch = SUPABASE_URL.match(/https:\/\/([a-z0-9]+)\.supabase\.co/);
+  if (!urlMatch) return { ok: false, reason: 'SUPABASE_URL formatı geçersiz.' };
+
+  const expectedRef = urlMatch[1]; // ctezbazpnqylufhrmcwn
+
+  if (!SUPABASE_ANON_KEY || SUPABASE_ANON_KEY.length < 50 || !SUPABASE_ANON_KEY.startsWith('eyJ')) {
+    return {
+      ok: false,
+      reason: `Anon key eksik veya geçersiz format. Dashboard'dan kopyaladığın key "eyJ" ile başlamalı.`
+    };
+  }
+
+  const payload = decodeJWT(SUPABASE_ANON_KEY);
+  if (!payload) {
+    return { ok: false, reason: 'Anon key geçerli bir JWT değil. Dashboard\'dan tekrar kopyala.' };
+  }
+
+  // Yanlış projenin key'i kullanılıyor mu?
+  if (payload.ref && payload.ref !== expectedRef) {
+    return {
+      ok: false,
+      reason: `Key yanlış projeye ait → key: "${payload.ref}", beklenen: "${expectedRef}". Dashboard'dan doğru projenin key'ini al.`
+    };
+  }
+
+  if (payload.role !== 'anon') {
+    return {
+      ok: false,
+      reason: `Yanlış key türü: "${payload.role}". "anon / public" key kullanılmalı, service_role değil.`
+    };
+  }
+
+  return { ok: true };
 }
 
-const CONFIG_OK = CONFIG_ERRORS.length === 0;
+// ─── Config Durumunu Kontrol Et ────────────────────────────────
+const configResult = validateConfig();
+const CONFIG_OK    = configResult.ok;
 
 if (!CONFIG_OK) {
-  // Log detail to console for the developer
-  console.error('[NicheLab] ⚠️ Configuration Error — Supabase client will NOT be initialised.');
-  CONFIG_ERRORS.forEach(e => console.error('  →', e));
+  console.error('[NicheLab] Config hatası:', configResult.reason);
+  // Setup banner'ı göster — form hâlâ kullanılabilir
+  const banner = document.getElementById('setup-banner');
+  const detail = document.getElementById('setup-detail');
+  if (banner) banner.style.display = 'block';
+  if (detail) detail.textContent   = configResult.reason;
+} else {
+  console.info('[NicheLab] ✓ Config geçerli. Supabase başlatılıyor...');
 }
 
-// ─── 3. SUPABASE CLIENT INIT ───────────────────────────────────
-//  Only initialised when config is valid; avoids cascading fetch errors
+// ─── Supabase Client ───────────────────────────────────────────
+// Config hatalıysa null bırak; hiç ağ isteği atılmaz → "Failed to fetch" olmaz
 let _sb = null;
 
 if (CONFIG_OK) {
-  try {
-    _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-      auth: {
-        storage: window.localStorage,        // Bypass Web Locks race condition
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: true,            // Required for Google OAuth callback
-      }
-    });
-    console.info('[NicheLab] Supabase client initialised →', SUPABASE_URL);
-  } catch (initErr) {
-    console.error('[NicheLab] createClient() threw:', initErr);
-    _sb = null;
-  }
+  _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: {
+      storage: window.localStorage,   // Web Locks race condition bypass
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true,       // Google OAuth callback için gerekli
+    }
+  });
 }
 
-// ─── 4. ERROR CLASSIFIER ───────────────────────────────────────
-//  Maps raw JS/Supabase errors to human-readable messages.
-//  Three categories: Config | Network | Auth
-function classifyError(err) {
-  const msg = (err.message || '').toLowerCase();
-
-  // Config problems (wrong URL, bad key)
-  if (
-    msg.includes('failed to fetch') ||
-    msg.includes('networkerror') ||
-    msg.includes('err_name_not_resolved') ||
-    msg.includes('err_connection_refused') ||
-    msg.includes('load failed')
-  ) {
-    console.error('[NicheLab] Network/DNS failure:', err);
-    return 'Bağlantı Hatası: Supabase projesine ulaşılamıyor. Proje URL\'si veya Anon Key yanlış olabilir. Konsolu kontrol edin.';
-  }
-
-  if (msg.includes('invalid api key') || msg.includes('jwt')) {
-    console.error('[NicheLab] API Key/JWT failure:', err);
-    return 'Konfigürasyon Hatası: API anahtarı geçersiz veya süresi dolmuş. Supabase Dashboard\'dan anon key\'i kontrol edin.';
-  }
-
-  // Auth errors — surface Supabase message directly (already user-friendly)
-  console.warn('[NicheLab] Auth error:', err);
-  return err.message || 'Giriş başarısız. Lütfen tekrar deneyin.';
-}
-
-// ─── 5. REDIRECT HELPER ────────────────────────────────────────
+// ─── Redirect Helper ───────────────────────────────────────────
 function getPageUrl(filename) {
   const parts = window.location.pathname.split('/');
   parts[parts.length - 1] = filename;
   return window.location.origin + parts.join('/');
 }
 
-// ─── 6. SESSION CHECK ON LOAD ──────────────────────────────────
-//  If already signed in → skip login, go straight to vault.
-(async () => {
-  if (!_sb) {
-    // Config broken — show warning immediately, don't attempt network call
-    showWarn('Konfigürasyon Hatası: Supabase bağlantısı kurulamadı. Geliştirici konsolunu inceleyin.');
-    return;
-  }
-  try {
-    const { data: { session } } = await _sb.auth.getSession();
-    if (session) {
-      window.location.replace(getPageUrl('vault.html'));
-    }
-  } catch (err) {
-    // Supabase unreachable or key invalid — stay on login page, don't crash
-    console.warn('[NicheLab] Could not check session:', err.message);
-  }
-})();
-
-// ─── 7. AUTH STATE CHANGE (Google OAuth callback) ─────────────
+// ─── Session Check (zaten giriş yapılmışsa vault'a git) ────────
 if (_sb) {
+  (async () => {
+    try {
+      const { data: { session } } = await _sb.auth.getSession();
+      if (session) window.location.replace(getPageUrl('vault.html'));
+    } catch (err) {
+      console.warn('[NicheLab] Session check failed:', err.message);
+    }
+  })();
+
+  // Google OAuth callback
   _sb.auth.onAuthStateChange((event, session) => {
     if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session) {
       window.location.replace(getPageUrl('vault.html'));
@@ -459,7 +290,33 @@ if (_sb) {
   });
 }
 
-// ─── 8. TAB SWITCHER ───────────────────────────────────────────
+// ─── Hata Sınıflandırıcı ──────────────────────────────────────
+function classifyError(err) {
+  const m = (err.message || '').toLowerCase();
+
+  if (m.includes('failed to fetch') || m.includes('networkerror') || m.includes('load failed') || m.includes('err_name_not_resolved')) {
+    console.error('[NicheLab] Network/DNS hatası:', err.message);
+    return 'Bağlantı hatası: Supabase projesine ulaşılamadı. İnternet bağlantını ve SUPABASE_URL değerini kontrol et.';
+  }
+  if (m.includes('invalid api key') || m.includes('invalid jwt') || m.includes('jwt expired')) {
+    console.error('[NicheLab] API Key hatası:', err.message);
+    return 'API Key hatası: Dashboard\'dan "anon / public" key\'i yeniden kopyala.';
+  }
+  if (m.includes('invalid login credentials') || m.includes('invalid email or password')) {
+    return 'E-posta veya şifre hatalı.';
+  }
+  if (m.includes('email not confirmed')) {
+    return 'E-posta adresin henüz doğrulanmamış. Gelen kutunu kontrol et.';
+  }
+  if (m.includes('user already registered')) {
+    return 'Bu e-posta zaten kayıtlı. Giriş Yap sekmesini dene.';
+  }
+
+  console.warn('[NicheLab] Auth error:', err.message);
+  return err.message || 'Giriş başarısız. Lütfen tekrar deneyin.';
+}
+
+// ─── Tab Switcher ──────────────────────────────────────────────
 let currentTab = 'signin';
 
 function switchTab(tab) {
@@ -471,15 +328,10 @@ function switchTab(tab) {
   clearAlerts();
 }
 
-// ─── 9. ALERT HELPERS ──────────────────────────────────────────
+// ─── Alert Helpers ─────────────────────────────────────────────
 function showError(msg)   { _setAlert('error',   msg); }
 function showSuccess(msg) { _setAlert('success',  msg); }
-function showWarn(msg)    { _setAlert('warn',     msg); }
-function clearAlerts()    {
-  _setAlert('error', '');
-  _setAlert('success', '');
-  _setAlert('warn', '');
-}
+function clearAlerts()    { _setAlert('error', ''); _setAlert('success', ''); }
 
 function _setAlert(type, msg) {
   const el = document.getElementById('msg-' + type);
@@ -487,15 +339,13 @@ function _setAlert(type, msg) {
   el.textContent = msg;
   el.style.display = msg ? 'block' : 'none';
   if (msg) {
-    // Hide the other two when this one appears
-    ['error', 'success', 'warn'].filter(t => t !== type).forEach(t => {
-      const other = document.getElementById('msg-' + t);
-      if (other) other.style.display = 'none';
-    });
+    const other = type === 'error' ? 'success' : 'error';
+    const otherEl = document.getElementById('msg-' + other);
+    if (otherEl) otherEl.style.display = 'none';
   }
 }
 
-// ─── 10. LOADING STATE ─────────────────────────────────────────
+// ─── Loading State ─────────────────────────────────────────────
 function setLoading(on) {
   const btn     = document.getElementById('auth-btn');
   const label   = document.getElementById('btn-label');
@@ -505,44 +355,38 @@ function setLoading(on) {
   if (spinner) spinner.style.display = on ? 'block' : 'none';
 }
 
-// ─── 11. EMAIL / PASSWORD AUTH ─────────────────────────────────
+// ─── Ana Auth Fonksiyonu ───────────────────────────────────────
 async function handleAuth() {
   clearAlerts();
 
-  // Guard: abort immediately if Supabase client failed to init
-  if (!_sb) {
-    showError('Konfigürasyon Hatası: Supabase bağlantısı kurulamadı. Geliştirici konsolunu inceleyin.');
+  // Config hatası varsa formu çalıştırma
+  if (!CONFIG_OK) {
+    showError('Önce Supabase yapılandırmasını tamamla: ' + configResult.reason);
     return;
   }
 
   const email    = document.getElementById('field-email').value.trim();
   const password = document.getElementById('field-password').value;
 
-  if (!email)    { showError('Lütfen e-posta adresinizi girin.'); return; }
-  if (!password) { showError('Lütfen şifrenizi girin.');          return; }
+  if (!email)    { showError('E-posta adresinizi girin.'); return; }
+  if (!password) { showError('Şifrenizi girin.');          return; }
 
   setLoading(true);
   try {
     if (currentTab === 'signin') {
-      // ── Sign In ────────────────────────────────────────────────
       const { data, error } = await _sb.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      // onAuthStateChange handles redirect; this is an explicit fallback
       window.location.replace(getPageUrl('vault.html'));
-
     } else {
-      // ── Sign Up ────────────────────────────────────────────────
       const fullName = document.getElementById('field-name')?.value.trim() || '';
       const { error } = await _sb.auth.signUp({
-        email,
-        password,
+        email, password,
         options: { data: { full_name: fullName } }
       });
       if (error) throw error;
-      showSuccess('Hesap oluşturuldu! E-postanızı doğruladıktan sonra giriş yapabilirsiniz.');
+      showSuccess('Hesap oluşturuldu! E-postanı doğruladıktan sonra giriş yapabilirsin.');
       switchTab('signin');
     }
-
   } catch (err) {
     showError(classifyError(err));
   } finally {
@@ -550,21 +394,14 @@ async function handleAuth() {
   }
 }
 
-// ─── 12. GOOGLE OAUTH ──────────────────────────────────────────
+// ─── Google OAuth ──────────────────────────────────────────────
 async function handleGoogle() {
   clearAlerts();
-
-  if (!_sb) {
-    showError('Konfigürasyon Hatası: Supabase bağlantısı kurulamadı.');
-    return;
-  }
-
+  if (!CONFIG_OK) { showError('Önce Supabase yapılandırmasını tamamla.'); return; }
   try {
     const { error } = await _sb.auth.signInWithOAuth({
       provider: 'google',
-      options: {
-        redirectTo: getPageUrl('vault.html'),
-      }
+      options: { redirectTo: getPageUrl('vault.html') }
     });
     if (error) throw error;
   } catch (err) {
@@ -572,7 +409,7 @@ async function handleGoogle() {
   }
 }
 
-// ─── 13. KEYBOARD SHORTCUT ─────────────────────────────────────
+// ─── Enter tuşu kısayolu ───────────────────────────────────────
 document.addEventListener('keydown', e => { if (e.key === 'Enter') handleAuth(); });
 </script>
 </body>
