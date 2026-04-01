@@ -7,154 +7,251 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --bg-cream:   #F5F5F0;
-      --bg-dark:    #1A1A1A;
-      --gold:       #C9A84C;
-      --gold-light: #F0E6C8;
-      --gold-dark:  #A07830;
-      --text-dark:  #1A1A1A;
-      --border:     #E2DDD0;
-    }
-    body { font-family: 'DM Sans', sans-serif; background: var(--bg-cream); min-height: 100vh; display: flex; }
-    .brand-panel {
-      width: 46%; background: var(--bg-dark); display: flex; flex-direction: column;
-      justify-content: center; align-items: flex-start; padding: 80px 72px;
-      position: relative; overflow: hidden;
-    }
-    .brand-panel::before {
-      content: ''; position: absolute; top: -120px; right: -120px; width: 480px; height: 480px;
-      background: radial-gradient(circle, rgba(201,168,76,0.14) 0%, transparent 65%); pointer-events: none;
-    }
-    .brand-panel::after {
-      content: ''; position: absolute; bottom: -60px; left: -60px; width: 320px; height: 320px;
-      background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 65%); pointer-events: none;
-    }
-    .brand-logo { display: flex; align-items: center; gap: 11px; margin-bottom: 64px; }
-    .brand-logo-icon {
-      width: 34px; height: 34px; background: var(--gold); border-radius: 6px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 15px; font-weight: 700; color: var(--bg-dark);
-    }
-    .brand-logo-text { font-size: 16px; font-weight: 600; color: #FFF; letter-spacing: 0.04em; }
-    .brand-headline { font-family: 'Playfair Display', serif; font-size: 44px; font-weight: 600; color: #FFF; line-height: 1.18; margin-bottom: 22px; }
-    .brand-headline span { color: var(--gold); }
-    .brand-sub { font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.55); line-height: 1.75; max-width: 360px; margin-bottom: 60px; }
-    .brand-stats { display: flex; gap: 44px; }
-    .brand-stat-num { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 700; color: var(--gold); }
-    .brand-stat-label { font-size: 10px; font-weight: 400; color: rgba(255,255,255,0.45); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 3px; }
-    .brand-divider { width: 40px; height: 1px; background: var(--gold); margin: 52px 0 28px; opacity: 0.4; }
-    .brand-tagline { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.3); }
-    .auth-panel { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px 80px; }
-    .auth-box { width: 100%; max-width: 400px; }
-    .auth-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 600; color: var(--text-dark); margin-bottom: 6px; }
-    .auth-subtitle { font-size: 13px; color: #8A8A8A; margin-bottom: 36px; }
-    .auth-tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 30px; }
-    .auth-tab { padding: 9px 0; margin-right: 24px; font-size: 13px; font-weight: 500; color: #9A9A9A; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.18s; }
-    .auth-tab.active { color: var(--text-dark); border-bottom-color: var(--gold); }
-    .form-group { margin-bottom: 18px; }
-    .form-label { display: block; font-size: 10px; font-weight: 600; color: #6A6A6A; letter-spacing: 0.09em; text-transform: uppercase; margin-bottom: 7px; }
-    .form-input { width: 100%; padding: 11px 15px; border: 1px solid var(--border); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text-dark); background: #FFF; outline: none; transition: border-color 0.18s, box-shadow 0.18s; }
-    .form-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.12); }
-    .btn-primary { width: 100%; padding: 12px; background: var(--text-dark); color: #FFF; border: none; border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; margin-top: 6px; transition: background 0.18s, transform 0.12s; display: flex; align-items: center; justify-content: center; min-height: 44px; }
-    .btn-primary:hover { background: #2C2C2C; }
-    .btn-primary:active { transform: scale(0.99); }
-    .btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
-    .auth-divider { display: flex; align-items: center; gap: 14px; margin: 22px 0; }
-    .auth-divider::before, .auth-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-    .auth-divider span { font-size: 11px; color: #B0B0B0; }
-    .btn-google { width: 100%; padding: 11px; background: #FFF; border: 1px solid var(--border); border-radius: 6px; font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--text-dark); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: border-color 0.18s, box-shadow 0.18s; }
-    .btn-google:hover { border-color: #C0C0C0; box-shadow: 0 2px 10px rgba(0,0,0,0.07); }
-    .alert { border-radius: 6px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; display: none; line-height: 1.5; }
-    .alert-error   { background: #FEF2F2; border: 1px solid #FECACA; color: #DC2626; }
-    .alert-success { background: #F0FDF4; border: 1px solid #BBF7D0; color: #16A34A; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* ── Setup Banner ── shown when anon key is missing/wrong ── */
-    .setup-banner {
-      display: none;
-      background: #FFFBEB; border: 1px solid #F59E0B;
-      border-radius: 8px; padding: 14px 16px; margin-bottom: 20px;
-      font-size: 12px; color: #78350F; line-height: 1.7;
-    }
-    .setup-banner strong { display: block; font-size: 13px; color: #92400E; margin-bottom: 6px; }
-    .setup-banner code { background: rgba(0,0,0,0.07); padding: 1px 5px; border-radius: 3px; font-family: monospace; font-size: 11px; word-break: break-all; }
-    .setup-banner ol { margin: 8px 0 0 16px; }
-    .setup-banner li { margin-bottom: 3px; }
+  :root {
+    --cream:     #F5F5F0;
+    --dark:      #1A1A1A;
+    --mid:       #4A4A4A;
+    --lite:      #9A9A9A;
+    --gold:      #C9A84C;
+    --gold-lt:   #F0E6C8;
+    --gold-dk:   #A07830;
+    --border:    #E2DDD0;
+    --white:     #FFFFFF;
+    --red:       #DC2626;
+    --red-bg:    #FEF2F2;
+    --red-bd:    #FECACA;
+    --green:     #16A34A;
+    --green-bg:  #F0FDF4;
+    --green-bd:  #BBF7D0;
+  }
 
-    .auth-footer { text-align: center; margin-top: 30px; font-size: 11px; color: #B0B0B0; line-height: 1.8; }
-    .auth-footer a { color: var(--gold-dark); text-decoration: none; }
-    .spinner { display: none; width: 17px; height: 17px; border: 2px solid rgba(255,255,255,0.3); border-top-color: #FFF; border-radius: 50%; animation: spin 0.7s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @media (max-width: 860px) { .brand-panel { display: none; } .auth-panel { padding: 40px 28px; } }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* ── LEFT: Brand ─────────────────────────── */
+  .brand {
+    width: 46%;
+    background: var(--dark);
+    padding: 72px;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .brand::before {
+    content: '';
+    position: absolute; top: -100px; right: -100px;
+    width: 440px; height: 440px;
+    background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .brand::after {
+    content: '';
+    position: absolute; bottom: -60px; left: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .brand-logo {
+    display: flex; align-items: center; gap: 11px;
+    margin-bottom: 60px;
+  }
+  .brand-icon {
+    width: 32px; height: 32px; border-radius: 6px;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; color: var(--dark);
+    flex-shrink: 0;
+  }
+  .brand-name { font-size: 15px; font-weight: 600; color: #fff; letter-spacing: 0.05em; }
+
+  .brand-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px; font-weight: 600; line-height: 1.18;
+    color: #fff; margin-bottom: 20px;
+  }
+  .brand-heading em { font-style: normal; color: var(--gold); }
+
+  .brand-body {
+    font-size: 13.5px; font-weight: 300; line-height: 1.8;
+    color: rgba(255,255,255,0.5); max-width: 340px;
+    margin-bottom: 56px;
+  }
+
+  .brand-stats { display: flex; gap: 40px; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px; font-weight: 700; color: var(--gold);
+  }
+  .stat-lbl {
+    font-size: 9.5px; font-weight: 500; text-transform: uppercase;
+    letter-spacing: 0.12em; color: rgba(255,255,255,0.35);
+    margin-top: 3px;
+  }
+
+  .brand-rule { width: 36px; height: 1px; background: var(--gold); opacity: 0.35; margin: 48px 0 22px; }
+  .brand-tag  { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.25); }
+
+  /* ── RIGHT: Auth ─────────────────────────── */
+  .auth {
+    flex: 1;
+    display: flex; align-items: center; justify-content: center;
+    padding: 60px 80px;
+  }
+  .auth-inner { width: 100%; max-width: 390px; }
+
+  .auth-heading { font-family: 'Playfair Display', serif; font-size: 27px; font-weight: 600; color: var(--dark); margin-bottom: 4px; }
+  .auth-sub     { font-size: 13px; color: var(--lite); margin-bottom: 32px; }
+
+  /* Tabs */
+  .tabs { display: flex; border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+  .tab  {
+    padding: 8px 0; margin-right: 22px;
+    font-size: 13px; font-weight: 500; color: var(--lite);
+    cursor: pointer; border-bottom: 2px solid transparent;
+    transition: color .15s, border-color .15s;
+    user-select: none;
+  }
+  .tab.on { color: var(--dark); border-bottom-color: var(--gold); }
+
+  /* Fields */
+  .field { margin-bottom: 16px; }
+  .label {
+    display: block; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.09em; text-transform: uppercase;
+    color: #6A6A6A; margin-bottom: 6px;
+  }
+  .input {
+    width: 100%; padding: 11px 14px;
+    border: 1px solid var(--border); border-radius: 6px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px;
+    color: var(--dark); background: var(--white); outline: none;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.11); }
+
+  /* Primary button */
+  .btn {
+    width: 100%; padding: 12px;
+    background: var(--dark); color: var(--white);
+    border: none; border-radius: 6px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+    cursor: pointer; margin-top: 6px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 44px;
+    transition: background .15s, transform .1s;
+  }
+  .btn:hover:not(:disabled) { background: #2C2C2C; }
+  .btn:active:not(:disabled) { transform: scale(0.99); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* Divider */
+  .or { display: flex; align-items: center; gap: 12px; margin: 20px 0; }
+  .or::before, .or::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .or span { font-size: 11px; color: #C0C0C0; }
+
+  /* Google button */
+  .btn-g {
+    width: 100%; padding: 10px;
+    background: var(--white); border: 1px solid var(--border); border-radius: 6px;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--dark);
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    transition: border-color .15s, box-shadow .15s;
+  }
+  .btn-g:hover { border-color: #C0C0C0; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+
+  /* Alerts */
+  .alert {
+    border-radius: 6px; padding: 10px 13px;
+    font-size: 13px; line-height: 1.5;
+    margin-bottom: 14px; display: none;
+  }
+  .alert.err { background: var(--red-bg);   border: 1px solid var(--red-bd);   color: var(--red); }
+  .alert.ok  { background: var(--green-bg); border: 1px solid var(--green-bd); color: var(--green); }
+
+  /* Spinner */
+  .spin {
+    display: none; width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff; border-radius: 50%;
+    animation: rot .65s linear infinite;
+  }
+  @keyframes rot { to { transform: rotate(360deg); } }
+
+  .footer { text-align: center; margin-top: 28px; font-size: 11px; color: #C0C0C0; line-height: 1.9; }
+  .footer a { color: var(--gold-dk); text-decoration: none; }
+
+  @media (max-width: 820px) {
+    .brand { display: none; }
+    .auth  { padding: 40px 24px; }
+  }
   </style>
 </head>
 <body>
 
-<div class="brand-panel">
+<!-- LEFT PANEL -->
+<div class="brand">
   <div class="brand-logo">
-    <div class="brand-logo-icon">N</div>
-    <div class="brand-logo-text">NicheLab</div>
+    <div class="brand-icon">N</div>
+    <div class="brand-name">NicheLab</div>
   </div>
-  <div class="brand-headline">Institutional<br>Intelligence.<br><span>Niche Precision.</span></div>
-  <div class="brand-sub">Access proprietary market gap reports, live intelligence signals, and analyst-grade niche research across 10 business verticals.</div>
+  <div class="brand-heading">Institutional<br>Intelligence.<br><em>Niche Precision.</em></div>
+  <div class="brand-body">Access proprietary market gap reports, live intelligence signals, and analyst-grade niche research across 10 business verticals.</div>
   <div class="brand-stats">
-    <div><div class="brand-stat-num">847+</div><div class="brand-stat-label">Markets Tracked</div></div>
-    <div><div class="brand-stat-num">15</div><div class="brand-stat-label">Report Sections</div></div>
-    <div><div class="brand-stat-num">97%</div><div class="brand-stat-label">Signal Accuracy</div></div>
+    <div><div class="stat-num">847+</div><div class="stat-lbl">Markets Tracked</div></div>
+    <div><div class="stat-num">15</div><div class="stat-lbl">Report Sections</div></div>
+    <div><div class="stat-num">97%</div><div class="stat-lbl">Signal Accuracy</div></div>
   </div>
-  <div class="brand-divider"></div>
-  <div class="brand-tagline">Premium Niche Intelligence &amp; Market Strategy</div>
+  <div class="brand-rule"></div>
+  <div class="brand-tag">Premium Niche Intelligence &amp; Market Strategy</div>
 </div>
 
-<div class="auth-panel">
-  <div class="auth-box">
-    <div class="auth-title">Members Access</div>
-    <div class="auth-subtitle">Sign in to your Intelligence Vault</div>
+<!-- RIGHT PANEL -->
+<div class="auth">
+  <div class="auth-inner">
 
-    <div class="auth-tabs">
-      <div class="auth-tab active" id="tab-signin" onclick="switchTab('signin')">Sign In</div>
-      <div class="auth-tab" id="tab-signup" onclick="switchTab('signup')">Create Account</div>
+    <div class="auth-heading">Members Access</div>
+    <div class="auth-sub">Sign in to your Intelligence Vault</div>
+
+    <div class="tabs">
+      <div class="tab on" id="t-in"  onclick="setTab('in')">Sign In</div>
+      <div class="tab"    id="t-up"  onclick="setTab('up')">Create Account</div>
     </div>
 
-    <!-- Setup Banner: shown automatically when key is wrong/missing -->
-    <div class="setup-banner" id="setup-banner">
-      <strong>⚠️ Supabase Anon Key Gerekiyor</strong>
-      <span id="setup-detail"></span>
-      <ol>
-        <li>Supabase Dashboard'a giriş yap</li>
-        <li><strong>Project Settings → API</strong> sayfasına git</li>
-        <li><strong>Project API keys</strong> altındaki <strong>anon / public</strong> key'i kopyala</li>
-        <li><code>login.html</code> dosyasında <strong>SUPABASE_ANON_KEY</strong> satırını güncelle</li>
-      </ol>
+    <div class="alert err" id="err"></div>
+    <div class="alert ok"  id="ok"></div>
+
+    <div class="field" id="f-name" style="display:none">
+      <label class="label">Full Name</label>
+      <input class="input" id="name" type="text" placeholder="Your full name" autocomplete="name">
     </div>
 
-    <div class="alert alert-error"   id="msg-error"></div>
-    <div class="alert alert-success" id="msg-success"></div>
-
-    <div class="form-group" id="group-name" style="display:none">
-      <label class="form-label">Full Name</label>
-      <input type="text" id="field-name" class="form-input" placeholder="Your full name">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Email Address</label>
-      <input type="email" id="field-email" class="form-input" placeholder="analyst@firm.com">
-    </div>
-    <div class="form-group">
-      <label class="form-label">Password</label>
-      <input type="password" id="field-password" class="form-input" placeholder="••••••••">
+    <div class="field">
+      <label class="label">Email Address</label>
+      <input class="input" id="email" type="email" placeholder="analyst@firm.com" autocomplete="email">
     </div>
 
-    <button class="btn-primary" id="auth-btn" onclick="handleAuth()">
-      <span id="btn-label">Access Vault</span>
-      <div class="spinner" id="btn-spinner"></div>
+    <div class="field">
+      <label class="label">Password</label>
+      <input class="input" id="pw" type="password" placeholder="••••••••" autocomplete="current-password">
+    </div>
+
+    <button class="btn" id="main-btn" onclick="go()">
+      <span id="btn-txt">Access Vault</span>
+      <div class="spin" id="spin"></div>
     </button>
 
-    <div class="auth-divider"><span>or</span></div>
+    <div class="or"><span>or</span></div>
 
-    <button class="btn-google" onclick="handleGoogle()">
-      <svg width="18" height="18" viewBox="0 0 24 24">
+    <button class="btn-g" onclick="goGoogle()">
+      <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true">
         <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
         <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
         <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
@@ -163,254 +260,165 @@
       Continue with Google
     </button>
 
-    <div class="auth-footer">
+    <div class="footer">
       Protected by NicheLab Intelligence Security Protocol.<br>
-      <a href="./index.html">Admin Console Access</a>
+      <a href="./index.html">Admin Console</a>
     </div>
+
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════════════════════════════
-//  NicheLab — login.html  |  Auth Script  (Final — v3)
-//  ─────────────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════
+//  NicheLab  —  login.html  (sıfırdan, v4-clean)
+//
 //  YAPMAN GEREKEN TEK ŞEY:
-//  Supabase Dashboard → Project Settings → API →
-//  "anon / public" key'i kopyalayıp aşağıya yapıştır.
-// ══════════════════════════════════════════════════════════════
+//  Aşağıdaki ANON_KEY satırını doldur.
+//
+//  Nereden alacaksın:
+//    Supabase Dashboard → (ctezbazpnqylufhrmcwn projesi)
+//    → Project Settings → API
+//    → "anon / public" altındaki key'i kopyala
+// ══════════════════════════════════════════════════════════
 
-const SUPABASE_URL      = 'https://ctezbazpnqylufhrmcwn.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
-//                         ↑↑↑ Dashboard → Project Settings → API → anon/public
+const URL_SB  = 'https://ctezbazpnqylufhrmcwn.supabase.co';
+const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';  // ← tek değiştirilecek yer
 
-// ─── JWT Payload Decoder ───────────────────────────────────────
-// Hiçbir kütüphane gerektirmez; tarayıcı built-in atob() kullanır.
-function decodeJWT(token) {
+// ── Supabase client ────────────────────────────────────────
+const sb = window.supabase.createClient(URL_SB, ANON_KEY, {
+  auth: {
+    storage: window.localStorage,
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true,
+  }
+});
+
+// ── Redirect helper ────────────────────────────────────────
+function goto(page) {
+  const p = window.location.pathname.split('/');
+  p[p.length - 1] = page;
+  window.location.replace(window.location.origin + p.join('/'));
+}
+
+// ── Oturum varsa vault'a git ───────────────────────────────
+(async () => {
   try {
-    const payload = token.split('.')[1];
-    if (!payload) return null;
-    return JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
-  } catch (e) {
-    return null;
-  }
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) goto('vault.html');
+  } catch (_) { /* bağlantı sorunu — login sayfasında kal */ }
+})();
+
+// ── Google OAuth callback ──────────────────────────────────
+sb.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_IN' && session) goto('vault.html');
+});
+
+// ── Tab yönetimi ───────────────────────────────────────────
+let tab = 'in';
+
+function setTab(t) {
+  tab = t;
+  document.getElementById('t-in').classList.toggle('on', t === 'in');
+  document.getElementById('t-up').classList.toggle('on', t === 'up');
+  document.getElementById('f-name').style.display = t === 'up' ? 'block' : 'none';
+  document.getElementById('btn-txt').textContent  = t === 'in' ? 'Access Vault' : 'Create Account';
+  document.getElementById('pw').autocomplete      = t === 'in' ? 'current-password' : 'new-password';
+  clr();
 }
 
-// ─── Config Validation (JWT Payload Tabanlı) ───────────────────
-// "REPLACE_WITH" string aramak yerine gerçek JWT içeriğini okur.
-// Bu sayede yanlış proje key'i de yakalanır.
-function validateConfig() {
-  const urlMatch = SUPABASE_URL.match(/https:\/\/([a-z0-9]+)\.supabase\.co/);
-  if (!urlMatch) return { ok: false, reason: 'SUPABASE_URL formatı geçersiz.' };
-
-  const expectedRef = urlMatch[1]; // ctezbazpnqylufhrmcwn
-
-  if (!SUPABASE_ANON_KEY || SUPABASE_ANON_KEY.length < 50 || !SUPABASE_ANON_KEY.startsWith('eyJ')) {
-    return {
-      ok: false,
-      reason: `Anon key eksik veya geçersiz format. Dashboard'dan kopyaladığın key "eyJ" ile başlamalı.`
-    };
-  }
-
-  const payload = decodeJWT(SUPABASE_ANON_KEY);
-  if (!payload) {
-    return { ok: false, reason: 'Anon key geçerli bir JWT değil. Dashboard\'dan tekrar kopyala.' };
-  }
-
-  // Yanlış projenin key'i kullanılıyor mu?
-  if (payload.ref && payload.ref !== expectedRef) {
-    return {
-      ok: false,
-      reason: `Key yanlış projeye ait → key: "${payload.ref}", beklenen: "${expectedRef}". Dashboard'dan doğru projenin key'ini al.`
-    };
-  }
-
-  if (payload.role !== 'anon') {
-    return {
-      ok: false,
-      reason: `Yanlış key türü: "${payload.role}". "anon / public" key kullanılmalı, service_role değil.`
-    };
-  }
-
-  return { ok: true };
+// ── Alert helpers ──────────────────────────────────────────
+function err(msg) {
+  const e = document.getElementById('err');
+  const o = document.getElementById('ok');
+  e.textContent = msg; e.style.display = 'block';
+  o.style.display = 'none';
+}
+function ok(msg) {
+  const e = document.getElementById('err');
+  const o = document.getElementById('ok');
+  o.textContent = msg; o.style.display = 'block';
+  e.style.display = 'none';
+}
+function clr() {
+  document.getElementById('err').style.display = 'none';
+  document.getElementById('ok').style.display  = 'none';
 }
 
-// ─── Config Durumunu Kontrol Et ────────────────────────────────
-const configResult = validateConfig();
-const CONFIG_OK    = configResult.ok;
-
-if (!CONFIG_OK) {
-  console.error('[NicheLab] Config hatası:', configResult.reason);
-  // Setup banner'ı göster — form hâlâ kullanılabilir
-  const banner = document.getElementById('setup-banner');
-  const detail = document.getElementById('setup-detail');
-  if (banner) banner.style.display = 'block';
-  if (detail) detail.textContent   = configResult.reason;
-} else {
-  console.info('[NicheLab] ✓ Config geçerli. Supabase başlatılıyor...');
+// ── Loading state ──────────────────────────────────────────
+function busy(on) {
+  document.getElementById('main-btn').disabled = on;
+  document.getElementById('btn-txt').style.display = on ? 'none' : 'inline';
+  document.getElementById('spin').style.display    = on ? 'block' : 'none';
 }
 
-// ─── Supabase Client ───────────────────────────────────────────
-// Config hatalıysa null bırak; hiç ağ isteği atılmaz → "Failed to fetch" olmaz
-let _sb = null;
-
-if (CONFIG_OK) {
-  _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    auth: {
-      storage: window.localStorage,   // Web Locks race condition bypass
-      autoRefreshToken: true,
-      persistSession: true,
-      detectSessionInUrl: true,       // Google OAuth callback için gerekli
-    }
-  });
-}
-
-// ─── Redirect Helper ───────────────────────────────────────────
-function getPageUrl(filename) {
-  const parts = window.location.pathname.split('/');
-  parts[parts.length - 1] = filename;
-  return window.location.origin + parts.join('/');
-}
-
-// ─── Session Check (zaten giriş yapılmışsa vault'a git) ────────
-if (_sb) {
-  (async () => {
-    try {
-      const { data: { session } } = await _sb.auth.getSession();
-      if (session) window.location.replace(getPageUrl('vault.html'));
-    } catch (err) {
-      console.warn('[NicheLab] Session check failed:', err.message);
-    }
-  })();
-
-  // Google OAuth callback
-  _sb.auth.onAuthStateChange((event, session) => {
-    if ((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session) {
-      window.location.replace(getPageUrl('vault.html'));
-    }
-  });
-}
-
-// ─── Hata Sınıflandırıcı ──────────────────────────────────────
-function classifyError(err) {
-  const m = (err.message || '').toLowerCase();
-
-  if (m.includes('failed to fetch') || m.includes('networkerror') || m.includes('load failed') || m.includes('err_name_not_resolved')) {
-    console.error('[NicheLab] Network/DNS hatası:', err.message);
-    return 'Bağlantı hatası: Supabase projesine ulaşılamadı. İnternet bağlantını ve SUPABASE_URL değerini kontrol et.';
-  }
-  if (m.includes('invalid api key') || m.includes('invalid jwt') || m.includes('jwt expired')) {
-    console.error('[NicheLab] API Key hatası:', err.message);
-    return 'API Key hatası: Dashboard\'dan "anon / public" key\'i yeniden kopyala.';
-  }
-  if (m.includes('invalid login credentials') || m.includes('invalid email or password')) {
+// ── Hata mesajı çevirici ───────────────────────────────────
+function msg(e) {
+  const m = (e.message || '').toLowerCase();
+  if (m.includes('invalid login credentials') || m.includes('invalid email or password'))
     return 'E-posta veya şifre hatalı.';
-  }
-  if (m.includes('email not confirmed')) {
-    return 'E-posta adresin henüz doğrulanmamış. Gelen kutunu kontrol et.';
-  }
-  if (m.includes('user already registered')) {
+  if (m.includes('email not confirmed'))
+    return 'E-posta adresin doğrulanmamış. Gelen kutunu kontrol et.';
+  if (m.includes('user already registered'))
     return 'Bu e-posta zaten kayıtlı. Giriş Yap sekmesini dene.';
-  }
-
-  console.warn('[NicheLab] Auth error:', err.message);
-  return err.message || 'Giriş başarısız. Lütfen tekrar deneyin.';
+  if (m.includes('password should be'))
+    return 'Şifre en az 6 karakter olmalı.';
+  if (m.includes('failed to fetch') || m.includes('networkerror') || m.includes('load failed'))
+    return 'Bağlantı hatası. İnternet bağlantını ve Supabase Anon Key\'i kontrol et.';
+  return e.message || 'Bir hata oluştu. Lütfen tekrar dene.';
 }
 
-// ─── Tab Switcher ──────────────────────────────────────────────
-let currentTab = 'signin';
+// ── Ana giriş/kayıt fonksiyonu ─────────────────────────────
+async function go() {
+  clr();
+  const email = document.getElementById('email').value.trim();
+  const pw    = document.getElementById('pw').value;
 
-function switchTab(tab) {
-  currentTab = tab;
-  document.getElementById('tab-signin').classList.toggle('active', tab === 'signin');
-  document.getElementById('tab-signup').classList.toggle('active', tab === 'signup');
-  document.getElementById('group-name').style.display = tab === 'signup' ? 'block' : 'none';
-  document.getElementById('btn-label').textContent = tab === 'signin' ? 'Access Vault' : 'Create Account';
-  clearAlerts();
-}
+  if (!email) { err('Lütfen e-posta adresini gir.'); return; }
+  if (!pw)    { err('Lütfen şifreni gir.');           return; }
 
-// ─── Alert Helpers ─────────────────────────────────────────────
-function showError(msg)   { _setAlert('error',   msg); }
-function showSuccess(msg) { _setAlert('success',  msg); }
-function clearAlerts()    { _setAlert('error', ''); _setAlert('success', ''); }
-
-function _setAlert(type, msg) {
-  const el = document.getElementById('msg-' + type);
-  if (!el) return;
-  el.textContent = msg;
-  el.style.display = msg ? 'block' : 'none';
-  if (msg) {
-    const other = type === 'error' ? 'success' : 'error';
-    const otherEl = document.getElementById('msg-' + other);
-    if (otherEl) otherEl.style.display = 'none';
-  }
-}
-
-// ─── Loading State ─────────────────────────────────────────────
-function setLoading(on) {
-  const btn     = document.getElementById('auth-btn');
-  const label   = document.getElementById('btn-label');
-  const spinner = document.getElementById('btn-spinner');
-  if (btn)     btn.disabled          = on;
-  if (label)   label.style.display   = on ? 'none'  : 'inline';
-  if (spinner) spinner.style.display = on ? 'block' : 'none';
-}
-
-// ─── Ana Auth Fonksiyonu ───────────────────────────────────────
-async function handleAuth() {
-  clearAlerts();
-
-  // Config hatası varsa formu çalıştırma
-  if (!CONFIG_OK) {
-    showError('Önce Supabase yapılandırmasını tamamla: ' + configResult.reason);
-    return;
-  }
-
-  const email    = document.getElementById('field-email').value.trim();
-  const password = document.getElementById('field-password').value;
-
-  if (!email)    { showError('E-posta adresinizi girin.'); return; }
-  if (!password) { showError('Şifrenizi girin.');          return; }
-
-  setLoading(true);
+  busy(true);
   try {
-    if (currentTab === 'signin') {
-      const { data, error } = await _sb.auth.signInWithPassword({ email, password });
+    if (tab === 'in') {
+      // ── Giriş ────────────────────────────────────────────
+      const { error } = await sb.auth.signInWithPassword({ email, password: pw });
       if (error) throw error;
-      window.location.replace(getPageUrl('vault.html'));
+      goto('vault.html');
+
     } else {
-      const fullName = document.getElementById('field-name')?.value.trim() || '';
-      const { error } = await _sb.auth.signUp({
-        email, password,
-        options: { data: { full_name: fullName } }
+      // ── Kayıt ─────────────────────────────────────────────
+      const name  = document.getElementById('name').value.trim();
+      const { error } = await sb.auth.signUp({
+        email, password: pw,
+        options: { data: { full_name: name } }
       });
       if (error) throw error;
-      showSuccess('Hesap oluşturuldu! E-postanı doğruladıktan sonra giriş yapabilirsin.');
-      switchTab('signin');
+      ok('Hesap oluşturuldu! E-postanı doğruladıktan sonra giriş yapabilirsin.');
+      setTab('in');
     }
-  } catch (err) {
-    showError(classifyError(err));
+  } catch (e) {
+    err(msg(e));
   } finally {
-    setLoading(false);
+    busy(false);
   }
 }
 
-// ─── Google OAuth ──────────────────────────────────────────────
-async function handleGoogle() {
-  clearAlerts();
-  if (!CONFIG_OK) { showError('Önce Supabase yapılandırmasını tamamla.'); return; }
+// ── Google OAuth ───────────────────────────────────────────
+async function goGoogle() {
+  clr();
   try {
-    const { error } = await _sb.auth.signInWithOAuth({
+    const { error } = await sb.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: getPageUrl('vault.html') }
+      options: { redirectTo: (()=>{ const p=window.location.pathname.split('/'); p[p.length-1]='vault.html'; return window.location.origin+p.join('/'); })() }
     });
     if (error) throw error;
-  } catch (err) {
-    showError(classifyError(err));
+  } catch (e) {
+    err(msg(e));
   }
 }
 
-// ─── Enter tuşu kısayolu ───────────────────────────────────────
-document.addEventListener('keydown', e => { if (e.key === 'Enter') handleAuth(); });
+// ── Enter kısayolu ─────────────────────────────────────────
+document.addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
 </script>
 </body>
 </html>
