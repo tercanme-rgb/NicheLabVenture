@@ -2427,7 +2427,7 @@ const PRICES = {
     p: {v:'699', c:'per year  (billed annually)', href:'https://buy.stripe.com/aFa6oI0A7glk6lFf96ebu03'}
   }
 };
-let billing = 'monthly';
+let billing = 'yearly';
 function setBill(mode) { if (billing===mode) return; billing=mode; applyPrices(); }
 function flipBill() { billing = billing==='monthly'?'yearly':'monthly'; applyPrices(); }
 function applyPrices() {
