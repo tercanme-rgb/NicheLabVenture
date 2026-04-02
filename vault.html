@@ -45,9 +45,9 @@
       --serif: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
       /* Layout */
-      --nav-h:     58px;
+      --nav-h:     70px;
       --left-w:    224px;
-      --right-w:   290px;
+      --right-w:   296px;
       --strip-h:   30px;
     }
 
@@ -124,14 +124,28 @@
     }
     .brand-name em { color: var(--gold); font-style: normal; }
 
-    /* Nav links */
+    /* Nav vault title — sits between brand and nav-links */
+    .nav-vault-title {
+      flex: 1;
+      font-family: var(--serif);
+      font-size: 1.75rem;
+      font-weight: 400;
+      color: var(--text);
+      letter-spacing: -0.01em;
+      line-height: 1;
+      padding: 0 1.8rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Nav links — right-aligned account controls */
     .nav-links {
       display: flex; align-items: center;
       gap: 0.25rem;
       list-style: none;
-      flex: 1;
-      justify-content: flex-end;
-      padding-right: 0.5rem;
+      flex-shrink: 0;
+      padding-right: 1.4rem;
     }
 
     .nav-links a {
@@ -630,37 +644,94 @@
       color: var(--muted);
     }
 
-    /* Niche Trends Heatmap */
+    /* ─── SIDEBAR DEEP SEARCH (Bloomberg terminal style) ─── */
+    .sb-search-wrap {
+      padding: 1.1rem 1.4rem 0.9rem;
+    }
+
+    .sb-search-label {
+      font-size: 0.45rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.55rem;
+      display: block;
+    }
+
+    .sb-search-box {
+      display: flex; align-items: center;
+      gap: 0.5rem;
+      border: 1.5px solid var(--border-strong);
+      background: var(--bg);
+      padding: 0.52rem 0.75rem;
+      transition: border-color 0.18s;
+    }
+    .sb-search-box:focus-within {
+      border-color: var(--gold);
+      background: var(--card);
+    }
+
+    .sb-search-icon { flex-shrink: 0; color: var(--muted); }
+
+    .sb-search-input {
+      flex: 1; min-width: 0;
+      background: none; border: none; outline: none;
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.02em;
+      color: var(--text);
+    }
+    .sb-search-input::placeholder { color: var(--dim); letter-spacing: 0; }
+
+    .sb-search-clear {
+      background: none; border: none; padding: 0;
+      cursor: pointer; color: var(--dim);
+      font-size: 0.7rem; line-height: 1;
+      display: none;
+      transition: color 0.15s;
+    }
+    .sb-search-clear.visible { display: block; }
+    .sb-search-clear:hover { color: var(--muted); }
+
+    .sb-search-count {
+      font-size: 0.44rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-top: 0.45rem;
+      min-height: 0.8rem;
+    }
+
+    /* Niche Trends Heatmap — 3×4 expanded */
     .heatmap {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
+      gap: 3px;
     }
 
     .hm-cell {
-      padding: 0.45rem 0.3rem;
+      padding: 0.65rem 0.35rem;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      min-height: 54px;
+      min-height: 68px;
       cursor: default;
       transition: filter 0.15s;
     }
-    .hm-cell:hover { filter: brightness(1.08); }
+    .hm-cell:hover { filter: brightness(1.1); }
 
     .hm-label {
-      font-size: 0.46rem;
-      color: rgba(255,255,255,0.88);
+      font-size: 0.52rem;
+      color: rgba(255,255,255,0.92);
       text-align: center;
-      line-height: 1.25;
-      margin-bottom: 0.18rem;
+      line-height: 1.3;
+      margin-bottom: 0.28rem;
       font-weight: 500;
     }
 
     .hm-score {
-      font-size: 0.65rem;
+      font-size: 0.82rem;
       color: #fff;
-      font-weight: 600;
-      font-family: var(--serif);
+      font-weight: 700;
+      font-family: var(--mono);
     }
 
     /* ═══════════════════════════════════════════════
@@ -756,7 +827,9 @@
     .modal-text {
       font-size: 0.7rem;
       color: var(--text-2);
-      line-height: 1.75;
+      line-height: 1.85;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
 
     /* Gated / Pro-locked sections */
@@ -987,14 +1060,14 @@
       <span class="brand-name">Niche<em>Lab</em></span>
     </a>
 
+    <span class="nav-vault-title">Intelligence Vault</span>
+
     <ul class="nav-links">
-      <li><a href="#" data-modal="account-modal" id="nav-my-account" style="margin-left:auto">My Account</a></li>
+      <li><a href="#" data-modal="account-modal" id="nav-my-account">My Account</a></li>
       <li><a href="index.html" class="nav-admin nav-members-access" id="nav-members">Members Access</a></li>
     </ul>
 
-    <div class="nav-right">
-      <!-- intentionally empty — user info is in the main bar -->
-    </div>
+    <div class="nav-right"></div>
   </nav>
 
   <!-- ════════════════════════════════════════════
@@ -1014,13 +1087,24 @@
 
       <div class="sb-divider"></div>
 
-      <div class="sb-section" style="padding-top:0.5rem">
-        <p class="sb-label">Navigation</p>
-        <button class="sb-item active">Intelligence Vault</button>
-        <button class="sb-item">AI Automation</button>
-        <button class="sb-item">B2B Services</button>
-        <button class="sb-item">Fintech</button>
-        <button class="sb-item">SaaS Vertical</button>
+      <!-- Deep Keyword Search -->
+      <div class="sb-search-wrap">
+        <span class="sb-search-label">Deep Search</span>
+        <div class="sb-search-box">
+          <svg class="sb-search-icon" width="11" height="11" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6">
+            <circle cx="6" cy="6" r="4.5"/><line x1="9.5" y1="9.5" x2="13" y2="13"/>
+          </svg>
+          <input
+            class="sb-search-input"
+            id="search-input"
+            type="text"
+            placeholder="Search titles, content…"
+            autocomplete="off"
+            spellcheck="false"
+          />
+          <button class="sb-search-clear" id="search-clear" title="Clear search">×</button>
+        </div>
+        <div class="sb-search-count" id="search-count"></div>
       </div>
 
       <div class="sb-divider"></div>
@@ -1041,12 +1125,6 @@
     <!-- ── MAIN CONTENT ─────────────────────── -->
     <main class="main">
 
-      <!-- Page Title -->
-      <div class="vault-heading">
-        <h1 class="vault-title" id="hero-title">Intelligence Vault</h1>
-        <span class="vault-title-underline"></span>
-      </div>
-
       <!-- Signal Banner -->
       <p class="signal-label">Intelligence Signal Banner</p>
       <div class="signal-banner" id="signal-banner">
@@ -1058,7 +1136,6 @@
 
       <!-- Hidden compatibility layer for JS filter state and identity fields -->
       <div style="display:none">
-        <input type="text" id="search-input" />
         <select id="cat-filter"><option value="all">All</option></select>
         <span id="user-email"></span>
         <span id="user-tier"></span>
@@ -1114,7 +1191,7 @@
           <div class="modal-title">The Analyst Line</div>
           <div class="modal-meta" style="margin-top:0.6rem">
             <span class="modal-meta-tag">Pro &amp; Admin Access</span>
-            <span class="modal-meta-tag">Direct Channel · tercan.me@gmail.com</span>
+            <span class="modal-meta-tag">Direct Channel · <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="780c1d0a1b191656151d381f15191114561b1715">[email&#160;protected]</a></span>
           </div>
         </div>
 
@@ -1235,6 +1312,8 @@
       </div>
     </div>
   </div>
+  <!-- ════════════════════════════════════════════
+       BOTTOM STRIP
   ════════════════════════════════════════════ -->
   <div class="bottom-strip">
     <div class="strip-group">
@@ -1292,7 +1371,7 @@
        getSession() redirect, onAuthStateChange,
        ADMIN_EMAIL check, signOut.
   ════════════════════════════════════════════ -->
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // ─── CONFIG ──────────────────────────────────────────────
     const SUPABASE_URL  = 'https://btiwdulcqtvkdupsotnx.supabase.co';
     const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
@@ -1435,6 +1514,10 @@
         buildHeatmap(_allReports);
         renderGrid(_allReports);
 
+        // Show initial report count in sidebar search
+        const countEl = document.getElementById('search-count');
+        if (countEl) countEl.textContent = `${_allReports.length} reports`;
+
       } catch (err) {
         console.error('[NicheLab] Report fetch error:', err);
         grid.innerHTML = `
@@ -1501,14 +1584,7 @@
           </div>`;
       }).join('');
 
-      // Delegate click to cards
-      grid.addEventListener('click', e => {
-        const card = e.target.closest('.report-card');
-        if (card) openModal(card.dataset.id);
-      }, { once: true });
-
-      // Re-attach after filter re-renders
-      grid._delegated = true;
+      // Click delegation is attached once (persistently) — see setup below
     }
 
     // ─── CATEGORIES SIDEBAR + FILTER ──────────────────────────────────
@@ -1544,28 +1620,59 @@
     }
 
     // ─── SEARCH & FILTER ──────────────────────────────────────────────
-    document.getElementById('search-input').addEventListener('input', applyFilters);
+    // Persistent grid click delegation — fires for any report card click,
+    // even after innerHTML is replaced by filters.
+    document.getElementById('report-grid').addEventListener('click', e => {
+      const card = e.target.closest('.report-card');
+      if (card) openModal(card.dataset.id);
+    });
+
+    // Sidebar deep search input
+    document.getElementById('search-input').addEventListener('input', function() {
+      const clearBtn = document.getElementById('search-clear');
+      clearBtn.classList.toggle('visible', this.value.length > 0);
+      applyFilters();
+    });
+
+    document.getElementById('search-clear').addEventListener('click', () => {
+      const inp = document.getElementById('search-input');
+      inp.value = '';
+      document.getElementById('search-clear').classList.remove('visible');
+      applyFilters();
+      inp.focus();
+    });
+
     document.getElementById('cat-filter').addEventListener('change', applyFilters);
 
     function applyFilters() {
-      const q   = document.getElementById('search-input').value.toLowerCase().trim();
+      const q   = (document.getElementById('search-input').value || '').toLowerCase().trim();
       const cat = document.getElementById('cat-filter').value;
 
       const filtered = _allReports.filter(r => {
-        const matchQ   = (r.title || r.name || '').toLowerCase().includes(q);
-        const rCat     = r.category || r.niche || '';
-        const matchCat = cat === 'all' || rCat === cat;
-        return matchQ && matchCat;
+        // Category gate
+        if (cat !== 'all') {
+          const rCat = r.category || r.niche || '';
+          if (rCat !== cat) return false;
+        }
+        // Deep keyword search across all text fields
+        if (!q) return true;
+        const haystack = [
+          r.title, r.name, r.abstract, r.summary, r.description,
+          r.content, r.executive_summary, r.deep_analysis,
+          r.analysis, r.recommendations, r.category, r.niche
+        ].filter(Boolean).join(' ').toLowerCase();
+        return haystack.includes(q);
       });
 
-      const grid = document.getElementById('report-grid');
       renderGrid(filtered);
 
-      // Re-attach click delegate (renderGrid uses { once: true })
-      grid.addEventListener('click', e => {
-        const card = e.target.closest('.report-card');
-        if (card) openModal(card.dataset.id);
-      }, { once: true });
+      // Update search result count in sidebar
+      const countEl = document.getElementById('search-count');
+      if (q) {
+        countEl.textContent = `${filtered.length} result${filtered.length !== 1 ? 's' : ''} found`;
+      } else {
+        countEl.textContent = `${_allReports.length} reports`;
+      }
     }
 
     // ─── SIGNAL BANNER (daily rotating pick) ──────────────────────────
@@ -1632,16 +1739,16 @@
       const grid = document.getElementById('heatmap-grid');
       if (!reports.length) { grid.textContent = 'No data'; return; }
 
-      // Top 9 by signal score for heatmap cells
+      // Top 12 by signal score for 3×4 heatmap grid
       const sorted = [...reports]
         .map(r => ({
           ...r,
           _sig: typeof r.signal === 'number'
             ? r.signal
-            : Math.floor(60 + Math.abs(hashCode(r.id || r.title || '')) % 30)
+            : Math.floor(60 + Math.abs(hashCode(r.id || r.title || '')) % 35)
         }))
         .sort((a, b) => b._sig - a._sig)
-        .slice(0, 9);
+        .slice(0, 12);
 
       grid.innerHTML = sorted.map(r => {
         const score = r._sig;
@@ -1659,16 +1766,30 @@
     }
 
     function heatColor(score) {
-      if (score >= 88) return '#145a2e';   /* dark green */
-      if (score >= 80) return '#1e7a40';   /* medium green */
-      if (score >= 72) return '#28a050';   /* green */
-      if (score >= 64) return '#c8a020';   /* yellow-gold (neutral) */
-      if (score >= 56) return '#c05820';   /* orange-red */
-      if (score >= 48) return '#a03020';   /* red */
-      return '#7a1a1a';                     /* dark red */
+      if (score >= 90) return '#0d4a22';   /* 90-100: deep green */
+      if (score >= 80) return '#1e7a40';   /* 80-89:  success green */
+      if (score >= 70) return '#9a7500';   /* 70-79:  muted gold/yellow */
+      if (score >= 60) return '#b84c00';   /* 60-69:  amber/orange */
+      return '#a02020';                     /* <60:    warning red */
     }
 
     // ─── OPEN MODAL ───────────────────────────────────────────────────
+    // Renders report content with paragraph-aware formatting.
+    // safeContent() escapes HTML then converts double-newlines → paragraphs.
+    function safeContent(str) {
+      if (!str) return '';
+      const escaped = String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+      // Double newlines → paragraph breaks; single newlines → <br>
+      return escaped
+        .split(/\n\s*\n/)
+        .map(p => `<p style="margin-bottom:0.9rem">${p.replace(/\n/g, '<br>')}</p>`)
+        .join('');
+    }
+
     function openModal(id) {
       const report = _allReports.find(r => String(r.id) === String(id));
       if (!report) return;
@@ -1682,33 +1803,37 @@
         : '—';
       const signal = report.signal || '—';
 
-      // Content fields — graceful fallback to report.content
-      const exec   = escHtml(
-        report.executive_summary || report.summary ||
-        report.description || report.content ||
-        'Executive summary is not yet available for this report. Full briefing content will appear here once the analysis pipeline completes.'
-      );
-      const deep   = escHtml(
-        report.deep_analysis || report.analysis ||
-        'Comprehensive deep-dive analysis covering competitive landscape mapping, total addressable market sizing, revenue model blueprints, and risk-adjusted entry strategy frameworks with proprietary scoring methodology.'
-      );
-      const recs   = escHtml(
-        report.recommendations ||
-        'Strategic analyst recommendations based on NicheLab proprietary intelligence data — including prioritized market entry vectors, positioning differentiation strategy, and capital allocation guidance for this specific niche opportunity.'
-      );
+      // Pull full content from every possible DB column — no placeholder fallback
+      // that masks real data. Each field tries all known column aliases.
+      const execRaw = report.executive_summary || report.summary ||
+                      report.description       || report.content || null;
+      const deepRaw = report.deep_analysis     || report.analysis || null;
+      const recsRaw = report.recommendations   || null;
 
-      const gatedSection = (heading, content) => {
+      const execHtml = execRaw
+        ? safeContent(execRaw)
+        : '<p style="color:var(--muted);font-style:italic">Executive summary not yet available for this report.</p>';
+
+      const deepHtml = deepRaw
+        ? safeContent(deepRaw)
+        : '<p>Comprehensive deep-dive analysis covering competitive landscape mapping, total addressable market sizing, revenue model blueprints, and risk-adjusted entry strategy frameworks with proprietary scoring methodology.</p>';
+
+      const recsHtml = recsRaw
+        ? safeContent(recsRaw)
+        : '<p>Strategic analyst recommendations based on NicheLab proprietary intelligence data — including prioritized market entry vectors, positioning differentiation strategy, and capital allocation guidance for this specific niche opportunity.</p>';
+
+      const gatedSection = (heading, contentHtml) => {
         if (isPro) {
           return `
             <div>
               <div class="modal-section-hd">${heading}</div>
-              <div class="modal-text">${content}</div>
+              <div class="modal-text" style="white-space:normal">${contentHtml}</div>
             </div>`;
         }
         return `
           <div class="locked-wrap">
             <div class="modal-section-hd">${heading}</div>
-            <div class="locked-content modal-text">${content}</div>
+            <div class="locked-content modal-text" style="white-space:normal">${contentHtml}</div>
             <div class="lock-overlay">
               <div class="lock-icon">🔒</div>
               <div class="lock-msg">Pro-tier access required<br/>to unlock this section</div>
@@ -1729,11 +1854,11 @@
 
         <div>
           <div class="modal-section-hd">Executive Summary</div>
-          <div class="modal-text">${exec}</div>
+          <div class="modal-text" style="white-space:normal">${execHtml}</div>
         </div>
 
-        ${gatedSection('Pro-Tier · Deep Market Analysis', deep)}
-        ${gatedSection('Analyst Recommendations', recs)}
+        ${gatedSection('Pro-Tier · Deep Market Analysis', deepHtml)}
+        ${gatedSection('Analyst Recommendations', recsHtml)}
       `;
 
       document.getElementById('report-modal').classList.add('open');
@@ -1874,15 +1999,3 @@
     }
 
     // Deterministic hash for fallback metric generation
-    function hashCode(str) {
-      let h = 0;
-      for (let i = 0; i < String(str).length; i++) {
-        h = ((h << 5) - h) + String(str).charCodeAt(i);
-        h |= 0;
-      }
-      return h;
-    }
-  </script>
-
-</body>
-</html>
