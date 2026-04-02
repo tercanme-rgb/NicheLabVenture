@@ -1790,130 +1790,107 @@
         .join('');
     }
 
-    function openModal(id) {
-      const report = _allReports.find(r => String(r.id) === String(id));
-      if (!report) return;
+   function openModal(id) {
+  const report = _allReports.find(r => String(r.id) === String(id));
+  if (!report) return;
 
-      const isPro  = _isAdmin || _userTier === 'pro';
-      const title  = escHtml(report.title || report.name || 'Untitled');
-      const cat    = escHtml(report.category || report.niche || '—');
-      const date   = report.created_at
-        ? new Date(report.created_at).toLocaleDateString('en-GB',
-            { day: '2-digit', month: 'long', year: 'numeric' })
-        : '—';
-      const signal = report.signal || '—';
+  const isPro  = _isAdmin || _userTier === 'pro';
+  const title  = escHtml(report.title || report.name || 'Untitled');
+  const cat    = escHtml(report.category || report.niche || '—');
+  const date   = report.created_at
+    ? new Date(report.created_at).toLocaleDateString('en-GB',
+        { day: '2-digit', month: 'long', year: 'numeric' })
+    : '—';
+  const signal = report.signal || '—';
 
-      // Pull full content from every possible DB column — no placeholder fallback
-      // that masks real data. Each field tries all known column aliases.
-            // Try every likely full-text field first
-      const fullReportRaw =
-        report.full_report ||
-        report.report ||
-        report.report_body ||
-        report.body ||
-        report.markdown ||
-        report.content ||
-        null;
+  const fullReportRaw =
+    report.full_report ||
+    report.report ||
+    report.report_body ||
+    report.body ||
+    report.markdown ||
+    report.content ||
+    null;
 
-      // Optional structured sections
-      const execRaw =
-        report.executive_summary ||
-        report.summary ||
-        report.description ||
-        null;
+  const execRaw =
+    report.executive_summary ||
+    report.summary ||
+    report.description ||
+    null;
 
-      const deepRaw =
-        report.deep_analysis ||
-        report.analysis ||
-        null;
+  const deepRaw =
+    report.deep_analysis ||
+    report.analysis ||
+    null;
 
-      const recsRaw =
-        report.recommendations ||
-        null;
+  const recsRaw =
+    report.recommendations ||
+    null;
 
-      const execHtml = execRaw
-        ? safeContent(execRaw)
-        : '<p style="color:var(--muted);font-style:italic">No executive summary available.</p>';
+  const execHtml = execRaw
+    ? safeContent(execRaw)
+    : '<p style="color:var(--muted);font-style:italic">No executive summary available.</p>';
 
-      const deepHtml = deepRaw
-        ? safeContent(deepRaw)
-        : '<p style="color:var(--muted);font-style:italic">No deep analysis available.</p>';
+  const deepHtml = deepRaw
+    ? safeContent(deepRaw)
+    : '<p style="color:var(--muted);font-style:italic">No deep analysis available.</p>';
 
-      const recsHtml = recsRaw
-        ? safeContent(recsRaw)
-        : '<p style="color:var(--muted);font-style:italic">No recommendations available.</p>';
+  const recsHtml = recsRaw
+    ? safeContent(recsRaw)
+    : '<p style="color:var(--muted);font-style:italic">No recommendations available.</p>';
 
-      const fullReportHtml = fullReportRaw
-        ? safeContent(fullReportRaw)
-        : '<p style="color:var(--muted);font-style:italic">No full report content available.</p>';
+  const fullReportHtml = fullReportRaw
+    ? safeContent(fullReportRaw)
+    : '<p style="color:var(--muted);font-style:italic">No full report content available.</p>';
 
-      const gatedSection = (heading, contentHtml) => {
-        if (isPro) {
-          return `
-            <div>
-              <div class="modal-section-hd">${heading}</div>
-              <div class="modal-text" style="white-space:normal">${contentHtml}</div>
-            </div>`;
-        }
-        return `
-          <div class="locked-wrap">
-            <div class="modal-section-hd">${heading}</div>
-            <div class="locked-content modal-text" style="white-space:normal">${contentHtml}</div>
-            <div class="lock-overlay">
-              <div class="lock-icon">🔒</div>
-              <div class="lock-msg">Pro-tier access required<br/>to unlock this section</div>
-              <button class="lock-cta" onclick="window.location.href='pricing.html'">Upgrade to Pro</button>
-            </div>
-          </div>`;
-      };
-
-            const hasStructuredSections = !!(execRaw || deepRaw || recsRaw);
-
-      document.getElementById('modal-body').innerHTML = `
+  const gatedSection = (heading, contentHtml) => {
+    if (isPro) {
+      return `
         <div>
-          <div class="modal-title">${title}</div>
-          <div class="modal-meta" style="margin-top:0.6rem">
-            <span class="modal-meta-tag">Category: ${cat}</span>
-            <span class="modal-meta-tag">Published: ${date}</span>
-            <span class="modal-meta-tag">Signal Index: ${signal}</span>
-          </div>
+          <div class="modal-section-hd">${heading}</div>
+          <div class="modal-text" style="white-space:normal">${contentHtml}</div>
+        </div>`;
+    }
+    return `
+      <div class="locked-wrap">
+        <div class="modal-section-hd">${heading}</div>
+        <div class="locked-content modal-text" style="white-space:normal">${contentHtml}</div>
+        <div class="lock-overlay">
+          <div class="lock-icon">🔒</div>
+          <div class="lock-msg">Pro-tier access required<br/>to unlock this section</div>
+          <button class="lock-cta" onclick="window.location.href='pricing.html'">Upgrade to Pro</button>
         </div>
+      </div>`;
+  };
 
-        ${
-          hasStructuredSections
-            ? `
-              <div>
-                <div class="modal-section-hd">Executive Summary</div>
-                <div class="modal-text" style="white-space:normal">${execHtml}</div>
-              </div>
+  document.getElementById('modal-body').innerHTML = `
+    <div>
+      <div class="modal-title">${title}</div>
+      <div class="modal-meta" style="margin-top:0.6rem">
+        <span class="modal-meta-tag">Category: ${cat}</span>
+        <span class="modal-meta-tag">Published: ${date}</span>
+        <span class="modal-meta-tag">Signal Index: ${signal}</span>
+      </div>
+    </div>
 
-              ${gatedSection('Pro-Tier · Deep Market Analysis', deepHtml)}
-              ${gatedSection('Analyst Recommendations', recsHtml)}
-            `
-            : `
-              ${gatedSection('Full Report', fullReportHtml)}
-            `
-        }
-      `;
+    ${
+      fullReportRaw
+        ? `${gatedSection('Full Report', fullReportHtml)}`
+        : `
+          <div>
+            <div class="modal-section-hd">Executive Summary</div>
+            <div class="modal-text" style="white-space:normal">${execHtml}</div>
+          </div>
 
-      document.getElementById('report-modal').classList.add('open');
-      document.body.style.overflow = 'hidden';
+          ${gatedSection('Pro-Tier · Deep Market Analysis', deepHtml)}
+          ${gatedSection('Analyst Recommendations', recsHtml)}
+        `
     }
+  `;
 
-    function closeModal() {
-      document.getElementById('report-modal').classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    document.getElementById('modal-close').addEventListener('click', closeModal);
-    document.getElementById('report-modal').addEventListener('click', e => {
-      if (e.target === e.currentTarget) closeModal();
-    });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-    document.getElementById('modal-download').addEventListener('click', () => {
-      window.print();
-    });
+  document.getElementById('report-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
 
     // ─── ANALYST LINE MODAL ───────────────────────────────────────────
     document.getElementById('analyst-line-btn').addEventListener('click', () => {
