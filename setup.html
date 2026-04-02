@@ -602,6 +602,10 @@ const $formBody = document.getElementById('form-body');
 const $success  = document.getElementById('success-block');
 const $fill     = document.getElementById('redirect-fill');
 
+const _params = new URLSearchParams(window.location.search);
+const _tierRaw = (_params.get('tier') || 'starter').toLowerCase();
+const _tier = _tierRaw === 'pro' ? 'pro' : 'starter';
+
 /* ── URL param email pre-fill ─────────────────────────── */
 (function prefillEmail() {
   try {
@@ -737,6 +741,7 @@ async function handleSubmit() {
         first_name: firstName,
         last_name:  lastName,
         full_name:  `${firstName} ${lastName}`,
+        tier:       _tier,
         updated_at: new Date().toISOString()
       }, { onConflict: 'id' });
 
