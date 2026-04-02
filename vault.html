@@ -1789,7 +1789,30 @@
         .map(p => `<p style="margin-bottom:0.9rem">${p.replace(/\n/g, '<br>')}</p>`)
         .join('');
     }
+function renderReportContent(str) {
+  if (!str) return '';
 
+  const raw = String(str).trim();
+
+  // If content is a full HTML document or contains real HTML tags,
+  // render it as HTML instead of escaping it.
+  if (
+    /<(html|head|body|style|table|thead|tbody|tr|td|th|h1|h2|h3|p|div|ol|ul|li)\b/i.test(raw)
+  ) {
+    // Remove outer document wrappers so only report body content is injected
+    let cleaned = raw
+      .replace(/<!DOCTYPE[^>]*>/gi, '')
+      .replace(/<html[^>]*>/gi, '')
+      .replace(/<\/html>/gi, '')
+      .replace(/<head[\s\S]*?<\/head>/gi, '')
+      .replace(/<body[^>]*>/gi, '')
+      .replace(/<\/body>/gi, '');
+
+    return cleaned;
+  }
+
+  return safeContent(raw);
+}
    function openModal(id) {
   const report = _allReports.find(r => String(r.id) === String(id));
   if (!report) return;
@@ -1839,9 +1862,27 @@
     ? safeContent(recsRaw)
     : '<p style="color:var(--muted);font-style:italic">No recommendations available.</p>';
 
-  const fullReportHtml = fullReportRaw
-    ? safeContent(fullReportRaw)
-    : '<p style="color:var(--muted);font-style:italic">No full report content available.</p>';
+  function renderReportContent(str) {
+  if (!str) return '';
+
+  const raw = String(str).trim();
+
+  if (
+    /<(html|head|body|style|table|thead|tbody|tr|td|th|h1|h2|h3|p|div|ol|ul|li)\b/i.test(raw)
+  ) {
+    let cleaned = raw
+      .replace(/<!DOCTYPE[^>]*>/gi, '')
+      .replace(/<html[^>]*>/gi, '')
+      .replace(/<\/html>/gi, '')
+      .replace(/<head[\s\S]*?<\/head>/gi, '')
+      .replace(/<body[^>]*>/gi, '')
+      .replace(/<\/body>/gi, '');
+
+    return cleaned;
+  }
+
+  return safeContent(raw);
+}
 
   const gatedSection = (heading, contentHtml) => {
     if (isPro) {
