@@ -89,52 +89,56 @@
     }
 
     .nav-brand {
-      display: flex; align-items: center; gap: 0.55rem;
-      width: var(--left-w);
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      min-width: var(--left-w);
       height: 100%;
-      padding: 0 1.4rem;
-      border-right: 1px solid var(--border);
+      padding: 0 1.25rem;
       flex-shrink: 0;
       text-decoration: none;
     }
 
     .brand-mark {
-      width: 26px; height: 26px;
-      border: 1.5px solid var(--gold);
-      border-radius: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--serif);
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--gold);
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: #11110f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 1.45rem;
+      font-weight: 500;
+      line-height: 1;
+      color: #c59a17;
       flex-shrink: 0;
-      position: relative;
-    }
-    .brand-mark::after {
-      content: '';
-      position: absolute; inset: 2px;
-      border: 0.5px solid rgba(184,146,14,0.25);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.04);
     }
 
     .brand-name {
-      font-family: var(--serif);
-      font-size: 1.05rem;
-      font-weight: 500;
-      color: var(--text);
-      letter-spacing: 0.01em;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 1.08rem;
+      font-weight: 400;
+      color: #24211d;
+      letter-spacing: -0.015em;
+      line-height: 1;
     }
-    .brand-name em { color: var(--gold); font-style: normal; }
+    .brand-name em {
+      color: inherit;
+      font-style: normal;
+    }
 
-    /* Nav vault title — sits between brand and nav-links */
+    /* Nav vault title — aligned to homepage design language */
     .nav-vault-title {
       flex: 1;
-      font-family: var(--serif);
-      font-size: 1.75rem;
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 1.32rem;
       font-weight: 400;
-      color: var(--text);
-      letter-spacing: -0.01em;
+      color: #3a342d;
+      letter-spacing: -0.018em;
       line-height: 1;
-      padding: 0 1.8rem;
+      padding: 0 1.55rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -868,6 +872,44 @@
       word-break: break-word;
     }
 
+    .modal-report-render h1,
+    .modal-report-render h2,
+    .modal-report-render h3,
+    .modal-report-render h4 {
+      color: var(--text);
+      line-height: 1.25;
+      margin: 1.2rem 0 0.7rem;
+    }
+
+    .modal-report-render p,
+    .modal-report-render ul,
+    .modal-report-render ol,
+    .modal-report-render table {
+      margin-bottom: 1rem;
+    }
+
+    .modal-report-render table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.62rem;
+    }
+
+    .modal-report-render th,
+    .modal-report-render td {
+      border: 1px solid var(--border);
+      padding: 0.45rem 0.55rem;
+      vertical-align: top;
+    }
+
+    .modal-report-render th {
+      background: var(--panel);
+      color: var(--text);
+    }
+
+    .modal-report-render .page-break {
+      display: none;
+    }
+
     /* Gated / Pro-locked sections */
     .locked-wrap {
       position: relative;
@@ -1091,7 +1133,7 @@
        NAVIGATION
   ════════════════════════════════════════════ -->
   <nav>
-    <a class="nav-brand" href="#">
+    <a class="nav-brand" href="index.html">
       <div class="brand-mark">N</div>
       <span class="brand-name">Niche<em>Lab</em></span>
     </a>
@@ -1905,15 +1947,12 @@
       if (!str) return '';
 
       const raw = String(str).trim();
-      const looksLikeHtml = /<(html|head|body|style|table|thead|tbody|tr|td|th|h1|h2|h3|p|div|ol|ul|li|section|article)\b/i.test(raw);
+      const looksLikeHtml = /<(html|head|body|style|table|thead|tbody|tr|td|th|h1|h2|h3|p|div|ol|ul|li|section|article)/i.test(raw);
 
       if (!looksLikeHtml) return `<div class="modal-report-render">${safeContent(raw)}</div>`;
 
-      const styleMatches = raw.match(/<style[\s\S]*?<\/style>/gi) || [];
-      const styleBlocks = styleMatches.join('\n');
-
       const bodyMatch = raw.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-      const content = bodyMatch
+      let content = bodyMatch
         ? bodyMatch[1]
         : raw
             .replace(/<!DOCTYPE[^>]*>/gi, '')
@@ -1924,7 +1963,12 @@
             .replace(/<\/body>/gi, '')
             .trim();
 
-      return `<div class="modal-report-render">${styleBlocks}${content}</div>`;
+      // Prevent report-level CSS/scripts from leaking into the main Vault layout.
+      content = content
+        .replace(/<style[\s\S]*?<\/style>/gi, '')
+        .replace(/<script[\s\S]*?<\/script>/gi, '');
+
+      return `<div class="modal-report-render">${content}</div>`;
     }
 
     function buildPrintableReport(title, metaText, contentHtml) {
@@ -2076,6 +2120,12 @@
       document.getElementById('report-modal').classList.remove('open');
       document.body.style.overflow = '';
       _currentModalReportId = null;
+
+      const modalBody = document.getElementById('modal-body');
+      modalBody.innerHTML = '';
+      delete modalBody.dataset.printTitle;
+      delete modalBody.dataset.printMeta;
+      delete modalBody.dataset.printContent;
     }
 
     document.getElementById('modal-close').addEventListener('click', closeModal);
