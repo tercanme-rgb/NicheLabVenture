@@ -1805,22 +1805,47 @@
 
       // Pull full content from every possible DB column — no placeholder fallback
       // that masks real data. Each field tries all known column aliases.
-      const execRaw = report.executive_summary || report.summary ||
-                      report.description       || report.content || null;
-      const deepRaw = report.deep_analysis     || report.analysis || null;
-      const recsRaw = report.recommendations   || null;
+            // Try every likely full-text field first
+      const fullReportRaw =
+        report.full_report ||
+        report.report ||
+        report.report_body ||
+        report.body ||
+        report.markdown ||
+        report.content ||
+        null;
+
+      // Optional structured sections
+      const execRaw =
+        report.executive_summary ||
+        report.summary ||
+        report.description ||
+        null;
+
+      const deepRaw =
+        report.deep_analysis ||
+        report.analysis ||
+        null;
+
+      const recsRaw =
+        report.recommendations ||
+        null;
 
       const execHtml = execRaw
         ? safeContent(execRaw)
-        : '<p style="color:var(--muted);font-style:italic">Executive summary not yet available for this report.</p>';
+        : '<p style="color:var(--muted);font-style:italic">No executive summary available.</p>';
 
       const deepHtml = deepRaw
         ? safeContent(deepRaw)
-        : '<p>Comprehensive deep-dive analysis covering competitive landscape mapping, total addressable market sizing, revenue model blueprints, and risk-adjusted entry strategy frameworks with proprietary scoring methodology.</p>';
+        : '<p style="color:var(--muted);font-style:italic">No deep analysis available.</p>';
 
       const recsHtml = recsRaw
         ? safeContent(recsRaw)
-        : '<p>Strategic analyst recommendations based on NicheLab proprietary intelligence data — including prioritized market entry vectors, positioning differentiation strategy, and capital allocation guidance for this specific niche opportunity.</p>';
+        : '<p style="color:var(--muted);font-style:italic">No recommendations available.</p>';
+
+      const fullReportHtml = fullReportRaw
+        ? safeContent(fullReportRaw)
+        : '<p style="color:var(--muted);font-style:italic">No full report content available.</p>';
 
       const gatedSection = (heading, contentHtml) => {
         if (isPro) {
@@ -1842,6 +1867,8 @@
           </div>`;
       };
 
+            const hasStructuredSections = !!(execRaw || deepRaw || recsRaw);
+
       document.getElementById('modal-body').innerHTML = `
         <div>
           <div class="modal-title">${title}</div>
@@ -1852,13 +1879,21 @@
           </div>
         </div>
 
-        <div>
-          <div class="modal-section-hd">Executive Summary</div>
-          <div class="modal-text" style="white-space:normal">${execHtml}</div>
-        </div>
+        ${
+          hasStructuredSections
+            ? `
+              <div>
+                <div class="modal-section-hd">Executive Summary</div>
+                <div class="modal-text" style="white-space:normal">${execHtml}</div>
+              </div>
 
-        ${gatedSection('Pro-Tier · Deep Market Analysis', deepHtml)}
-        ${gatedSection('Analyst Recommendations', recsHtml)}
+              ${gatedSection('Pro-Tier · Deep Market Analysis', deepHtml)}
+              ${gatedSection('Analyst Recommendations', recsHtml)}
+            `
+            : `
+              ${gatedSection('Full Report', fullReportHtml)}
+            `
+        }
       `;
 
       document.getElementById('report-modal').classList.add('open');
