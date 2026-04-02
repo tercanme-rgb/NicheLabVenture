@@ -229,6 +229,40 @@
       margin-bottom: 0.6rem;
     }
 
+    .sb-label-bookmarks {
+      color: var(--gold-dim);
+    }
+
+    .sb-empty-note {
+      padding: 0 1.4rem 0.25rem;
+      font-size: 0.54rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .sb-bookmark-item {
+      display: block;
+      width: 100%;
+      background: none;
+      border: none;
+      border-left: 2px solid transparent;
+      padding: 0.48rem 1.4rem;
+      font-family: var(--mono);
+      font-size: 0.48rem;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--gold-dim);
+      text-align: left;
+      line-height: 1.55;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .sb-bookmark-item:hover {
+      background: var(--gold-faint);
+      color: var(--text);
+      border-left-color: var(--gold);
+    }
+
     .sb-divider {
       height: 1px;
       background: var(--border);
@@ -315,7 +349,7 @@
       flex: 1;
       margin-left: var(--left-w);
       margin-right: var(--right-w);
-      padding: 2.4rem 2rem 3rem;
+      padding: 2rem 1.25rem 3rem 1.25rem;
       min-width: 0;
     }
 
@@ -454,8 +488,9 @@
     /* ─── REPORT GRID ────────────────────── */
     .report-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.9rem;
+      grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+      gap: 0.8rem;
+      align-items: stretch;
       animation: fadeUp 0.45s 0.18s cubic-bezier(0.16,1,0.3,1) both;
     }
 
@@ -1027,7 +1062,7 @@
 
     
     @media (max-width: 1260px) {
-      .report-grid { grid-template-columns: repeat(2, 1fr); }
+      .report-grid { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
     }
 
     @media (max-width: 1100px) {
@@ -1089,7 +1124,7 @@
       <div class="sb-divider"></div>
 
       <div class="sb-section" style="padding-top:0.85rem">
-        <p class="sb-label">Bookmarked Reports</p>
+        <p class="sb-label sb-label-bookmarks">Bookmarked Reports</p>
         <div id="sb-bookmarks">
           <div class="sb-empty-note">No bookmarked reports yet.</div>
         </div>
