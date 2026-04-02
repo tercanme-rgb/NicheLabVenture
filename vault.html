@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NicheLab — Intelligence Vault</title>
+  <link rel="icon" href="data:,">
 
   <!-- Supabase v2 CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1087,6 +1088,15 @@
 
       <div class="sb-divider"></div>
 
+      <div class="sb-section" style="padding-top:0.85rem">
+        <p class="sb-label">Bookmarked Reports</p>
+        <div id="sb-bookmarks">
+          <div class="sb-empty-note">No bookmarked reports yet.</div>
+        </div>
+      </div>
+
+      <div class="sb-divider"></div>
+
       <!-- Deep Keyword Search -->
       <div class="sb-search-wrap">
         <span class="sb-search-label">Deep Search</span>
@@ -1343,10 +1353,11 @@
           Close
         </button>
 
-        <button class="modal-btn" id="modal-search-btn">
+        <button class="modal-btn" id="modal-bookmark" type="button" title="Bookmark report">
           <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
-            <circle cx="6" cy="6" r="4.5"/><line x1="9.5" y1="9.5" x2="13" y2="13"/>
+            <path d="M4 1.5h6a1 1 0 0 1 1 1V13l-4-2.6L3 13V2.5a1 1 0 0 1 1-1z"/>
           </svg>
+          Bookmark
         </button>
 
         <button class="modal-btn" id="modal-download">
@@ -1371,7 +1382,7 @@
        getSession() redirect, onAuthStateChange,
        ADMIN_EMAIL check, signOut.
   ════════════════════════════════════════════ -->
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     // ─── CONFIG ──────────────────────────────────────────────
     const SUPABASE_URL  = 'https://btiwdulcqtvkdupsotnx.supabase.co';
     const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
@@ -1395,6 +1406,8 @@
     let _isAdmin      = false;
     let _userTier     = 'starter';   // 'starter' | 'pro'
     let _allReports   = [];
+    let _currentModalReportId = null;
+    const BOOKMARKS_KEY = 'nichelab_bookmarks_v1';
 
     // ═════════════════════════════════════════════════════════════════
     //  STEP 1 — IMMEDIATE SESSION CHECK
@@ -1494,6 +1507,69 @@
       }
     }
 
+    function getBookmarks() {
+      try {
+        const raw = window.localStorage.getItem(BOOKMARKS_KEY);
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch (_) {
+        return [];
+      }
+    }
+
+    function setBookmarks(ids) {
+      window.localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(ids));
+    }
+
+    function isBookmarked(id) {
+      return getBookmarks().includes(String(id));
+    }
+
+    function toggleBookmark(id) {
+      const target = String(id);
+      const items = getBookmarks();
+      const next = items.includes(target)
+        ? items.filter(x => x !== target)
+        : [target, ...items.filter(Boolean)];
+      setBookmarks(next);
+      renderBookmarks();
+      syncBookmarkButton();
+    }
+
+    function renderBookmarks() {
+      const wrap = document.getElementById('sb-bookmarks');
+      if (!wrap) return;
+
+      const bookmarkIds = getBookmarks();
+      const reports = bookmarkIds
+        .map(id => _allReports.find(r => String(r.id) === String(id)))
+        .filter(Boolean);
+
+      if (!reports.length) {
+        wrap.innerHTML = '<div class="sb-empty-note">No bookmarked reports yet.</div>';
+        return;
+      }
+
+      wrap.innerHTML = reports.map(r => `
+        <button class="sb-bookmark-item" type="button" data-bookmark-open="${escAttr(String(r.id))}">
+          ${escHtml(r.title || r.name || 'Untitled Report')}
+        </button>
+      `).join('');
+    }
+
+    function syncBookmarkButton() {
+      const btn = document.getElementById('modal-bookmark');
+      if (!btn || !_currentModalReportId) return;
+      const active = isBookmarked(_currentModalReportId);
+      btn.classList.toggle('active-bookmark', active);
+      btn.innerHTML = `
+        <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M4 1.5h6a1 1 0 0 1 1 1V13l-4-2.6L3 13V2.5a1 1 0 0 1 1-1z"/>
+        </svg>
+        ${active ? 'Bookmarked' : 'Bookmark'}
+      `;
+    }
+
     // ─── LOAD REPORTS ─────────────────────────────────────────────────
     async function loadReports() {
       const grid = document.getElementById('report-grid');
@@ -1513,6 +1589,7 @@
         buildSignalBanner(_allReports);
         buildHeatmap(_allReports);
         renderGrid(_allReports);
+        renderBookmarks();
 
         // Show initial report count in sidebar search
         const countEl = document.getElementById('search-count');
@@ -1783,155 +1860,232 @@
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
-      // Double newlines → paragraph breaks; single newlines → <br>
       return escaped
         .split(/\n\s*\n/)
         .map(p => `<p style="margin-bottom:0.9rem">${p.replace(/\n/g, '<br>')}</p>`)
         .join('');
     }
-function renderReportContent(str) {
-  if (!str) return '';
 
-  const raw = String(str).trim();
+    function renderReportContent(str) {
+      if (!str) return '';
 
-  // If content is a full HTML document or contains real HTML tags,
-  // render it as HTML instead of escaping it.
-  if (
-    /<(html|head|body|style|table|thead|tbody|tr|td|th|h1|h2|h3|p|div|ol|ul|li)\b/i.test(raw)
-  ) {
-    // Remove outer document wrappers so only report body content is injected
-    let cleaned = raw
-      .replace(/<!DOCTYPE[^>]*>/gi, '')
-      .replace(/<html[^>]*>/gi, '')
-      .replace(/<\/html>/gi, '')
-      .replace(/<head[\s\S]*?<\/head>/gi, '')
-      .replace(/<body[^>]*>/gi, '')
-      .replace(/<\/body>/gi, '');
+      const raw = String(str).trim();
+      const looksLikeHtml = /<(html|head|body|style|table|thead|tbody|tr|td|th|h1|h2|h3|p|div|ol|ul|li|section|article)\b/i.test(raw);
 
-    return cleaned;
-  }
+      if (!looksLikeHtml) return `<div class="modal-report-render">${safeContent(raw)}</div>`;
 
-  return safeContent(raw);
-}
-   function openModal(id) {
-  const report = _allReports.find(r => String(r.id) === String(id));
-  if (!report) return;
+      const styleMatches = raw.match(/<style[\s\S]*?<\/style>/gi) || [];
+      const styleBlocks = styleMatches.join('\n');
 
-  const isPro  = _isAdmin || _userTier === 'pro';
-  const title  = escHtml(report.title || report.name || 'Untitled');
-  const cat    = escHtml(report.category || report.niche || '—');
-  const date   = report.created_at
-    ? new Date(report.created_at).toLocaleDateString('en-GB',
-        { day: '2-digit', month: 'long', year: 'numeric' })
-    : '—';
-  const signal = report.signal || '—';
+      const bodyMatch = raw.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+      const content = bodyMatch
+        ? bodyMatch[1]
+        : raw
+            .replace(/<!DOCTYPE[^>]*>/gi, '')
+            .replace(/<html[^>]*>/gi, '')
+            .replace(/<\/html>/gi, '')
+            .replace(/<head[\s\S]*?<\/head>/gi, '')
+            .replace(/<body[^>]*>/gi, '')
+            .replace(/<\/body>/gi, '')
+            .trim();
 
-  const fullReportRaw =
-    report.full_report ||
-    report.report ||
-    report.report_body ||
-    report.body ||
-    report.markdown ||
-    report.content ||
-    null;
-
-  const execRaw =
-    report.executive_summary ||
-    report.summary ||
-    report.description ||
-    null;
-
-  const deepRaw =
-    report.deep_analysis ||
-    report.analysis ||
-    null;
-
-  const recsRaw =
-    report.recommendations ||
-    null;
-
-  const execHtml = execRaw
-    ? safeContent(execRaw)
-    : '<p style="color:var(--muted);font-style:italic">No executive summary available.</p>';
-
-  const deepHtml = deepRaw
-    ? safeContent(deepRaw)
-    : '<p style="color:var(--muted);font-style:italic">No deep analysis available.</p>';
-
-  const recsHtml = recsRaw
-    ? safeContent(recsRaw)
-    : '<p style="color:var(--muted);font-style:italic">No recommendations available.</p>';
-
-  function renderReportContent(str) {
-  if (!str) return '';
-
-  const raw = String(str).trim();
-
-  if (
-    /<(html|head|body|style|table|thead|tbody|tr|td|th|h1|h2|h3|p|div|ol|ul|li)\b/i.test(raw)
-  ) {
-    let cleaned = raw
-      .replace(/<!DOCTYPE[^>]*>/gi, '')
-      .replace(/<html[^>]*>/gi, '')
-      .replace(/<\/html>/gi, '')
-      .replace(/<head[\s\S]*?<\/head>/gi, '')
-      .replace(/<body[^>]*>/gi, '')
-      .replace(/<\/body>/gi, '');
-
-    return cleaned;
-  }
-
-  return safeContent(raw);
-}
-
-  const gatedSection = (heading, contentHtml) => {
-    if (isPro) {
-      return `
-        <div>
-          <div class="modal-section-hd">${heading}</div>
-          <div class="modal-text" style="white-space:normal">${contentHtml}</div>
-        </div>`;
+      return `<div class="modal-report-render">${styleBlocks}${content}</div>`;
     }
-    return `
-      <div class="locked-wrap">
-        <div class="modal-section-hd">${heading}</div>
-        <div class="locked-content modal-text" style="white-space:normal">${contentHtml}</div>
-        <div class="lock-overlay">
-          <div class="lock-icon">🔒</div>
-          <div class="lock-msg">Pro-tier access required<br/>to unlock this section</div>
-          <button class="lock-cta" onclick="window.location.href='pricing.html'">Upgrade to Pro</button>
-        </div>
-      </div>`;
-  };
 
-  document.getElementById('modal-body').innerHTML = `
-    <div>
-      <div class="modal-title">${title}</div>
-      <div class="modal-meta" style="margin-top:0.6rem">
-        <span class="modal-meta-tag">Category: ${cat}</span>
-        <span class="modal-meta-tag">Published: ${date}</span>
-        <span class="modal-meta-tag">Signal Index: ${signal}</span>
-      </div>
+    function buildPrintableReport(title, metaText, contentHtml) {
+      return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>${title}</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; color: #1A1714; margin: 32px; line-height: 1.6; }
+  .print-wrap { max-width: 980px; margin: 0 auto; }
+  .print-header { margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #d8d2c8; }
+  .print-title { font-size: 28px; line-height: 1.2; margin-bottom: 10px; }
+  .print-meta { color: #6E6860; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+  .modal-section-hd { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: #8A6E10; margin: 24px 0 12px; }
+  table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+  th, td { border: 1px solid #ddd; padding: 8px; vertical-align: top; }
+  img { max-width: 100%; }
+  @page { size: A4; margin: 14mm; }
+</style>
+</head>
+<body>
+  <div class="print-wrap">
+    <div class="print-header">
+      <div class="print-title">${title}</div>
+      <div class="print-meta">${metaText}</div>
     </div>
+    ${contentHtml}
+  </div>
+</body>
+</html>`;
+    }
 
-    ${
-      fullReportRaw
+    function openModal(id) {
+      const report = _allReports.find(r => String(r.id) === String(id));
+      if (!report) return;
+
+      _currentModalReportId = String(report.id);
+
+      const isPro  = _isAdmin || _userTier === 'pro';
+      const titleText = report.title || report.name || 'Untitled';
+      const title  = escHtml(titleText);
+      const catText = report.category || report.niche || '—';
+      const cat    = escHtml(catText);
+      const dateText = report.created_at
+        ? new Date(report.created_at).toLocaleDateString('en-GB',
+            { day: '2-digit', month: 'long', year: 'numeric' })
+        : '—';
+      const signalText = report.signal || '—';
+      const date = escHtml(dateText);
+      const signal = escHtml(String(signalText));
+
+      const fullReportRaw =
+        report.full_report ||
+        report.report ||
+        report.report_body ||
+        report.body ||
+        report.markdown ||
+        report.content ||
+        null;
+
+      const execRaw =
+        report.executive_summary ||
+        report.summary ||
+        report.description ||
+        null;
+
+      const deepRaw =
+        report.deep_analysis ||
+        report.analysis ||
+        null;
+
+      const recsRaw =
+        report.recommendations ||
+        null;
+
+      const execHtml = execRaw
+        ? safeContent(execRaw)
+        : '<p style="color:var(--muted);font-style:italic">No executive summary available.</p>';
+
+      const deepHtml = deepRaw
+        ? safeContent(deepRaw)
+        : '<p style="color:var(--muted);font-style:italic">No deep analysis available.</p>';
+
+      const recsHtml = recsRaw
+        ? safeContent(recsRaw)
+        : '<p style="color:var(--muted);font-style:italic">No recommendations available.</p>';
+
+      const fullReportHtml = fullReportRaw
+        ? renderReportContent(fullReportRaw)
+        : '<p style="color:var(--muted);font-style:italic">No full report content available.</p>';
+
+      const gatedSection = (heading, contentHtml) => {
+        if (isPro) {
+          return `
+            <div>
+              <div class="modal-section-hd">${heading}</div>
+              <div class="modal-text" style="white-space:normal">${contentHtml}</div>
+            </div>`;
+        }
+        return `
+          <div class="locked-wrap">
+            <div class="modal-section-hd">${heading}</div>
+            <div class="locked-content modal-text" style="white-space:normal">${contentHtml}</div>
+            <div class="lock-overlay">
+              <div class="lock-icon">🔒</div>
+              <div class="lock-msg">Pro-tier access required<br/>to unlock this section</div>
+              <button class="lock-cta" onclick="window.location.href='pricing.html'">Upgrade to Pro</button>
+            </div>
+          </div>`;
+      };
+
+      const contentBlock = fullReportRaw
         ? `${gatedSection('Full Report', fullReportHtml)}`
         : `
-          <div>
-            <div class="modal-section-hd">Executive Summary</div>
-            <div class="modal-text" style="white-space:normal">${execHtml}</div>
+            <div>
+              <div class="modal-section-hd">Executive Summary</div>
+              <div class="modal-text" style="white-space:normal">${execHtml}</div>
+            </div>
+
+            ${gatedSection('Pro-Tier · Deep Market Analysis', deepHtml)}
+            ${gatedSection('Analyst Recommendations', recsHtml)}
+          `;
+
+      const modalBody = document.getElementById('modal-body');
+      modalBody.innerHTML = `
+        <div>
+          <div class="modal-title">${title}</div>
+          <div class="modal-meta" style="margin-top:0.6rem">
+            <span class="modal-meta-tag">Category: ${cat}</span>
+            <span class="modal-meta-tag">Published: ${date}</span>
+            <span class="modal-meta-tag">Signal Index: ${signal}</span>
           </div>
+        </div>
 
-          ${gatedSection('Pro-Tier · Deep Market Analysis', deepHtml)}
-          ${gatedSection('Analyst Recommendations', recsHtml)}
-        `
+        ${contentBlock}
+      `;
+
+      modalBody.dataset.printTitle = titleText;
+      modalBody.dataset.printMeta = `Category: ${catText} · Published: ${dateText} · Signal Index: ${signalText}`;
+      modalBody.dataset.printContent = contentBlock;
+
+      document.getElementById('report-modal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      syncBookmarkButton();
     }
-  `;
 
-  document.getElementById('report-modal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
+    function closeModal() {
+      document.getElementById('report-modal').classList.remove('open');
+      document.body.style.overflow = '';
+      _currentModalReportId = null;
+    }
+
+    document.getElementById('modal-close').addEventListener('click', closeModal);
+    document.getElementById('report-modal').addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeModal();
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.getElementById('report-modal').classList.contains('open')) {
+        closeModal();
+      }
+    });
+
+    document.getElementById('modal-download').addEventListener('click', () => {
+      const modalBody = document.getElementById('modal-body');
+      const printable = buildPrintableReport(
+        escHtml(modalBody.dataset.printTitle || 'NicheLab Report'),
+        escHtml(modalBody.dataset.printMeta || ''),
+        modalBody.dataset.printContent || modalBody.innerHTML
+      );
+
+      const printWindow = window.open('', '_blank', 'width=1100,height=900');
+      if (!printWindow) {
+        alert('Please allow pop-ups to save this report as PDF.');
+        return;
+      }
+
+      printWindow.document.open();
+      printWindow.document.write(printable);
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.onload = () => {
+        printWindow.print();
+      };
+    });
+
+    document.getElementById('modal-bookmark').addEventListener('click', () => {
+      if (!_currentModalReportId) return;
+      toggleBookmark(_currentModalReportId);
+    });
+
+    document.getElementById('sb-bookmarks').addEventListener('click', e => {
+      const btn = e.target.closest('[data-bookmark-open]');
+      if (!btn) return;
+      openModal(btn.dataset.bookmarkOpen);
+    });
 
     // ─── ANALYST LINE MODAL ───────────────────────────────────────────
     document.getElementById('analyst-line-btn').addEventListener('click', () => {
