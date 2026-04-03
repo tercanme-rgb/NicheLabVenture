@@ -926,8 +926,20 @@
       position: absolute; inset: 0;
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      background: rgba(243,240,232,0.72);
-      backdrop-filter: blur(3px);
+      background: rgba(243,240,232,0.88);
+      backdrop-filter: blur(4px);
+      z-index: 2;
+      padding: 1.2rem;
+    }
+
+    .lock-overlay.top-priority {
+      position: sticky;
+      top: 0;
+      inset: auto;
+      margin: 0 0 1rem 0;
+      min-height: 220px;
+      border: 1px solid var(--border-gold);
+      background: linear-gradient(180deg, rgba(243,240,232,0.96) 0%, rgba(243,240,232,0.92) 100%);
     }
 
     .lock-icon {
@@ -937,11 +949,12 @@
     }
 
     .lock-msg {
-      font-size: 0.62rem;
+      font-size: 0.68rem;
       color: var(--text-2);
       text-align: center;
-      line-height: 1.5;
-      margin-bottom: 0.8rem;
+      line-height: 1.6;
+      margin-bottom: 0.9rem;
+      max-width: 320px;
     }
 
     .lock-cta {
@@ -957,6 +970,10 @@
       transition: background 0.2s;
     }
     .lock-cta:hover { background: var(--gold-dim); }
+
+    .modal-btn.hidden-by-tier {
+      display: none !important;
+    }
 
     /* ═══════════════════════════════════════════════
        BOTTOM STRIP
@@ -1543,7 +1560,7 @@
 
     // ─── APPLY IDENTITY ───────────────────────────────────────────────
     function applyIdentity(user) {
-      const isPro      = _isAdmin || _userTier === 'pro';
+      const isPro      = _isAdmin || _userTier === 'starter' || _userTier === 'pro';
       const tierLabel  = _isAdmin ? 'Admin' : (_userTier === 'pro' ? 'Pro' : _userTier === 'starter' ? 'Starter' : 'Free');
       const allowance  = isPro ? 'Unlimited reads' : 'Limited reads';
 
@@ -1637,7 +1654,12 @@
 
     function syncBookmarkButton() {
       const btn = document.getElementById('modal-bookmark');
-      if (!btn || !_currentModalReportId) return;
+      if (!btn) return;
+
+      const canUseBookmarks = _isAdmin || _userTier === 'starter' || _userTier === 'pro';
+      btn.classList.toggle('hidden-by-tier', !canUseBookmarks);
+      if (!canUseBookmarks || !_currentModalReportId) return;
+
       const active = isBookmarked(_currentModalReportId);
       btn.classList.toggle('active-bookmark', active);
       btn.innerHTML = `
@@ -2018,7 +2040,9 @@
 
       _currentModalReportId = String(report.id);
 
-      const isPro  = _isAdmin || _userTier === 'pro';
+      const isPro  = _isAdmin || _userTier === 'starter' || _userTier === 'pro';
+      const canUseBookmarks = isPro;
+      const canExportPDF = isPro;
       const titleText = report.title || report.name || 'Untitled';
       const title  = escHtml(titleText);
       const catText = report.category || report.niche || '—';
@@ -2071,6 +2095,14 @@
         ? renderReportContent(fullReportRaw)
         : '<p style="color:var(--muted);font-style:italic">No full report content available.</p>';
 
+      const lockHero = !isPro ? `
+        <div class="lock-overlay top-priority">
+          <div class="lock-icon">🔒</div>
+          <div class="lock-msg">Starter or Pro access required to unlock the full report, PDF export, and bookmarks.</div>
+          <button class="lock-cta" onclick="window.location.href='index.html#membership-tiers'">Upgrade Membership</button>
+        </div>
+      ` : '';
+
       const gatedSection = (heading, contentHtml) => {
         if (isPro) {
           return `
@@ -2085,14 +2117,14 @@
             <div class="locked-content modal-text" style="white-space:normal">${contentHtml}</div>
             <div class="lock-overlay">
               <div class="lock-icon">🔒</div>
-              <div class="lock-msg">Pro-tier access required<br/>to unlock this section</div>
-              <button class="lock-cta" onclick="window.location.href='pricing.html'">Upgrade to Pro</button>
+              <div class="lock-msg">Starter or Pro access required to unlock this section.</div>
+              <button class="lock-cta" onclick="window.location.href='index.html#membership-tiers'">Upgrade Membership</button>
             </div>
           </div>`;
       };
 
       const contentBlock = fullReportRaw
-        ? `${gatedSection('Full Report', fullReportHtml)}`
+        ? `${lockHero}${gatedSection('Full Report', fullReportHtml)}`
         : `
             <div>
               <div class="modal-section-hd">Executive Summary</div>
@@ -2102,6 +2134,11 @@
             ${gatedSection('Pro-Tier · Deep Market Analysis', deepHtml)}
             ${gatedSection('Analyst Recommendations', recsHtml)}
           `;
+
+      const modalBookmarkBtn = document.getElementById('modal-bookmark');
+      const modalDownloadBtn = document.getElementById('modal-download');
+      if (modalBookmarkBtn) modalBookmarkBtn.classList.toggle('hidden-by-tier', !canUseBookmarks);
+      if (modalDownloadBtn) modalDownloadBtn.classList.toggle('hidden-by-tier', !canExportPDF);
 
       const modalBody = document.getElementById('modal-body');
       modalBody.innerHTML = `
@@ -2149,6 +2186,7 @@
     });
 
     document.getElementById('modal-download').addEventListener('click', () => {
+      if (!(_isAdmin || _userTier === 'starter' || _userTier === 'pro')) return;
       const modalBody = document.getElementById('modal-body');
       const printable = buildPrintableReport(
         escHtml(modalBody.dataset.printTitle || 'NicheLab Report'),
@@ -2172,6 +2210,7 @@
     });
 
     document.getElementById('modal-bookmark').addEventListener('click', () => {
+      if (!(_isAdmin || _userTier === 'starter' || _userTier === 'pro')) return;
       if (!_currentModalReportId) return;
       toggleBookmark(_currentModalReportId);
     });
