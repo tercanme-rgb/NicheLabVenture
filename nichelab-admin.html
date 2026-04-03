@@ -68,6 +68,11 @@ html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);fon
 .subtopic-item input[type=checkbox]{accent-color:var(--accent);margin-top:2px;flex-shrink:0}
 .subtopic-text{font-size:12px;color:var(--text);line-height:1.4}
 .subtopic-actions{display:flex;gap:8px;margin-top:12px}
+.custom-topic-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:12px}
+.custom-topic-note{font-size:11px;color:var(--text3);margin-top:10px;line-height:1.55}
+textarea.custom-input{width:100%;min-height:96px;resize:vertical;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 12px;color:var(--text);font-family:var(--font-ui);font-size:12px;outline:none;transition:border-color .15s}
+textarea.custom-input:focus{border-color:var(--accent)}
+textarea.custom-input::placeholder{color:var(--text3)}
 /* ── Queue ── */
 .queue-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:8px;background:var(--surface2);cursor:pointer;transition:all .12s}
 .queue-item:hover{border-color:var(--border2)}
@@ -318,8 +323,9 @@ const state = {
   category: null,
   subtopics: [],
   selected: new Set(),
-  queue: [],           // [{id, niche, status, progress, html, analystCode}]
+  queue: [],           // [{id, niche, status, progress, html, analystCode, categoryLabel, userBrief}]
   activePreview: null, // queue item id
+  customDraft: { topic:'', keywords:'' },
   isRunning: false,
   stopQueue: false,
   stopReason: '',
@@ -527,7 +533,7 @@ async function publishReport(){
 
   const {error} = await state.sbClient.from('reports').insert({
     title: item.niche,
-    category: state.category.label,
+    category: item.categoryLabel || state.category?.label || 'Custom',
     niche: item.niche,
     content: item.html,
     summary: `Market intelligence report covering 15 analytical sections for the ${item.niche} niche.`,
@@ -1075,9 +1081,72 @@ function clearSelectionSubtopics(){
 
 function updateQueueButton(){
   const btn = document.getElementById('btn-run-all');
-  if(btn) btn.disabled = state.selected.size === 0 || state.isRunning;
+  const pendingCount = state.queue.filter(q=>q.status==='pending').length;
+  if(btn) btn.disabled = (state.selected.size === 0 && pendingCount === 0) || state.isRunning;
   const sel = document.getElementById('selection-count');
-  if(sel) sel.textContent = `${state.selected.size} selected`;
+  if(sel) sel.textContent = `${state.selected.size} selected · ${pendingCount} pending`;
+}
+
+function escapeHtml(str=''){
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
+
+function buildCustomResearchBrief(topic, keywords=''){
+  const cleanTopic = String(topic||'').trim();
+  const cleanKeywords = String(keywords||'').trim();
+  if(!cleanTopic) return '';
+  return cleanKeywords
+    ? `Primary topic: ${cleanTopic}
+Keyword guidance: ${cleanKeywords}`
+    : `Primary topic: ${cleanTopic}`;
+}
+
+function addCustomTopicToQueue(){
+  const topicEl = document.getElementById('custom-topic-input');
+  const keywordsEl = document.getElementById('custom-keywords-input');
+  if(!topicEl) return;
+
+  const topic = topicEl.value.trim();
+  const keywords = keywordsEl ? keywordsEl.value.trim() : '';
+
+  if(!topic){
+    alert('Enter a topic or niche first.');
+    return;
+  }
+
+  const queueLabel = keywords ? `${topic} — ${keywords}` : topic;
+  const duplicate = state.queue.some(q => q.niche === queueLabel && q.categoryLabel === state.category.label);
+  if(duplicate){
+    log(`Custom topic already queued: "${queueLabel}"`, 'warning');
+    return;
+  }
+
+  const item = {
+    id: `${Date.now()}-custom-${Math.random().toString(36).slice(2,8)}`,
+    niche: queueLabel,
+    status: 'pending',
+    progress: 0,
+    sections: [],
+    html: '',
+    analystCode: genAnalystCode(),
+    categoryLabel: state.category.label,
+    userBrief: buildCustomResearchBrief(topic, keywords),
+    sourceType: 'custom'
+  };
+
+  state.queue.push(item);
+  state.customDraft = { topic, keywords };
+  renderQueue();
+  updateQueueButton();
+  log(`Custom topic queued: "${topic}"`, 'success');
+
+  topicEl.value = '';
+  if(keywordsEl) keywordsEl.value = '';
 }
 
 // ══════════════════════════════════════════════════════════
@@ -1093,7 +1162,10 @@ function addToQueue(){
       progress: 0,
       sections: [],
       html: '',
-      analystCode: genAnalystCode()
+      analystCode: genAnalystCode(),
+      categoryLabel: state.category.label,
+      userBrief: '',
+      sourceType: 'ai-subtopic'
     }));
 
   state.queue.push(...newItems);
@@ -1110,6 +1182,12 @@ async function runQueue(){
   document.getElementById('btn-run-all').disabled = true;
 
   const pending = state.queue.filter(q=>q.status==='pending');
+  if(!pending.length){
+    state.isRunning = false;
+    document.getElementById('btn-run-all').disabled = false;
+    log('No pending reports in queue.', 'warning');
+    return;
+  }
   log(`Starting generation of ${pending.length} reports...`, 'accent');
 
   for(const item of pending){
@@ -1200,7 +1278,7 @@ async function generateReport(item){
     log(`  Section ${sec.n}/15: ${sec.t}`, 'info');
 
     try{
-      const prompt = getSectionPrompt(sec, item.niche, state.category.label, item.analystCode, date);
+      const prompt = getSectionPrompt(sec, item.niche, item.categoryLabel || state.category.label, item.analystCode, date) + (item.userBrief ? `\n\nUSER-DEFINED RESEARCH BRIEF:\n${item.userBrief}\n\nInterpret this brief as mandatory scoping guidance. Keep the same institutional report structure, but tailor every section, market assumption, competitor set, and GTM recommendation to this exact topic/keyword brief.` : '');
       const rawHtml = await callAI(sysPr, prompt);
       const html = sanitizeHTML(rawHtml);
       item.sections.push(html);
@@ -1247,14 +1325,15 @@ function updateQueueItemUI(item){
   el.querySelector('.queue-status').className = `queue-status ${cls[item.status]}`;
   el.querySelector('.queue-status').textContent = icons[item.status];
   el.querySelector('.progress-fill').style.width = item.progress+'%';
-  el.querySelector('.queue-meta').textContent = item.status==='running'
+  el.querySelector('.queue-meta').textContent = (item.status==='running'
     ? `Generating... ${item.progress}%`
     : item.status==='done'
     ? `Complete · ${item.analystCode}`
     : item.status==='error'
     ? 'Error — check logs'
-    : 'Pending';
+    : 'Pending') + ` · ${item.sourceType==='custom'?'Custom brief':'AI subtopic'} · ${item.categoryLabel || '—'}`;
 }
+
 
 function renderQueue(){
   const el = document.getElementById('queue-list');
@@ -1267,7 +1346,7 @@ function renderQueue(){
       </div>
       <div class="queue-info">
         <div class="queue-niche">${item.niche}</div>
-        <div class="queue-meta">${item.status==='done'?`Complete · ${item.analystCode}`:item.status==='running'?`Generating... ${item.progress}%`:item.status==='error'?'Error':'Pending'}</div>
+        <div class="queue-meta">${item.status==='done'?`Complete · ${item.analystCode}`:item.status==='running'?`Generating... ${item.progress}%`:item.status==='error'?'Error':'Pending'} · ${(item.sourceType==='custom'?'Custom brief':'AI subtopic')} · ${escapeHtml(item.categoryLabel || '—')}</div>
         <div class="progress-bar"><div class="progress-fill" style="width:${item.progress}%"></div></div>
       </div>
     </div>`).join('');
@@ -1321,6 +1400,7 @@ function selectCategory(cat){
   document.getElementById(`cat-${cat.id}`)?.classList.add('active');
 
   renderWorkspace();
+  updateQueueButton();
   log(`Category selected: ${cat.label}`, 'info');
 }
 
@@ -1347,22 +1427,44 @@ function renderWorkspace(){
 
     <div class="card">
       <div class="card-header">
-        <div class="card-title"><span class="step-badge">02</span> Select & Queue</div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <span id="selection-count" style="font-family:var(--font-mono);font-size:11px;color:var(--text2)">0 selected</span>
-          <button class="btn btn-ghost btn-sm" onclick="selectAllSubtopics()">All</button>
-          <button class="btn btn-ghost btn-sm" onclick="clearSelectionSubtopics()">None</button>
-        </div>
+        <div class="card-title"><span class="step-badge">02</span> Custom Topic / Keywords</div>
+        <button class="btn btn-accent btn-sm" onclick="addCustomTopicToQueue()">Add Custom Topic</button>
       </div>
-      <div class="card-body" style="font-size:12px;color:var(--text2)">
-        Select subtopics above, then run the generation queue below.
+      <div class="card-body">
+        <div class="custom-topic-grid">
+          <div>
+            <label for="custom-topic-input">Topic or report title</label>
+            <textarea id="custom-topic-input" class="custom-input" placeholder="Example: CRM workflow automation for boutique immigration law firms"></textarea>
+          </div>
+          <div>
+            <label for="custom-keywords-input">Keywords, constraints, or angle</label>
+            <textarea id="custom-keywords-input" class="custom-input" placeholder="Example: Portugal, GDPR, low-ticket retainers, WhatsApp intake, solo operator"></textarea>
+          </div>
+        </div>
+        <div class="custom-topic-note">
+          Enter any niche, market, use case, or keyword cluster. The system will generate the same 15-section institutional report format, but scoped to your exact brief.
+        </div>
       </div>
     </div>
 
     <div class="card">
       <div class="card-header">
-        <div class="card-title"><span class="step-badge">03</span> Generation Queue</div>
-        <button class="btn btn-accent" id="btn-run-all" onclick="runQueue()" disabled>▶ Run All Selected</button>
+        <div class="card-title"><span class="step-badge">03</span> Select & Queue</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span id="selection-count" style="font-family:var(--font-mono);font-size:11px;color:var(--text2)">0 selected · 0 pending</span>
+          <button class="btn btn-ghost btn-sm" onclick="selectAllSubtopics()">All</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearSelectionSubtopics()">None</button>
+        </div>
+      </div>
+      <div class="card-body" style="font-size:12px;color:var(--text2)">
+        Queue AI-generated subtopics above, add a custom topic, or combine both before running the generation queue.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title"><span class="step-badge">04</span> Generation Queue</div>
+        <button class="btn btn-accent" id="btn-run-all" onclick="runQueue()" disabled>▶ Run Pending Queue</button>
       </div>
       <div class="card-body">
         <div id="queue-list"><div style="color:var(--text2);font-size:12px;padding:8px">No reports queued yet.</div></div>
