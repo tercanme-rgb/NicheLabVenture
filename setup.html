@@ -587,7 +587,7 @@ html, body {
 
   <!-- Page footer -->
   <div class="page-footer">
-    Secured connection &nbsp;·&nbsp; <a href="index.html">Kroneberg & Co.</a>
+    Secured connection &nbsp;·&nbsp; <a href="index.html">Kroneberg &amp; Co.</a>
   </div>
 
 </div><!-- /page-wrapper -->
@@ -599,13 +599,8 @@ html, body {
 <script>
 'use strict';
 
-/* ── Supabase credentials ─────────────────────────────────
-   URL confirmed from project: ctezbazpnqylufhrmcwn
-   ANON KEY: paste your anon/public key from
-   Supabase → Project Settings → API → "anon public"
-──────────────────────────────────────────────────────── */
+/* ── Supabase credentials ───────────────────────────────── */
 const SUPABASE_URL = 'https://btiwdulcqtvkdupsotnx.supabase.co';
-
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aXdkdWxjcXR2a2R1cHNvdG54Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NzY2NjcsImV4cCI6MjA5MDM1MjY2N30.RawdFhi84Zq95eZ29w8QwXPcBT9VDffFcHMB3fAzITA';
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -621,7 +616,6 @@ const $pw2      = document.getElementById('f-pw2');
 const $legal    = document.getElementById('f-legal');
 const $btn      = document.getElementById('btn-submit');
 const $btnLabel = document.getElementById('btn-label');
-const $spinner  = document.getElementById('spinner');
 const $pwMsg    = document.getElementById('pw-match-msg');
 const $errBlock = document.getElementById('error-block');
 const $errText  = document.getElementById('error-text');
@@ -629,15 +623,20 @@ const $formBody = document.getElementById('form-body');
 const $success  = document.getElementById('success-block');
 const $fill     = document.getElementById('redirect-fill');
 
-const _params = new URLSearchParams(window.location.search);
-const _tierRaw = (_params.get('tier') || 'free').toLowerCase();
-const _tier = ['free', 'starter', 'pro'].includes(_tierRaw) ? _tierRaw : 'free';
-
+const params = new URLSearchParams(window.location.search);
+const rawTier = (params.get('tier') || 'free').toLowerCase().trim();
+const tierMap = {
+  free: 'free',
+  core: 'core',
+  elite: 'elite',
+  starter: 'core',
+  pro: 'elite'
+};
+const resolvedTier = tierMap[rawTier] || 'free';
 
 /* ── URL param email pre-fill ─────────────────────────── */
 (function prefillEmail() {
   try {
-    const params = new URLSearchParams(window.location.search);
     const emailParam = params.get('email') || params.get('prefill_email');
     if (emailParam && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailParam)) {
       $email.value = decodeURIComponent(emailParam);
@@ -728,7 +727,6 @@ async function handleSubmit() {
   const email     = $email.value.trim().toLowerCase();
   const password  = $pw.value;
 
-  /* — Client-side guard — */
   if (!firstName || !lastName || !email || password.length < 8 || password !== $pw2.value || !$legal.checked) {
     showError('Please complete all fields correctly before submitting.');
     return;
@@ -737,52 +735,75 @@ async function handleSubmit() {
   setLoading(true);
 
   try {
-    /* ── Step 1: Supabase signUp ────────────────────────── */
+    let finalUser = null;
+
+    /* ── Step 1: Try sign up ───────────────────────────── */
     const { data: signUpData, error: signUpError } = await sb.auth.signUp({
       email,
       password,
       options: {
         data: {
           first_name: firstName,
-          last_name:  lastName,
-          full_name:  `${firstName} ${lastName}`
+          last_name: lastName,
+          full_name: `${firstName} ${lastName}`
         }
       }
     });
 
     if (signUpError) {
-      throw signUpError;
+      const signUpMessage = signUpError.message || '';
+
+      if (/already registered|already exists|user already/i.test(signUpMessage)) {
+        const { data: signInData, error: signInError } = await sb.auth.signInWithPassword({
+          email,
+          password
+        });
+
+        if (signInError) {
+          throw new Error('An account with this email already exists. Please sign in with the same password you used previously, or reset your password from the Vault login screen.');
+        }
+
+        finalUser = signInData?.user || null;
+      } else {
+        throw signUpError;
+      }
+    } else {
+      finalUser = signUpData?.user || null;
     }
 
-    const user = signUpData?.user;
-    if (!user) {
-      /* Supabase sometimes returns no error but confirmation email flow */
-      throw new Error('Account could not be created. Please try again or contact support.');
+    if (!finalUser) {
+      const { data: userData, error: userError } = await sb.auth.getUser();
+      if (userError) throw userError;
+      finalUser = userData?.user || null;
     }
 
-    /* ── Step 2: Insert into profiles ───────────────────── */
+    if (!finalUser) {
+      throw new Error('User could not be resolved after account creation.');
+    }
+
+    /* ── Step 2: Upsert profile with resolved tier ─────── */
     const { error: profileError } = await sb
       .from('profiles')
       .upsert({
-        id:         user.id,
-  email:      email,
-  first_name: firstName,
-  last_name:  lastName,
-  full_name:  `${firstName} ${lastName}`,
-  tier:       _tier,
-  updated_at: new Date().toISOString()
+        id: finalUser.id,
+        email: email,
+        first_name: firstName,
+        last_name: lastName,
+        full_name: `${firstName} ${lastName}`,
+        tier: resolvedTier,
+        updated_at: new Date().toISOString()
       }, { onConflict: 'id' });
 
     if (profileError) {
-      /* Non-fatal: profile may already exist via webhook; proceed */
-      console.warn('Profile upsert warning:', profileError.message);
+      throw profileError;
     }
 
-    /* ── Step 3: Success → redirect ─────────────────────── */
+    console.log('Profile tier set to:', resolvedTier);
+
+    /* ── Step 3: Success → redirect ───────────────────── */
     $formBody.style.display = 'none';
     $success.classList.add('visible');
 
-    /* Animate progress bar, then redirect */
     requestAnimationFrame(() => {
       $fill.style.width = '100%';
     });
@@ -796,15 +817,14 @@ async function handleSubmit() {
 
     const raw = err?.message || '';
 
-    /* User-friendly error mapping */
-    if (/already registered|already exists|user already/i.test(raw)) {
-      showError('An account with this email address already exists. Please sign in at vault.html or use a different email.');
-    } else if (/password.*characters|too short/i.test(raw)) {
+    if (/password.*characters|too short/i.test(raw)) {
       showError('Password must be at least 8 characters.');
     } else if (/invalid email/i.test(raw)) {
       showError('Please enter a valid email address.');
     } else if (/rate limit/i.test(raw)) {
       showError('Too many requests. Please wait a moment and try again.');
+    } else if (/already exists|already registered/i.test(raw)) {
+      showError('An account with this email address already exists. Please sign in using the same password, or reset your password from the Vault login screen.');
     } else if (raw) {
       showError(raw);
     } else {
