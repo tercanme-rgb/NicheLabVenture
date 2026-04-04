@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kroneberg &amp; Co. — Intelligence Vault</title>
+  <title>NicheLab — Intelligence Vault</title>
   <link rel="icon" href="data:,">
 
   <!-- Supabase v2 CDN -->
@@ -88,22 +88,14 @@
       border-bottom: 1px solid var(--border-strong);
     }
 
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      min-width: var(--left-w);
-      height: 100%;
-      padding: 0 1.25rem;
-      flex-shrink: 0;
-      text-decoration: none;
-    }
+    
+/* BRAND LOCKUP */
+.brand-lockup{display:flex;align-items:center;gap:8px}
+.brand-symbol{width:42px;height:42px;object-fit:contain;display:block;flex:0 0 42px;transform:translateY(1px)}
+.brand-text{height:42px;display:grid;grid-template-rows:22px 12px;align-content:center;padding-top:2px}
+.brand-name{margin:0;font-family:Georgia,'Times New Roman',serif;font-size:19px;line-height:22px;letter-spacing:-0.02em;color:#2F3440;white-space:nowrap}
+.brand-sub{margin:0;font-family:var(--mono);font-size:8px;line-height:12px;letter-spacing:.24em;text-transform:uppercase;color:#8B8478;white-space:nowrap}
 
-    .nav-brand img {
-      height: 48px;
-      width: auto;
-      object-fit: contain;
-      display: block;
-    }
 
     /* Nav vault title — aligned to homepage design language */
     .nav-vault-title {
@@ -1127,8 +1119,14 @@
   ════════════════════════════════════════════ -->
   <nav>
     <a class="nav-brand" href="index.html">
-      <img src="LOGO.png" alt="Kroneberg &amp; Co.">
-    </a>
+<div class="brand-lockup">
+  <img src="kroneberg-gold-symbol.png" alt="Kroneberg &amp; Co." class="brand-symbol">
+  <div class="brand-text">
+    <div class="brand-name">Kroneberg &amp; Co.</div>
+    <div class="brand-sub">Intelligence · Analytica</div>
+  </div>
+</div>
+</a>
 
     <span class="nav-vault-title">Intelligence Vault</span>
 

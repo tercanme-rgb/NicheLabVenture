@@ -3,73 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Account Configuration — Kroneberg &amp; Co.</title>
+<title>Account Configuration — NicheLab</title>
 
 <!-- ─── Supabase v2 ─────────────────────────────────────── -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 
 <style>
-/* ═══════════════════════════════════════════════════════════
-   RESET & BASE
-═══════════════════════════════════════════════════════════ */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-:root {
-  --bg:        #F5F5F7;
-  --surface:   #FFFFFF;
-  --border:    #D1D1D6;
-  --border-dk: #A0A0A8;
-  --text-pri:  #0A0A0C;
-  --text-sec:  #4A4A52;
-  --text-ter:  #8A8A92;
-  --accent:    #0A0A0C;
-  --accent-dk: #000000;
-  --btn-dis:   #C7C7CC;
-  --error:     #C0392B;
-  --link:      #0A0A0C;
-}
-
-html, body {
-  min-height: 100%;
-  background: var(--bg);
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 13px;
-  color: var(--text-pri);
-  -webkit-font-smoothing: antialiased;
-}
-
-/* ═══════════════════════════════════════════════════════════
-   PAGE WRAPPER
-═══════════════════════════════════════════════════════════ */
-.page-wrapper {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 16px;
-}
 
 /* ═══════════════════════════════════════════════════════════
    WORDMARK
 ═══════════════════════════════════════════════════════════ */
-.wordmark {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 28px;
-}
+.wordmark{display:flex;align-items:center;justify-content:center;margin-bottom:28px}
+.brand-lockup{display:flex;align-items:center;gap:10px}
+.brand-symbol{width:56px;height:56px;object-fit:contain;display:block;flex:0 0 56px;transform:translateY(1px)}
+.brand-text{height:56px;display:grid;grid-template-rows:30px 14px;align-content:center;padding-top:3px}
+.brand-name{margin:0;font-family:Georgia,'Times New Roman',serif;font-size:24px;line-height:30px;letter-spacing:-0.02em;color:#2F3440;white-space:nowrap}
+.brand-sub{margin:0;font-family:Helvetica,Arial,sans-serif;font-size:10px;line-height:14px;letter-spacing:.30em;text-transform:uppercase;color:#8B8478;white-space:nowrap}
 
-.wordmark img {
-  height: 58px;
-  width: auto;
-  object-fit: contain;
-  display: block;
-}
 
 /* ═══════════════════════════════════════════════════════════
    CARD
@@ -459,7 +409,15 @@ html, body {
 <div class="page-wrapper">
 
   <!-- Wordmark -->
-  <div class="wordmark"><img src="LOGO.png" alt="Kroneberg &amp; Co."></div>
+  <div class="wordmark">
+<div class="brand-lockup">
+  <img src="kroneberg-gold-symbol.png" alt="Kroneberg &amp; Co." class="brand-symbol">
+  <div class="brand-text">
+    <div class="brand-name">Kroneberg &amp; Co.</div>
+    <div class="brand-sub">Intelligence · Analytica</div>
+  </div>
+</div>
+</div>
 
   <!-- Card -->
   <div class="card" id="card-main">
@@ -563,7 +521,7 @@ html, body {
 
   <!-- Page footer -->
   <div class="page-footer">
-    Secured connection &nbsp;·&nbsp; <a href="index.html">Kroneberg &amp; Co.</a>
+    Secured connection &nbsp;·&nbsp; <a href="index.html">NicheLab</a>
   </div>
 
 </div><!-- /page-wrapper -->
