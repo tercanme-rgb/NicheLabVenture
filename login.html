@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NicheLab — Sign In</title>
+  <title>Kroneberg & Co. — Sign In</title>
 
   <!-- Supabase v2 CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -65,14 +65,37 @@
       backdrop-filter: blur(12px);
     }
 
-    
-    .nav-logo{display:flex;align-items:center;text-decoration:none}
-    .brand-lockup{display:flex;align-items:center;gap:8px}
-    .brand-symbol{width:40px;height:40px;object-fit:contain;display:block;flex:0 0 40px;transform:translateY(1px)}
-    .brand-text{height:40px;display:grid;grid-template-rows:21px 11px;align-content:center;padding-top:2px}
-    .brand-name{margin:0;font-family:Georgia,'Times New Roman',serif;font-size:19px;line-height:21px;letter-spacing:-0.02em;color:#2F3440;white-space:nowrap}
-    .brand-sub{margin:0;font-family:var(--sans);font-size:8px;line-height:11px;letter-spacing:.22em;text-transform:uppercase;color:#8B8478;white-space:nowrap}
+    .nav-logo {
+      display:flex;
+      align-items:center;
+      text-decoration:none;
+    }
 
+    /* ─── KRONEBERG BRAND LOCKUP ───────────────────────────── */
+.brand-lockup{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand-lockup--tight{gap:8px}
+.brand-symbol{display:block;object-fit:contain;flex-shrink:0;background:transparent}
+.brand-symbol--nav{height:46px;width:auto}
+.brand-symbol--hero{height:98px;width:auto}
+.brand-text{display:flex;flex-direction:column;justify-content:center;line-height:1}
+.brand-text--nav{height:46px}
+.brand-text--hero{height:98px}
+.brand-name{font-family:var(--fd, Georgia, 'Times New Roman', serif);font-weight:500;letter-spacing:-0.025em;color:var(--ink, #2f3440);white-space:nowrap}
+.brand-sub{font-family:var(--fb, 'Helvetica Neue', Helvetica, Arial, sans-serif);text-transform:uppercase;white-space:nowrap;color:var(--ink-faint, #8b8478)}
+.brand-name--nav{font-size:18px;line-height:22px}
+.brand-sub--nav{font-size:8.5px;line-height:11px;letter-spacing:.30em;margin-top:3px}
+.brand-name--hero{font-size:46px;line-height:50px}
+.brand-sub--hero{font-size:12px;line-height:16px;letter-spacing:.34em;margin-top:6px}
+@media (max-width:768px){
+  .brand-symbol--nav{height:40px}
+  .brand-text--nav{height:40px}
+  .brand-name--nav{font-size:16px;line-height:19px}
+  .brand-sub--nav{font-size:7.4px;line-height:10px;letter-spacing:.24em}
+  .brand-symbol--hero{height:72px}
+  .brand-text--hero{height:72px}
+  .brand-name--hero{font-size:30px;line-height:33px}
+  .brand-sub--hero{font-size:8.6px;line-height:12px;letter-spacing:.24em}
+}
 
     .nav-links {
       display: flex;
@@ -357,14 +380,12 @@
   <!-- ── NAVIGATION ──────────────────────────────────────────────── -->
   <nav>
     <a class="nav-logo" href="index.html">
-<div class="brand-lockup">
-  <img src="kroneberg-gold-symbol.png" alt="Kroneberg &amp; Co." class="brand-symbol">
-  <div class="brand-text">
-    <div class="brand-name">Kroneberg &amp; Co.</div>
-    <div class="brand-sub">Intelligence · Analytica</div>
-  </div>
-</div>
-</a>
+      <img src="kroneberg-gold-symbol-transparent.png" alt="Kroneberg &amp; Co." class="brand-symbol brand-symbol--nav">
+      <span class="brand-text brand-text--nav">
+        <span class="brand-name brand-name--nav">Kroneberg &amp; Co.</span>
+        <span class="brand-sub brand-sub--nav">Intelligence · Analytica</span>
+      </span>
+    </a>
     <ul class="nav-links">
       <li><a href="index.html#pricing">Pricing</a></li>
       <li><a href="index.html#about">About</a></li>
@@ -417,7 +438,7 @@
         <p id="status-msg" role="alert" aria-live="polite"></p>
 
         <div style="margin-top:16px;text-align:center;font-size:0.72rem;color:var(--muted);line-height:1.6;">
-          New to NicheLab? <a href="setup.html?tier=free" style="color:var(--text);text-decoration:underline;text-underline-offset:2px;font-weight:600;">Create Free Account</a>
+          New to Kroneberg & Co.? <a href="setup.html?tier=free" style="color:var(--text);text-decoration:underline;text-underline-offset:2px;font-weight:600;">Create Free Account</a>
         </div>
       </div>
 
@@ -431,7 +452,7 @@
 
   <!-- ── BOTTOM BAR ──────────────────────────────────────────────── -->
   <div class="bottom-bar">
-    <p>© 2025 NicheLab Intelligence. All rights reserved.</p>
+    <p>© 2025 Kroneberg & Co.. All rights reserved.</p>
     <span class="ticker" id="live-time"></span>
   </div>
 

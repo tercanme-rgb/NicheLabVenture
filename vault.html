@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NicheLab — Intelligence Vault</title>
+  <title>Kroneberg & Co. — Intelligence Vault</title>
   <link rel="icon" href="data:,">
 
   <!-- Supabase v2 CDN -->
@@ -88,16 +88,42 @@
       border-bottom: 1px solid var(--border-strong);
     }
 
-    
-/* BRAND LOCKUP */
-.brand-lockup{display:flex;align-items:center;gap:8px}
-.brand-symbol{width:42px;height:42px;object-fit:contain;display:block;flex:0 0 42px;transform:translateY(1px)}
-.brand-text{height:42px;display:grid;grid-template-rows:22px 12px;align-content:center;padding-top:2px}
-.brand-name{margin:0;font-family:Georgia,'Times New Roman',serif;font-size:19px;line-height:22px;letter-spacing:-0.02em;color:#2F3440;white-space:nowrap}
-.brand-sub{margin:0;font-family:var(--mono);font-size:8px;line-height:12px;letter-spacing:.24em;text-transform:uppercase;color:#8B8478;white-space:nowrap}
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      min-width: var(--left-w);
+      height: 100%;
+      padding: 0 1.25rem;
+      flex-shrink: 0;
+      text-decoration: none;
+    }
 
-
-    /* Nav vault title — aligned to homepage design language */
+    /* ─── KRONEBERG BRAND LOCKUP ───────────────────────────── */
+    .brand-lockup{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .brand-lockup--tight{gap:8px}
+    .brand-symbol{display:block;object-fit:contain;flex-shrink:0;background:transparent}
+    .brand-symbol--nav{height:46px;width:auto}
+    .brand-symbol--hero{height:98px;width:auto}
+    .brand-text{display:flex;flex-direction:column;justify-content:center;line-height:1}
+    .brand-text--nav{height:46px}
+    .brand-text--hero{height:98px}
+    .brand-name{font-family:var(--fd, Georgia, 'Times New Roman', serif);font-weight:500;letter-spacing:-0.025em;color:var(--ink, #2f3440);white-space:nowrap}
+    .brand-sub{font-family:var(--fb, 'Helvetica Neue', Helvetica, Arial, sans-serif);text-transform:uppercase;white-space:nowrap;color:var(--ink-faint, #8b8478)}
+    .brand-name--nav{font-size:18px;line-height:22px}
+    .brand-sub--nav{font-size:8.5px;line-height:11px;letter-spacing:.30em;margin-top:3px}
+    .brand-name--hero{font-size:46px;line-height:50px}
+    .brand-sub--hero{font-size:12px;line-height:16px;letter-spacing:.34em;margin-top:6px}
+    @media (max-width:768px){
+      .brand-symbol--nav{height:40px}
+      .brand-text--nav{height:40px}
+      .brand-name--nav{font-size:16px;line-height:19px}
+      .brand-sub--nav{font-size:7.4px;line-height:10px;letter-spacing:.24em}
+      .brand-symbol--hero{height:72px}
+      .brand-text--hero{height:72px}
+      .brand-name--hero{font-size:30px;line-height:33px}
+      .brand-sub--hero{font-size:8.6px;line-height:12px;letter-spacing:.24em}
+    }
+/* Nav vault title — aligned to homepage design language */
     .nav-vault-title {
       flex: 1;
       font-family: Georgia, 'Times New Roman', serif;
@@ -1118,15 +1144,15 @@
        NAVIGATION
   ════════════════════════════════════════════ -->
   <nav>
-    <a class="nav-brand" href="index.html">
-<div class="brand-lockup">
-  <img src="kroneberg-gold-symbol.png" alt="Kroneberg &amp; Co." class="brand-symbol">
-  <div class="brand-text">
-    <div class="brand-name">Kroneberg &amp; Co.</div>
-    <div class="brand-sub">Intelligence · Analytica</div>
-  </div>
-</div>
-</a>
+    <div class="nav-brand">
+      <a class="brand-lockup brand-lockup--tight" href="index.html">
+      <img src="kroneberg-gold-symbol-transparent.png" alt="Kroneberg &amp; Co." class="brand-symbol brand-symbol--nav">
+      <span class="brand-text brand-text--nav">
+        <span class="brand-name brand-name--nav">Kroneberg &amp; Co.</span>
+        <span class="brand-sub brand-sub--nav">Intelligence · Analytica</span>
+      </span>
+    </a>
+    </div>
 
     <span class="nav-vault-title">Intelligence Vault</span>
 
@@ -1273,7 +1299,7 @@
         </div>
 
         <div style="font-size:0.68rem;color:var(--text-2);line-height:1.75;border-left:2px solid var(--border-gold);padding-left:1rem;">
-          Submit a direct briefing request to the NicheLab analyst team. Requests are reviewed within 48 hours. Please be specific about the market, sector, or intelligence gap you wish to investigate.
+          Submit a direct briefing request to the Kroneberg & Co. analyst team. Requests are reviewed within 48 hours. Please be specific about the market, sector, or intelligence gap you wish to investigate.
         </div>
 
         <form id="analyst-form" style="display:flex;flex-direction:column;gap:1.2rem;"
@@ -1324,7 +1350,7 @@
         <div>
           <div class="modal-title">My Account</div>
           <div class="modal-meta" style="margin-top:0.6rem">
-            <span class="modal-meta-tag">NicheLab Intelligence Platform</span>
+            <span class="modal-meta-tag">Kroneberg & Co. Platform</span>
             <span class="modal-meta-tag" id="acct-tier-meta">—</span>
           </div>
         </div>
@@ -1395,7 +1421,7 @@
   <div class="bottom-strip">
     <div class="strip-group">
       <div class="status-dot"></div>
-      <span class="strip-item">NicheLab Intelligence Platform</span>
+      <span class="strip-item">Kroneberg & Co. Platform</span>
       <div class="strip-sep"></div>
       <span class="strip-item">Secure Session Active</span>
     </div>
@@ -1474,7 +1500,7 @@
     let _userTier     = 'free';      // 'free' | 'starter' | 'pro'
     let _allReports   = [];
     let _currentModalReportId = null;
-    const BOOKMARKS_KEY = 'nichelab_bookmarks_v1';
+    const BOOKMARKS_KEY = 'kroneberg_bookmarks_v1';
 
     // ═════════════════════════════════════════════════════════════════
     //  STEP 1 — IMMEDIATE SESSION CHECK
@@ -1669,7 +1695,7 @@
         if (countEl) countEl.textContent = `${_allReports.length} reports`;
 
       } catch (err) {
-        console.error('[NicheLab] Report fetch error:', err);
+        console.error('[Kroneberg & Co.] Report fetch error:', err);
         grid.innerHTML = `
           <div class="grid-state" style="color:var(--error)">
             Failed to load reports — ${escHtml(err.message)}
@@ -2162,7 +2188,7 @@
       if (!(_isAdmin || _userTier === 'starter' || _userTier === 'pro')) return;
       const modalBody = document.getElementById('modal-body');
       const printable = buildPrintableReport(
-        escHtml(modalBody.dataset.printTitle || 'NicheLab Report'),
+        escHtml(modalBody.dataset.printTitle || 'Kroneberg & Co. Report'),
         escHtml(modalBody.dataset.printMeta || ''),
         modalBody.dataset.printContent || modalBody.innerHTML
       );
@@ -2219,7 +2245,7 @@
       if (!subject || !message) return;
 
       const userEmail   = _currentUser ? _currentUser.email : '';
-      const mailSubject = encodeURIComponent(`[NicheLab Analyst Line] ${subject}`);
+      const mailSubject = encodeURIComponent(`[Kroneberg & Co. Analyst Line] ${subject}`);
       const mailBody    = encodeURIComponent(
         `From: ${userEmail}\n\n${message}`
       );
