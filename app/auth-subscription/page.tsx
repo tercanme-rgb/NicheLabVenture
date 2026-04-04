@@ -1,5 +1,5 @@
 /**
- * NicheLab — Auth & Subscription Flow
+ * Kroneberg & Co. — Auth & Subscription Flow
  * File: pages/auth-subscription.tsx  (or app/auth-subscription/page.tsx for App Router)
  *
  * Covers:
@@ -10,7 +10,7 @@
  *
  * Dependencies:
  *   npm install @supabase/supabase-js @supabase/auth-helpers-nextjs
- *   (Tailwind CSS assumed — mirrors existing NicheLab gold/light theme)
+ *   (Tailwind CSS assumed — mirrors existing Kroneberg & Co. gold/light theme)
  */
 
 'use client';
@@ -181,14 +181,7 @@ export default function AuthSubscriptionPage() {
         padding: '0 48px', zIndex: 1000,
       }}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
-          <span style={{
-            width: 34, height: 34, background: '#141410', borderRadius: 7,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: '#B8860B', fontWeight: 700, fontSize: 13,
-          }}>N</span>
-          <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 19, fontWeight: 500, color: '#141410' }}>
-            NicheLab
-          </span>
+          <img src="/kroneberg-logo.png" alt="Kroneberg & Co. logo" style={{ height: 40, width: 'auto', objectFit: 'contain', display: 'block' }} />
         </a>
         <span style={{ fontFamily: 'DM Mono, monospace', fontSize: 11, color: '#A8A898', letterSpacing: '1.5px', textTransform: 'uppercase' }}>
           Secure Registration
@@ -401,7 +394,7 @@ function RegistrationForm({
 
           <span style={S.eyebrow}>Selected Plan</span>
           <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 36, fontWeight: 400, letterSpacing: -1, lineHeight: 1.1, marginBottom: 8, color: '#141410' }}>
-            NicheLab <em style={{ fontStyle: 'italic', color: '#B8860B' }}>{cfg.label}</em>
+            Kroneberg & Co. <em style={{ fontStyle: 'italic', color: '#B8860B' }}>{cfg.label}</em>
           </h2>
           <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 48, fontWeight: 400, letterSpacing: -2, color: '#141410', lineHeight: 1, marginBottom: 6 }}>
             {data.price}
@@ -499,7 +492,7 @@ function RegistrationForm({
                   </div>
                 </div>
                 <span style={{ fontSize: 13, color: '#6A6A58', lineHeight: 1.65 }}>
-                  I have read, understood, and agree to the NicheLab{' '}
+                  I have read, understood, and agree to the Kroneberg & Co.{' '}
                   <a href="/legal/terms-of-service" target="_blank" rel="noopener noreferrer" style={{ color: '#B8860B', textDecoration: 'underline' }}>
                     Terms of Service
                   </a>{' '}
@@ -507,7 +500,7 @@ function RegistrationForm({
                   <a href="/legal/privacy-policy" target="_blank" rel="noopener noreferrer" style={{ color: '#B8860B', textDecoration: 'underline' }}>
                     Privacy Policy
                   </a>
-                  . I acknowledge that NicheLab research materials are provided for informational purposes and do not constitute financial advice.
+                  . I acknowledge that Kroneberg & Co. research materials are provided for informational purposes and do not constitute financial advice.
                 </span>
               </label>
             </div>
@@ -602,7 +595,7 @@ function VerificationScreen({ email, plan }: { email: string; plan: Plan }) {
       <p style={{ fontSize: 16, color: '#6A6A58', lineHeight: 1.80, fontWeight: 300, marginBottom: 32 }}>
         A verification link has been dispatched to{' '}
         <strong style={{ color: '#141410', fontWeight: 500 }}>{email}</strong>.<br />
-        Access to NicheLab's research infrastructure requires email confirmation
+        Access to Kroneberg & Co.'s research infrastructure requires email confirmation
         to protect the integrity of proprietary intelligence data.
       </p>
 
@@ -651,7 +644,7 @@ function VerificationScreen({ email, plan }: { email: string; plan: Plan }) {
 
       <p style={{ marginTop: 24, fontSize: 12, color: '#A8A898', fontFamily: 'DM Mono, monospace', letterSpacing: .3, lineHeight: 1.7 }}>
         Check spam/junk if not received within 2 minutes.<br />
-        From: <strong>noreply@nichelab.io</strong>
+        From: <strong>noreply@kronebergco.com</strong>
       </p>
     </div>
   );
